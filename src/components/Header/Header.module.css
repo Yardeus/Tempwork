@@ -1,0 +1,33 @@
+.header {
+    grid-area: h;
+    background-color: #c4ffe1;
+
+    display: grid;
+    width: auto;
+
+    grid-template-columns: 3fr 5fr 2fr 2fr 1fr;
+
+
+}
+
+.item{
+    color: red;
+    vertical-align: middle;
+
+    margin-top: 27px;
+}
+
+.item a{
+    color: black;
+    text-decoration: none;
+}
+
+.text {
+    color: firebrick;
+    font-size: 50px;
+    margin-top: 0px;
+}
+
+.item a.activeLink {
+    color: blueviolet;
+}

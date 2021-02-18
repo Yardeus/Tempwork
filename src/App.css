@@ -1,0 +1,18 @@
+.App {
+  display: grid;
+  width: auto;
+  height: 1000px;
+  grid-template-rows: 1fr 9fr 2fr;
+  grid-template-columns: 12fr;
+  grid-template-areas:
+  "h"
+  "m"
+  "f";
+}
+
+.content {
+  background-color: cadetblue;
+}
+
+
+

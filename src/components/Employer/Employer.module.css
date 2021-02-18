@@ -1,0 +1,35 @@
+.employer {
+
+    background-color: cadetblue;
+
+
+
+}
+.title {
+    horiz-align: center;
+    text-align: center;
+    padding: 90px;
+}
+
+.panel {
+
+    display: grid;
+    grid-template-columns: 4fr 4fr 4fr;
+    text-align: center;
+}
+.item{
+    color: black;
+    vertical-align: middle;
+
+    margin-top: 27px;
+}
+
+.item a{
+    color: black;
+    text-decoration: none;
+}
+
+
+.item a.activeLink {
+    color: blueviolet;
+}

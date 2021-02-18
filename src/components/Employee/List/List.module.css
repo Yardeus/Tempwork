@@ -1,0 +1,30 @@
+.list {
+    grid-area: m;
+    background-color: steelblue;
+}
+
+.item{
+    color: black;
+    vertical-align: middle;
+
+    margin-top: 27px;
+}
+
+.vacancy {
+    grid-area: m;
+    background-color: coral;
+    margin: 10px;
+}
+
+.number {
+
+}
+
+.number_select {
+    font-weight: bold;
+}
+
+.btn {
+    background-color: burlywood;
+
+}
