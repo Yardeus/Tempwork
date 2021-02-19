@@ -125,6 +125,7 @@ export const signIn = (type, login, password) => (dispatch) => {
     dispatch(toggleIsLoginProgress(true));
     loginAPI.singIn(type, login, password)
         .then(data => {
+            debugger
             let {userId, email, login, token} = data.values;
             dispatch(loginForm(type, userId, email, login, token));
             dispatch(toggleIsFetching(false));

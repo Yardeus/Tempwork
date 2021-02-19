@@ -80,6 +80,11 @@ export const loginAPI = {
                 login: login,
                 password: password
             }).then(response => response.data)
+        } else if (type === "admin") {
+            return instance.post(`auth/admin/signin`, {
+                login: login,
+                password: password
+            }).then(response => response.data)
         }
     },
     singUp(type, data) {
@@ -202,6 +207,33 @@ export const feedbackAPI = {
     },
     sendFeedbackEmployer(data) {
         return instance.post(`feedback/employer`,{...data}).then(response => response.data)
+    },
+}
+
+export const adminAPI = {
+    getEmployerList(currentPage = 1, pageSize = 5) {
+        return instance.get(`employer?page=${currentPage}&size=${pageSize}`)
+            .then(response => response.data)
+    },
+    getEmployeeList(currentPage = 1, pageSize = 5) {
+        return instance.get(`employee?page=${currentPage}&size=${pageSize}`)
+            .then(response => response.data)
+    },
+    banEmployer(idUser,currentPage = 1, pageSize = 5) {
+        return instance.put(`employer/ban`,{
+            idUser: idUser,
+            page:currentPage,
+            size: pageSize
+        })
+            .then(response => response.data)
+    },
+    banEmployee(idUser,currentPage = 1, pageSize = 5) {
+        return instance.put(`employee/ban`,{
+            idUser: idUser,
+            page:currentPage,
+            size: pageSize
+        })
+            .then(response => response.data)
     },
 }
 

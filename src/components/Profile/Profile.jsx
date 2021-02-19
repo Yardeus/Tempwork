@@ -5,7 +5,7 @@ import {Field, reduxForm} from "redux-form";
 import {Input} from "../common/formsControl";
 import {setEditProfileMode} from "../../redux/profile-reducer";
 import moment from "moment";
-//test
+
 let EditProfileForm = (props) => {
     const {handleSubmit} = props;
     debugger

@@ -18,7 +18,7 @@ const Header = (props) => {
                 <NavLink to="/employer" activeClassName={s.activeLink}>Работодателям</NavLink>
             </div>
             <div className={s.item}>
-                {props.isAuth ? <NavLink to="/profile" activeClassName={s.activeLink}>Профиль</NavLink> : <NavLink to="/login" activeClassName={s.activeLink}>Войти</NavLink>}
+                {props.isAuth  ? (props.type === "employer" || props.type === "employee") ? <NavLink to="/profile" activeClassName={s.activeLink}>Профиль</NavLink>: <NavLink to="/admin-panel" activeClassName={s.activeLink}>Панель администратора</NavLink> : <NavLink to="/login" activeClassName={s.activeLink}>Войти</NavLink>}
 
             </div>
         </div>

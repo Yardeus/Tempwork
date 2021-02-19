@@ -8,16 +8,11 @@ import AdmLogin from "./AdmLogin";
 
 class AdmLoginContainer extends React.Component {
 
-    EmployeeSignIn = (login, password, type) => {
-        this.props.signIn(type, login, password)
-
-
-    }
 
     render() {
         return (
             <>
-                {this.props.isFetching ? <Preloader/> :  <AdmLogin {...this.props} EmployeeSignIn={this.EmployeeSignIn}/>}
+                {this.props.isFetching ? <Preloader/> :  <AdmLogin {...this.props} signIn={this.props.signIn}/>}
 
             </>
         )

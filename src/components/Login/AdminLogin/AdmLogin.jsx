@@ -28,11 +28,9 @@ const AdmLoginForm = (props) => {
 const LoginReduxForm = reduxForm({form: 'login'})(AdmLoginForm)
 
 const AdmLogin = (props) => {
-    if (props.isAuth) return <Redirect to={'/profile'}/>
+    if (props.isAuth) return <Redirect to={'/admin-panel'}/>
     const onSubmit = (formData) => {
-        //disabled = {props.loginInProgress}
-        console.log(formData.login)
-        props.EmployeeSignIn(formData.login, formData.password, formData.type)
+        props.signIn("admin",formData.login, formData.password)
     }
 
     return (

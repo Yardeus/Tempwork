@@ -16,6 +16,7 @@ import RespondedListContainer from "./components/Profile/MyVacancy/RespondedList
 import AdmLoginContainer from "./components/Login/AdminLogin/AdmLoginContainer";
 import FeedbackContainer from "./components/Profile/Feedback/FeedbackContainer";
 import WorkersListContainer from "./components/Profile/MyVacancy/WorkersList/WorkersListContainer";
+import AdminPanelContainer from "./components/AdminPanel/AdminPanelContainer";
 
 
 const App = (props) => {
@@ -38,6 +39,7 @@ const App = (props) => {
                 <Route path='/responded-list' render={() => <RespondedListContainer/>}/>
                 <Route path='/feedback' render={() => <FeedbackContainer/>}/>
                 <Route path='/my-workers' render={() => <WorkersListContainer/>}/>
+                <Route path='/admin-panel' render={() => <AdminPanelContainer/>}/>
             </div>
             <Footer/>
 
