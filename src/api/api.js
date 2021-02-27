@@ -6,12 +6,12 @@ const instance = axios.create({
 });
 
 export const vacancyAPI = {
-    getVacancy(currentPage = 1, pageSize = 3) {
-        return instance.get(`vacancy?page=${currentPage}&size=${pageSize}`)
+    getVacancy(currentPage = 1, pageSize = 3,type) {
+        return instance.get(`vacancy?page=${currentPage}&size=${pageSize}&type=${type}`)
             .then(response => response.data)
     },
-    getFilterVacancy(data,currentPage = 1, pageSize = 3) {
-        return instance.post(`vacancy/filter`,{...data,currentPage, pageSize})
+    getFilterVacancy(data,currentPage = 1, pageSize = 3,type) {
+        return instance.post(`vacancy/filter`,{...data,currentPage, pageSize,type})
             .then(response => response.data)
     },
 
@@ -162,13 +162,10 @@ export const profileAPI = {
             return instance.delete(`employer-list?id=${idVacancy}&idEmployer=${userId}`).then(response => response.data)
         }
     },
-    updateStatus(status, idVacancy) {
+    myWorks(idEmployer) {
         debugger
 
-        return instance.put(`vacancy`, {
-            status: status,
-            idVacancy: idVacancy
-        }).then(response => response.data)
+        return instance.get(`employer-list/works?idEmployer=${idEmployer}`).then(response => response.data)
 
     }
 }
@@ -183,6 +180,12 @@ export const jobsAPI = {
     getSpecialisations(profession) {
         return instance.get(`jobs/specialisations?profession=${profession}`).then(response => response.data)
     },
+    addJobs(data){
+        return instance.post(`jobs`,{...data}).then(response => response.data)
+    },
+    deleteJobs(id){
+        return instance.delete(`jobs?id=${id}`).then(response => response.data)
+    }
 }
 export const agreementAPI = {
     createAgreement(data) {
@@ -208,6 +211,12 @@ export const feedbackAPI = {
     sendFeedbackEmployer(data) {
         return instance.post(`feedback/employer`,{...data}).then(response => response.data)
     },
+    getFeedbacks(type){
+        return instance.get(`feedback?type=${type}`).then(response => response.data)
+    },
+    deleteFeedback(type,id){
+        return instance.delete(`feedback?type=${type}&id=${id}`).then(response => response.data)
+    }
 }
 
 export const adminAPI = {
@@ -235,5 +244,13 @@ export const adminAPI = {
         })
             .then(response => response.data)
     },
+    closeVacancy(id) {
+        return instance.put(`vacancy/admin`,{
+            idFind_Employer: id
+
+        })
+            .then(response => response.data)
+    },
+
 }
 

@@ -241,7 +241,10 @@ let Profile = (props) => {
                     Краткое описание - {p.Description}
                 </div>
                 <div className={s.btn}>
-                    <NavLink to={"/my-vacancy"}>Мои вакансии</NavLink>
+                    <NavLink to={"/my-vacancy"}>Мои отклики</NavLink>
+                </div>
+                <div className={s.btn}>
+                    <NavLink to={"/my-works"}>Моя занятость</NavLink>
                 </div>
                 <div className={s.btn}>
                     <NavLink to={"/feedback"}>Мои отзывы</NavLink>

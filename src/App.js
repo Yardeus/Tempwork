@@ -17,6 +17,7 @@ import AdmLoginContainer from "./components/Login/AdminLogin/AdmLoginContainer";
 import FeedbackContainer from "./components/Profile/Feedback/FeedbackContainer";
 import WorkersListContainer from "./components/Profile/MyVacancy/WorkersList/WorkersListContainer";
 import AdminPanelContainer from "./components/AdminPanel/AdminPanelContainer";
+import MyWorksContainer from "./components/Profile/MyVacancy/MyWorks/MyWorksContainer";
 
 
 const App = (props) => {
@@ -40,6 +41,7 @@ const App = (props) => {
                 <Route path='/feedback' render={() => <FeedbackContainer/>}/>
                 <Route path='/my-workers' render={() => <WorkersListContainer/>}/>
                 <Route path='/admin-panel' render={() => <AdminPanelContainer/>}/>
+                <Route path='/my-works' render={() => <MyWorksContainer/>}/>
             </div>
             <Footer/>
 

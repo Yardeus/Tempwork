@@ -13,6 +13,7 @@ const CURRENT_RESPONDED_VACANCY = 'CURRENT_RESPONDED_VACANCY';
 const PUSH_STATUS_RESPONDED_FROM_MY_VACANCY = 'PUSH_STATUS_RESPONDED_FROM_MY_VACANCY';
 const SET_FEEDBACK = 'SET_FEEDBACK';
 const SET_EDIT_PROFILE_MODE = 'SET_EDIT_PROFILE_MODE';
+const SET_MY_WORKS = 'SET_MY_WORKS';
 
 
 let initialState = {
@@ -23,7 +24,8 @@ let initialState = {
     responded: [],
     currentResponded: null,
     editProfileMode: false,
-    feedback: []
+    feedback: [],
+    myWorks: []
 
 }
 
@@ -51,6 +53,12 @@ const profileReducer = (state = initialState, action) => {
             return {
                 ...state,
                 editVacancy: [action.data]
+            }
+        case SET_MY_WORKS:
+            debugger
+            return {
+                ...state,
+                myWorks: action.data
             }
         case SET_FEEDBACK:
             debugger
@@ -115,6 +123,13 @@ export const setEditProfileMode = (data) => {
 export const SetFeedback = (data) => {
     return {
         type: SET_FEEDBACK,
+        data
+
+    }
+}
+export const SetMyWorks = (data) => {
+    return {
+        type: SET_MY_WORKS,
         data
 
     }
@@ -263,6 +278,15 @@ export const getOneVacancy = (vacancyId) => (dispatch) => {
     profileAPI.myOneVacancy(vacancyId)
         .then(data => {
                 dispatch(FormOneVacancy(data.values));
+                dispatch(toggleIsFetching(false));
+            }
+        )
+}
+export const getMyWorks = (idEmployer) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    profileAPI.myWorks(idEmployer)
+        .then(data => {
+                dispatch(SetMyWorks(data.values));
                 dispatch(toggleIsFetching(false));
             }
         )

@@ -46,19 +46,61 @@ let RespondedList = (props) => {
                             <div>
                                 Дата регистрации на сайте - {v.Date_Registration}
                             </div>
-                        {!v.Status?<div>
-                            <button onClick={() => {
-                                let data = {idFind_Employer: v.idFind_Employer,
-                                    idEmployer: v.idEmployer}
+                            <div>
+                                {props.isViewFeedback ? <div>
+                                        <div>
+                                            <button onClick={() => {
+                                                props.setIsViewFeedback(false)
+                                            }}>Закрыть отзывы
+                                            </button>
+                                        </div>
+                                        <div>
+                                            {props.feedbacks.map(f => <div>
+                                                <div>
+                                                    Название организаии - {f.Organization_name}
+                                                </div>
+                                                {f.feedback.length > 0 && f.feedback !== "undefined" && f.feedback !== "null" ?
+                                                    <div>
+                                                        Отзыв - {f.feedback}
+                                                    </div> : null}
+                                                {f.rank ? <div>
+                                                    Мнение - {f.rank === "like" ? <span>Хорошее</span> : f.rank === "dislike" ?
+                                                    <span>Плохое</span> : <span>Нейтральное</span>}
+                                                </div> : null}
 
-                                props.createAgreement(data)
-                            }}>
-                                Принять на работу
-                            </button>
+                                                <div>
 
-                        </div> : <div><button >
-                            Уволить
-                        </button></div>}
+                                                </div>
+                                            </div>)}
+                                        </div>
+                                    </div>
+                                    :
+                                    <div>
+                                        <button onClick={() => {
+                                            props.getFeedbackEmployer(v.idEmployer)
+                                        }}>
+                                            Просмотреть отзывы о соискателе
+                                        </button>
+                                    </div>}
+                            </div>
+
+                            {!v.Status ? <div>
+                                <button onClick={() => {
+                                    let data = {
+                                        idFind_Employer: v.idFind_Employer,
+                                        idEmployer: v.idEmployer
+                                    }
+
+                                    props.createAgreement(data)
+                                }}>
+                                    Принять на работу
+                                </button>
+
+                            </div> : <div>
+                                <button>
+                                    Уволить
+                                </button>
+                            </div>}
 
 
                         </div>

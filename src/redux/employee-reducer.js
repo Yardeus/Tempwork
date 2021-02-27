@@ -12,6 +12,9 @@ const UPDATE_FILTER = 'UPDATE_FILTER';
 const SET_ONE_VACANCY = 'SET_ONE_VACANCY';
 const SET_FEEDBACK_MODE = 'SET_FEEDBACK_MODE';
 const SET_FEEDBACK_SEND_MODE = 'SET_FEEDBACK_SEND_MODE';
+const SET_IS_RESPONDED = 'SET_IS_RESPONDED';
+const SET_IS_VIEW_FEEDBACK = 'SET_IS_VIEW_FEEDBACK';
+const SET_FEEDBACKS = 'SET_FEEDBACKS';
 
 let initialState = {
     vacancyData: [],
@@ -31,7 +34,10 @@ let initialState = {
         idJobs: null,
         startTime: null,
         endTime: null,
-    }
+    },
+    isResponded: false,
+    isViewFeedback: false,
+    feedbacks: []
 }
 
 
@@ -49,15 +55,10 @@ const employeeReducer = (state = initialState, action) => {
                     price: action.updatePrice
                 }]
             };
-        case FOLLOW:
+        case SET_IS_VIEW_FEEDBACK:
             return {
                 ...state,
-                vacancyData: state.vacancyData.map(v => {
-                    if (v.id === action.vacancyId) {
-                        return {...v, followed: true};
-                    }
-                    return v;
-                })
+                isViewFeedback: action.data
             };
         case SET_FEEDBACK_MODE:
             return {
@@ -65,10 +66,22 @@ const employeeReducer = (state = initialState, action) => {
                 feedbackMode: action.data
 
             };
+        case SET_IS_RESPONDED:
+            return {
+                ...state,
+                isResponded: action.data
+
+            };
         case SET_FEEDBACK_SEND_MODE:
             return {
                 ...state,
                 feedbackSendMode: action.data
+
+            };
+            case SET_FEEDBACKS:
+            return {
+                ...state,
+                feedbacks: action.data
 
             };
         case UNFOLLOW:
@@ -126,15 +139,27 @@ const employeeReducer = (state = initialState, action) => {
     }
 }
 
-export const follow = (vacancyId) => {
+export const setFeedbacks = (data) => {
     return {
-        type: FOLLOW,
-        vacancyId
+        type: SET_FEEDBACKS,
+        data
     }
 }
 export const setFeedbackMode = (data) => {
     return {
         type: SET_FEEDBACK_MODE,
+        data
+    }
+}
+export const setIsResponded = (data) => {
+    return {
+        type: SET_IS_RESPONDED,
+        data
+    }
+}
+export const setIsViewFeedback = (data) => {
+    return {
+        type: SET_IS_VIEW_FEEDBACK,
         data
     }
 }
@@ -193,10 +218,10 @@ export const setOneVacancy = (vacancyData) => {
     }
 }
 
-export const getVacancy = (currentPage, pageSize) => (dispatch) => {
+export const getVacancy = (currentPage, pageSize,type) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     dispatch(setCurrentPage(currentPage));
-    vacancyAPI.getVacancy(currentPage, pageSize)
+    vacancyAPI.getVacancy(currentPage, pageSize,type)
         .then(data => {
             dispatch(setVacancy(data.values));
             dispatch(setCount(data.count));
@@ -217,10 +242,10 @@ export const sendFeedbackEmployer = (data) => (dispatch) => {
             dispatch(toggleIsFetching(false));
         })
 }
-export const getFilterVacancy = (data, currentPage, pageSize) => (dispatch) => {
+export const getFilterVacancy = (data, currentPage, pageSize,type) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     dispatch(setCurrentPage(currentPage));
-    vacancyAPI.getFilterVacancy(data, currentPage, pageSize)
+    vacancyAPI.getFilterVacancy(data, currentPage, pageSize,type)
         .then(data => {
             debugger
             dispatch(setVacancy(data.values));
@@ -233,6 +258,24 @@ export const respondVacancy = (idVacancy, userId) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     vacancyAPI.respondVacancy(idVacancy, userId)
         .then(data => {
+            dispatch(toggleIsFetching(false));
+        })
+}
+export const getFeedbackEmployee = (id) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    feedbackAPI.getFeedbackEmployee(id)
+        .then(data => {
+            dispatch(setFeedbacks(data.values))
+            dispatch(setIsViewFeedback(true))
+            dispatch(toggleIsFetching(false));
+        })
+}
+export const getFeedbackEmployer = (id) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    feedbackAPI.getFeedbackEmployer(id)
+        .then(data => {
+            dispatch(setFeedbacks(data.values))
+            dispatch(setIsViewFeedback(true))
             dispatch(toggleIsFetching(false));
         })
 }

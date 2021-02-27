@@ -6,6 +6,7 @@ import {required} from "../../../../utils/validators/validators";
 import {Input} from "../../../common/formsControl";
 import {feedbackAPI} from "../../../../api/api";
 import moment from "moment";
+import {setIsVacancyClosed} from "../../../../redux/admin-reducer";
 
 let VacancyForm = (props) => {
     const {handleSubmit} = props;
@@ -26,6 +27,7 @@ let VacancyForm = (props) => {
                     </button>
                 </div>
 
+
             </div>
         </form>
     )
@@ -34,6 +36,15 @@ let VacancyForm = (props) => {
 const VacancyReduxForm = reduxForm({form: 'vacancy'})(VacancyForm)
 
 const Vacancy = (props) => {
+    debugger
+    props.oneVacancy.map(v => {
+        if (v.Status === "Активно") {
+            props.setIsVacancyClosed(false)
+        } else {
+            props.setIsVacancyClosed(true)
+        }
+
+    })
 
     const onSubmit = (formData) => {
         debugger
@@ -44,7 +55,7 @@ const Vacancy = (props) => {
                 idEmployee: v.idEmployee,
                 idEmployer: props.userId,
                 feedback: formData.feedback,
-                idVacancy:v.idFind_Employer
+                idVacancy: v.idFind_Employer
             })
 
             console.log(formData)
@@ -64,7 +75,10 @@ const Vacancy = (props) => {
                     props.oneVacancy.map(v => <div className={s.vacancy}>
 
                             <div>
-                                Компания - {v.idFind_Employer}
+                                Рейтинг компании - {v.rank}
+                            </div>
+                            <div>
+                                Компания - {v.Organization_name}
                             </div>
                             <div>
                                 Дата начала работы - {moment(v.Start_Date).format('L')}
@@ -87,34 +101,83 @@ const Vacancy = (props) => {
 
                             <div>
                                 График работы
-                                <div>Начало дня - {moment(v.Start_Time,'hh:mm:ss').format('LT')}</div>
-                                <div>Конец дня - {moment(v.End_Time,'hh:mm:ss').format('LT')}</div>
+                                <div>Начало дня - {moment(v.Start_Time, 'hh:mm:ss').format('LT')}</div>
+                                <div>Конец дня - {moment(v.End_Time, 'hh:mm:ss').format('LT')}</div>
                             </div>
                             <div>
                                 <NavLink to={"/employee"}>
                                     <button>Вернуться</button>
                                 </NavLink>
                             </div>
-                            <div>
+                            {props.isResponded ? <div>Вы откликнулись</div> :
+                                <div>
+                                    <button onClick={() => {
+                                        props.onRespond(v.idFind_Employer)
+                                    }}>Откликнуться
+                                    </button>
+                                </div>
+                            }
+
+                            {props.type === "admin" ? props.isVacancyClosed ? <div>Вакансия закрыта</div> : <div>
                                 <button onClick={() => {
-                                    props.onRespond(v.idFind_Employer)
-                                }}>Откликнуться
+                                    props.closeVacancyAdmin(v.idFind_Employer)
+                                    props.setIsVacancyClosed(true)
+                                }}>Закрыть вакансию(Admin)
                                 </button>
+                            </div> : null}
+                            <div>
+                                {props.feedbackSendMode ? <div>Спасибо за оставленный отзыв</div> :
+                                    <div>{props.feedbackMode === v.idFind_Employer ? <div>
+                                            <VacancyReduxForm onSubmit={onSubmit} setFeedbackMode={props.setFeedbackMode}
+                                                              setFeedbackSendMode={props.setFeedbackSendMode}
+                                                              sendFeedbackEmployee={props.sendFeedbackEmployee}/>
+                                        </div>
+                                        :
+                                        <div>
+                                            <button onClick={() => {
+                                                props.setFeedbackMode(v.idFind_Employer)
+                                            }}>
+                                                Оставить отзыв
+                                            </button>
+                                        </div>}</div>}
                             </div>
-                            {props.feedbackSendMode ? <div>Спасибо за оставленный отзыв</div> :
-                                <div>{props.feedbackMode === v.idFind_Employer ? <div>
-                                        <VacancyReduxForm onSubmit={onSubmit} setFeedbackMode={props.setFeedbackMode}
-                                                          setFeedbackSendMode={props.setFeedbackSendMode}
-                                                          sendFeedbackEmployee={props.sendFeedbackEmployee}/>
+                            <div>
+                                {props.isViewFeedback ? <div>
+                                        <div>
+                                            <button onClick={() => {
+                                                props.setIsViewFeedback(false)
+                                            }}>Закрыть отзывы
+                                            </button>
+                                        </div>
+                                        <div>
+                                            {props.feedbacks.map(f => <div>
+                                                <div>
+                                                    ФИО - {f.Surname} {f.First_Name} {f.Middle_Name}
+                                                </div>
+                                                {f.feedback.length > 0 && f.feedback !== "undefined" && f.feedback !== "null" ?
+                                                    <div>
+                                                        Отзыв - {f.feedback}
+                                                    </div> : null}
+                                                {f.rank ? <div>
+                                                    Мнение - {f.rank === "like" ? <span>Хорошее</span> : f.rank === "dislike" ?
+                                                    <span>Плохое</span> : <span>Нейтральное</span>}
+                                                </div> : null}
+
+                                                <div>
+
+                                                </div>
+                                            </div>)}
+                                        </div>
                                     </div>
                                     :
                                     <div>
                                         <button onClick={() => {
-                                            props.setFeedbackMode(v.idFind_Employer)
+                                            props.getFeedbackEmployee(v.idEmployee)
                                         }}>
-                                            Оставить отзыв
+                                            Просмотреть отзывы о работодателе
                                         </button>
-                                    </div>}</div>}
+                                    </div>}
+                            </div>
 
 
                         </div>

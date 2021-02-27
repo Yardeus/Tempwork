@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {compose} from "redux";
 import Preloader from "../common/preloader";
 import AdminPanel from "./AdminPanel";
-import {getEmployeeList, getEmployerList, SetActionType} from "../../redux/admin-reducer";
+import {getAllJobs, getEmployeeList, getEmployerList, getFeedbacks, SetActionType} from "../../redux/admin-reducer";
 
 
 class AdminPanelContainer extends React.Component {
@@ -12,6 +12,7 @@ class AdminPanelContainer extends React.Component {
         this.props.SetActionType(null)
         this.props.getEmployerList(this.props.employerCurrentPage,this.props.pageSize)
         this.props.getEmployeeList(this.props.employeeCurrentPage,this.props.pageSize)
+        this.props.getAllJobs()
     }
 
 
@@ -20,7 +21,8 @@ class AdminPanelContainer extends React.Component {
     render() {
 
         return <>
-            {this.props.isFetching ? <Preloader/> : <AdminPanel {...this.props} SetActionType={this.props.SetActionType}/>}
+            {this.props.isFetching ? <Preloader/> : <AdminPanel {...this.props} SetActionType={this.props.SetActionType}
+                                                                getFeedbacks={this.props.getFeedbacks}/>}
 
         </>
 
@@ -43,7 +45,7 @@ let mapStateToProps = (state) => {
 
 export default compose(
     connect(mapStateToProps,
-        {SetActionType,getEmployerList,getEmployeeList})
+        {SetActionType,getEmployerList,getEmployeeList,getAllJobs,getFeedbacks})
 )(AdminPanelContainer);
 
 

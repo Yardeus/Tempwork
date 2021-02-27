@@ -3,9 +3,9 @@ import {connect} from "react-redux";
 
 import * as axios from "axios";
 import {
-    follow, getVacancy,
+    follow, getFeedbackEmployee, getVacancy,
     respondVacancy, sendFeedbackEmployee,
-    setCurrentPage, setFeedbackMode, setFeedbackSendMode,
+    setCurrentPage, setFeedbackMode, setFeedbackSendMode, setIsResponded, setIsViewFeedback,
     setOneVacancy,
     toggleIsFetching,
     unFollow
@@ -14,6 +14,7 @@ import Vacancy from "./vacancy";
 import withRouter from "react-router-dom/es/withRouter";
 import {compose} from "redux";
 import withUrlDataContainer from "../../../../hoc/WithAuthRedirect"
+import {closeVacancyAdmin, setIsVacancyClosed} from "../../../../redux/admin-reducer";
 
 
 
@@ -33,11 +34,15 @@ class VacancyContainer extends React.Component {
                 )
             })
         this.props.setFeedbackSendMode(false)
+        this.props.setIsVacancyClosed(false)
+        this.props.setIsResponded(false)
+
     }
 
     onRespond(idVacancy){
         debugger
         this.respondVacancy(idVacancy, this.userId);
+        this.setIsResponded(true)
     }
 
     render() {
@@ -45,7 +50,11 @@ class VacancyContainer extends React.Component {
             <Vacancy {...this.props} onRespond={this.onRespond}
                      setFeedbackMode={this.props.setFeedbackMode}
                      setFeedbackSendMode={this.props.setFeedbackSendMode}
-                     sendFeedbackEmployee={this.props.sendFeedbackEmployee}/>
+                     sendFeedbackEmployee={this.props.sendFeedbackEmployee}
+                     closeVacancyAdmin={this.props.closeVacancyAdmin}
+                     setIsVacancyClosed={this.props.setIsVacancyClosed}
+                     setIsResponded={this.props.setIsResponded}
+                     getFeedbackEmployee={this.props.getFeedbackEmployee}/>
         )
     }
 
@@ -58,14 +67,21 @@ let mapStateToProps = (state) => {
         oneVacancy: state.employeePage.oneVacancy,
         userId: state.auth.userId,
         feedbackMode: state.employeePage.feedbackMode,
-        feedbackSendMode: state.employeePage.feedbackSendMode
+        feedbackSendMode: state.employeePage.feedbackSendMode,
+        type:state.auth.type,
+        isVacancyClosed: state.admin.isVacancyClosed,
+        isResponded: state.employeePage.isResponded,
+        isViewFeedback: state.employeePage.isViewFeedback,
+        feedbacks: state.employeePage.feedbacks
     }
 }
 
 
 export default compose(
     connect(mapStateToProps,
-        {follow, unFollow, setCurrentPage, toggleIsFetching, setOneVacancy, getVacancy, setFeedbackMode, setFeedbackSendMode, sendFeedbackEmployee}),
+        {setCurrentPage, toggleIsFetching, setOneVacancy,
+            getVacancy, setFeedbackMode, setFeedbackSendMode, sendFeedbackEmployee,
+            closeVacancyAdmin,setIsVacancyClosed,respondVacancy,setIsResponded, setIsViewFeedback,getFeedbackEmployee}),
     withRouter
 )(VacancyContainer);
 

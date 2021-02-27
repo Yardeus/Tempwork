@@ -12,7 +12,7 @@ const Header = (props) => {
                 TEMPWORK.RU
             </div>
             <div className={s.item}>
-                <NavLink to="/employee" activeClassName={s.activeLink}>Соискателям</NavLink>
+                <NavLink to="/employee" activeClassName={s.activeLink}>Вакансии</NavLink>
             </div>
             <div className={s.item}>
                 <NavLink to="/employer" activeClassName={s.activeLink}>Работодателям</NavLink>

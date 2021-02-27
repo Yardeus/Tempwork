@@ -1,10 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-    follow, getFilterVacancy, getVacancy,
+    getFilterVacancy, getVacancy,
     setCurrentPage, setOneVacancy,
-    toggleIsFetching,
-    unFollow
+    toggleIsFetching
 } from '../../../redux/employee-reducer';
 import List from './List';
 import Preloader from "../../common/preloader";
@@ -14,12 +13,12 @@ import {compose} from "redux";
 class ListContainer extends React.Component {
 
     componentDidMount() {
-        this.props.filterMode ? this.props.getFilterVacancy(this.props.filter,this.props.currentPage, this.props.pageSize) : this.props.getVacancy(this.props.currentPage, this.props.pageSize)
+        this.props.filterMode ? this.props.getFilterVacancy(this.props.filter,this.props.currentPage, this.props.pageSize,this.props.type) : this.props.getVacancy(this.props.currentPage, this.props.pageSize,this.props.type)
 
     }
 
     onPageChanged = (pageNumber) => {
-        this.props.filterMode ? this.props.getFilterVacancy(this.props.filter,pageNumber, this.props.pageSize) : this.props.getVacancy(pageNumber, this.props.pageSize);
+        this.props.filterMode ? this.props.getFilterVacancy(this.props.filter,pageNumber, this.props.pageSize,this.props.type) : this.props.getVacancy(pageNumber, this.props.pageSize,this.props.type);
     }
 
 
@@ -50,14 +49,15 @@ let mapStateToProps = (state) => {
         currentPage: state.employeePage.currentPage,
         isFetching: state.employeePage.isFetching,
         filterMode: state.employeePage.filterMode,
-        filter: state.employeePage.filter
+        filter: state.employeePage.filter,
+        type: state.auth.type
 
     }
 }
 
 export default compose(
     connect(mapStateToProps,
-        {follow, unFollow, setCurrentPage, toggleIsFetching, setOneVacancy, getVacancy,getFilterVacancy})
+        {setCurrentPage, toggleIsFetching, setOneVacancy, getVacancy,getFilterVacancy})
 )(ListContainer);
 
 
