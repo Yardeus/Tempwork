@@ -20,7 +20,7 @@ let initialState = {
     vacancyData: [],
     oneVacancy: [],
     count: 0,
-    pageSize: 3,
+    pageSize: 5,
     feedbackMode: null,
     feedbackSendMode: false,
     currentPage: 1,
@@ -182,6 +182,7 @@ export const setVacancy = (vacancyData) => {
     }
 }
 export const setCount = (count) => {
+
     return {
         type: SET_COUNT_DATA,
         count
@@ -252,6 +253,7 @@ export const getFilterVacancy = (data, currentPage, pageSize,type) => (dispatch)
             dispatch(setCount(data.count));
             dispatch(toggleIsFetching(false));
         })
+        .catch(dispatch(toggleIsFetching(false)))
 }
 
 export const respondVacancy = (idVacancy, userId) => (dispatch) => {

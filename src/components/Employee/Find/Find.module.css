@@ -1,4 +1,102 @@
 .find {
-    grid-area: m;
-    background-color: cadetblue;
+    grid-area: f;
+
+    width: auto;
+    height: auto;
+    left: 0px;
+    top: 90px;
+
+    background: linear-gradient(180deg, #EFF7BE 13.85%, rgba(255, 255, 255, 0) 100%), #D0E5C3;
+    mix-blend-mode: normal;
 }
+
+.find h1 {
+    width: auto;
+    height: 34px;
+    left: 65px;
+    top: 155px;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 29px;
+    line-height: 34px;
+    /* identical to box height */
+    color: #000000;
+}
+
+.form {
+    display: grid;
+    grid-template-rows: 5fr 5fr;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr;
+    grid-template-areas:
+            "p ps ds pd ts btna"
+            "s ss de c te btnd";
+}
+
+.profession {
+    grid-area: p;
+
+}
+
+.professionSelect {
+    grid-area: ps;
+
+}
+
+.specialisation {
+    grid-area: s;
+
+}
+
+.specialisationSelect {
+    grid-area: ss;
+
+}
+
+.dateStart {
+    grid-area: ds;
+}
+
+.dateEnd {
+    grid-area: de;
+}
+
+.paid {
+    grid-area: pd;
+}
+
+.timeStart {
+    grid-area: ts;
+}
+
+.timeEnd {
+    grid-area: te;
+}
+
+.city {
+    grid-area: c;
+}
+
+.btn1 {
+    grid-area: btna;
+}
+
+.btn2 {
+    grid-area: btnd;
+}
+
+span {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 34px;
+    /* identical to box height */
+    color: #000000;
+}
+
+.textField {
+    grid-area: t;
+}
+

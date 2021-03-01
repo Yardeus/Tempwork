@@ -1,0 +1,51 @@
+.text {
+    left: 1.36%;
+    right: 76.24%;
+    top: 75.94%;
+    bottom: 13.21%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 23px;
+
+    color: #000000;
+
+    opacity: 0.8;
+}
+
+.text.main {
+    left: 1.58%;
+    right: 60.48%;
+    top: 12.26%;
+    bottom: 73.58%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 30px;
+
+    color: rgba(0, 0, 0, 0.7);
+}
+.vacancy {
+
+    background-color: white;
+
+    border: 1px solid rgba(51, 84, 31, 0.7);
+    background-color: white;
+    margin: 20px 50px;
+    padding: 5px;
+}
+
+.item {
+    border: 1px solid rgba(51, 84, 31, 0.7);
+    margin: 0px 0px 20px 0px;
+    padding: 5px;
+}
+
+.name {
+    margin: 0px;
+    padding: 0px;
+}

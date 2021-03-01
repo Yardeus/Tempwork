@@ -99,3 +99,19 @@
 
     color: rgba(0, 0, 0, 0.7);
 }
+.text {
+    left: 1.36%;
+    right: 76.24%;
+    top: 75.94%;
+    bottom: 13.21%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 23px;
+
+    color: #000000;
+
+    opacity: 0.8;
+}

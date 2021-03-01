@@ -1,5 +1,12 @@
-.login {
-    grid-area: m;
-    background-color: cadetblue;
-    horiz-align: center;
+.reg {
+    display: flex;
+    justify-content: space-between;
+    width: 380px;
+    height: auto;
+    min-height: 450px;
+
+    background: white;
+
+    padding: 30px;
+    margin:150px auto;
 }

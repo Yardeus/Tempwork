@@ -1,0 +1,22 @@
+.user {
+    border: 1px solid rgba(51, 84, 31, 0.7);
+    background-color: white;
+    margin: 20px 50px;
+    padding: 5px;
+}
+.text {
+    left: 1.36%;
+    right: 76.24%;
+    top: 75.94%;
+    bottom: 13.21%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 23px;
+
+    color: #000000;
+
+    opacity: 0.8;
+}

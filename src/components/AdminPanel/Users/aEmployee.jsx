@@ -1,5 +1,7 @@
 import React from "react";
-import s from "../../Employee/List/List.module.css";
+import s from "./Users.module.css";
+import {Button} from "../../common/formsControl";
+import moment from "moment";
 
 let AEmployee = (props) => {
     debugger
@@ -10,34 +12,35 @@ let AEmployee = (props) => {
     }
 
 
-    return <div>
-        {props.employeeList.map(l => <div>
+    return <div className={s.text}>
+        {props.employeeList.map(l => <div className={s.user}>
             <div>
                 id - {l.idEmployee}
+            </div>
+            <div>
+                Статус - {l.Status}
             </div>
             <div>
                 ФИО - {l.Surname} {l.Firstname} {l.Middle_Name}
             </div>
             <div>
-                Дата регистрации - {l.Date_Registration}
+                Дата регистрации - {moment(l.Date_Registration).format('L')}
             </div>
             <div>
                 Город - {l.City}
             </div>
-            <div>
-                Статус - {l.Status}
-            </div>
+
             <div>
                 Название организации - {l.Organization_name}
             </div>
             <div>
                 {l.Status === "Активен" ?
                     <div>
-                        <button onClick={() => {
-                            props.banEmployee(l.idEmployee,props.employeeCurrentPage, props.pageSize)
+                        <Button onClick={() => {
+                            props.banEmployee(l.idEmployee, props.employeeCurrentPage, props.pageSize)
                         }}>
                             Заблокировать
-                        </button>
+                        </Button>
                     </div> : null}
             </div>
         </div>)}
@@ -50,11 +53,11 @@ let AEmployee = (props) => {
             })}
         </div>
         <div>
-            <button onClick={() => {
+            <Button onClick={() => {
                 props.SetActionType(null)
             }}>
                 Назад
-            </button>
+            </Button>
         </div>
 
     </div>

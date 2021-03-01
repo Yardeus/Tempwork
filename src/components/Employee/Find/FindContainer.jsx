@@ -8,11 +8,12 @@ import {filterModeIsFetching, getFilterVacancy, getVacancy, updateFilter} from "
 
 class EmployerContainer extends React.Component {
 
-
     componentDidMount() {
         debugger
         this.props.getJobs("professions");
     }
+
+
 
     getSpecialisations = (profession) => {
         debugger
@@ -26,7 +27,8 @@ class EmployerContainer extends React.Component {
                                                                 getFilterVacancy={this.props.getFilterVacancy}
                                                                 filterModeIsFetching={this.props.filterModeIsFetching}
                                                                 updateFilter={this.props.updateFilter}
-                                                                getVacancy={this.props.getVacancy}/>}
+                                                                getVacancy={this.props.getVacancy}
+                                                               /* handleClick={this.handleClick}*//>}
 
             </>
         )

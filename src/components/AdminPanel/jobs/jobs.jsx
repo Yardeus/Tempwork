@@ -1,33 +1,42 @@
 import React from "react";
 import {Field, reduxForm} from "redux-form";
-import {Input} from "../../common/formsControl";
+import {Button, Input, renderTextField} from "../../common/formsControl";
+
+import s from "./jobs.module.css";
 import {addJobs} from "../../../redux/admin-reducer";
 
-let AddJobsForm = (props) => {
-    const {handleSubmit} = props;
-    debugger
-    return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <div>
-                    <Field placeholder={"Введите профессию"} name={"profession"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={"Введите специализацию"} name={"specialisation"} component={Input}/>
-                </div>
-                <div>
-                    <button type="submit">Создать связку</button>
-                </div>
-                <div>
-                    <button onClick={() => {
-                        props.setAddJobsMode(false)
-                    }}>Отменить
-                    </button>
-                </div>
+class AddJobsForm extends React.Component {
+    render() {
 
-            </div>
-        </form>
-    )
+
+        const {handleSubmit} = this.props;
+        debugger
+        return (
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <div>
+                        <span>Введите профессию</span>
+                        <Field name={"profession"} component={renderTextField}/>
+                    </div>
+                    <div>
+                        <span>Введите специализацию</span>
+                        <Field name={"specialisation"} component={renderTextField}/>
+                    </div>
+                    <div>
+                        <Button type="submit">Создать связку</Button>
+                    </div>
+                    <div>
+                        <Button onClick={() => {
+                            this.props.setAddJobsMode(false)
+                        }}>Отменить
+                        </Button>
+                    </div>
+
+                </div>
+            </form>
+        )
+    }
+
 }
 
 const AddJobsReduxForm = reduxForm({form: 'addJobs'})(AddJobsForm)
@@ -49,25 +58,25 @@ let Jobs = (props) => {
 
     }
 
-    return <div>
+    return <div className={s.text}>
         <div>
-            <button onClick={() => {
+            <Button onClick={() => {
                 props.SetActionType(null)
             }}>
                 Назад
-            </button>
+            </Button>
         </div>
         {props.sendJobsMode ? <div>
                 <div>
                     Профессия и специализация добавлены
                 </div>
                 <div>
-                    <button onClick={() => {
+                    <Button onClick={() => {
                         props.setAddJobsMode(true)
                         props.setSendJobsMode(false)
                     }}>
                         Добавить еще профессию и специализацию
-                    </button>
+                    </Button>
                 </div>
 
             </div> :
@@ -76,15 +85,15 @@ let Jobs = (props) => {
                 </div>
                 :
                 <div>
-                    <button onClick={() => {
+                    <Button onClick={() => {
                         props.setAddJobsMode(true)
                     }}>
                         Добавить профессию и специализацию
-                    </button>
+                    </Button>
                 </div>}</div>}
 
         <div>
-            {props.jobs.map(j => <div>
+            {props.jobs.map(j => <div className={s.job}>
                 <div>
                     id - {j.idJobs}
                 </div>
@@ -96,10 +105,10 @@ let Jobs = (props) => {
                     Специализация - {j.Specialisation}
                 </div>
                 <div>
-                    <button onClick={() => {
+                    <Button onClick={() => {
                         props.deleteJobs(j.idJobs)
                     }}>Удалить
-                    </button>
+                    </Button>
                 </div>
             </div>)}
         </div>

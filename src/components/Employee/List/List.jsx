@@ -12,52 +12,52 @@ let List = (props) => {
     }
 
     return <div className={s.list}>
+        <div className={s.text}>
+            Все вакансии
+        </div>
+        <div className={s.line}>
+
+        </div>
         <div>
             {
-                props.vacancyData.map(v => <div className={s.vacancy}>
+                props.vacancyData ? <div> {props.vacancyData.map(v => <div className={s.vacancy}>
 
-                    <div>
-                        Компания - {v.Organization_name}
+                    <div className={s.specialisation}>
+                        {v.Specialisation}
                     </div>
-                    <div>
-                        Дата начала работы - {moment(v.Start_Date).format('L')}
+                    <div className={s.paid}>
+                        {v.Price} руб.
                     </div>
-                    <div>
-                        Дата конца работы - {moment(v.End_Date).format('L')}
-                    </div>
-                    <div>
-                        Описание - {v.Description}
-                    </div>
-                    <div>
-                        Оплата - {v.Price}
-                    </div>
-                    <div>
-                        Город - {v.City}
-                    </div>
-                    <div>
-                        Адрес - {v.Adress}
+                    <div className={s.date}>
+                        {moment(v.Start_Date).format('L')} - {moment(v.End_Date).format('L')}
                     </div>
 
-                    <div>
-                        График работы
-                        <div>Начало дня - {moment(v.Start_Time,'hh:mm:ss').format('LT')}</div>
-                        <div>Конец дня - {moment(v.End_Time,'hh:mm:ss').format('LT')}</div>
+                    <div className={s.adress}>
+                        {v.City}, {v.Adress}
+                    </div>
+                    <div className={s.company}>
+                        {v.Organization_name}
                     </div>
                     <div className={s.btn}>
-                        <NavLink to={"/vacancy/" + v.idFind_Employer}>Подробнее</NavLink>
+                        <NavLink to={"/vacancy/" + v.idFind_Employer}>
+                            <button>Подробнее</button>
+                        </NavLink>
                     </div>
-                </div>)
+                </div>)}
+                    <div className={s.numbers}>
+                        {pages.map(p => {
+                            return <span className={props.currentPage === p && s.number_select}
+                                         onClick={() => {
+                                             props.onPageChanged(p)
+                                         }}>{p}</span>
+                        })}
+
+                    </div>
+                </div> : <div>По заданному фильтру вакансии не найдены</div>
             }
-        </div>
-        <div>
-            {pages.map(p => {
-                return <span className={props.currentPage === p && s.number_select}
-                             onClick={() => {
-                                 props.onPageChanged(p)
-                             }}>{p}</span>
-            })}
 
         </div>
+
     </div>
 }
 

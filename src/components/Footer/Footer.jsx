@@ -4,7 +4,7 @@ const Footer = () => {
     return (
         <div className={s.footer}>
             <div>
-                Описание
+
             </div>
         </div>
     )

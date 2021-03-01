@@ -1,5 +1,7 @@
 import React from "react";
-import s from "../../Employee/List/List.module.css";
+import s from "./Users.module.css";
+import {Button} from "../../common/formsControl";
+import moment from "moment";
 
 let AEmployer = (props) => {
     debugger
@@ -10,16 +12,19 @@ let AEmployer = (props) => {
     }
 
 
-    return <div>
-        {props.employerList.map(l => <div>
+    return <div  className={s.text}>
+        {props.employerList.map(l => <div className={s.user}>
             <div>
                 id - {l.idEmployer}
+            </div>
+            <div>
+                Статус - {l.Status}
             </div>
             <div>
                 ФИО - {l.Surname} {l.Firstname} {l.Middle_Name}
             </div>
             <div>
-                Дата регистрации - {l.Date_Registration}
+                Дата регистрации - {moment(l.Date_Registration).format('L')}
             </div>
             <div>
                 Город - {l.City}
@@ -27,20 +32,18 @@ let AEmployer = (props) => {
             <div>
                 Описание - {l.Description}
             </div>
-            <div>
-                Статус - {l.Status}
-            </div>
+
             <div>
                 Профессия - {l.Profession}
             </div>
             <div>
                 {l.Status === "Активен" ?
                     <div>
-                        <button onClick={() => {
+                        <Button onClick={() => {
                             props.banEmployer(l.idEmployer,props.employerCurrentPage, props.pageSize)
                         }}>
                             Заблокировать
-                        </button>
+                        </Button>
                     </div> : null}
             </div>
         </div>)}
@@ -53,11 +56,11 @@ let AEmployer = (props) => {
             })}
         </div>
         <div>
-            <button onClick={() => {
+            <Button onClick={() => {
                 props.SetActionType(null)
             }}>
                 Назад
-            </button>
+            </Button>
         </div>
 
     </div>

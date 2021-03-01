@@ -1,0 +1,59 @@
+.main {
+
+    display: grid;
+    grid-template-rows: 12fr;
+    grid-template-columns: 4fr 4fr 4fr;
+    grid-template-areas:
+            "n i  ";
+    padding-top: 30px;
+}
+
+.info {
+    grid-area: i;
+}
+
+
+.nav {
+    grid-area: n;
+
+}
+
+.text {
+    left: 1.36%;
+    right: 76.24%;
+    top: 75.94%;
+    bottom: 13.21%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 23px;
+    line-height: 23px;
+
+    color: #000000;
+
+    opacity: 0.8;
+}
+
+.text span {
+    left: 1.36%;
+    right: 76.24%;
+    top: 75.94%;
+    bottom: 13.21%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 23px;
+
+    color: #000000;
+
+    opacity: 0.6;
+}
+
+.edit {
+    color: #000000;
+
+    opacity: 0.9;
+}

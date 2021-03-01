@@ -64,7 +64,7 @@ let mapStateToProps = (state) => {
 
 export default compose(
     connect(mapStateToProps, {getWorkersFromMyVacancy,SetCurrentRespondVacancyId,FormRespondedMyVacancy, createAgreement,  setFeedbackMode,
-        setFeedbackSendMode,sendFeedbackEmployee,getMyWorks})
+        setFeedbackSendMode,sendFeedbackEmployee,getMyWorks,setIsViewFeedback})
 )(MyWorksContainer);
 
 

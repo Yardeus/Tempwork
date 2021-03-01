@@ -26,15 +26,18 @@ class ListContainer extends React.Component {
 
         return <>
             {this.props.isFetching ? <Preloader/> : null}
-            <List count={this.props.count}
-                  pageSize={this.props.pageSize}
-                  vacancyData={this.props.vacancyData}
-                  currentPage={this.props.currentPage}
-                  onPageChanged={this.onPageChanged}
-                  unFollow={this.props.unFollow}
-                  follow={this.props.follow}
+            {this.props.vacancyData ?
+                <List count={this.props.count}
+                      pageSize={this.props.pageSize}
+                      vacancyData={this.props.vacancyData}
+                      currentPage={this.props.currentPage}
+                      onPageChanged={this.onPageChanged}
+                      unFollow={this.props.unFollow}
+                      follow={this.props.follow}
 
-            />
+                />
+                : <div>Не найдено вакансий по заданному фильтру</div>
+            }
         </>
 
     }

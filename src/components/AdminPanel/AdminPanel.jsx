@@ -5,6 +5,7 @@ import JobsContainer from "./jobs/jobsContainer";
 import {getFeedbacks} from "../../redux/admin-reducer";
 import FeedbackAboutEmployeeContainer from "./Feedbacks/FeedbackAboutEmployeeContainer";
 import FeedbackAboutEmployerContainer from "./Feedbacks/FeedbackAboutEmployerContainer";
+import {Button} from "../common/formsControl";
 
 
 let AdminPanel = (props) => {
@@ -24,48 +25,41 @@ let AdminPanel = (props) => {
         default:
             return <div>
                 <div>
-                    <button onClick={() => {
+                    <Button onClick={() => {
                         props.SetActionType("employer")
                     }}>
                         Список всех соискателей
-                    </button>
+                    </Button>
                 </div>
                 <div>
-                    <button onClick={() => {
+                    <Button onClick={() => {
                         props.SetActionType("employee")
                     }}>
                         Список всех работодателей
-                    </button>
+                    </Button>
                 </div>
                 <div>
-                    <button onClick={() => {
+                    <Button onClick={() => {
                         props.SetActionType("jobs")
                     }}>
                         Список профессий и специализаций
-                    </button>
+                    </Button>
                 </div>
                 <div>
-                    <button onClick={() => {
+                    <Button onClick={() => {
                         props.getFeedbacks("employee")
                         props.SetActionType("feedbackEmployee")
                     }}>
                         Список отзывов о работодателях
-                    </button>
+                    </Button>
                 </div>
                 <div>
-                    <button onClick={() => {
+                    <Button onClick={() => {
                         props.getFeedbacks("employer")
                         props.SetActionType("feedbackEmployer")
                     }}>
                         Список отзывов о сотрудниках
-                    </button>
-                </div>
-                <div>
-                    <button onClick={() => {
-                        props.SetActionType("vacancy")
-                    }}>
-                        Список всех вакансий
-                    </button>
+                    </Button>
                 </div>
             </div>
     }

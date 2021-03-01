@@ -30,7 +30,8 @@ const mapStateToProps = (state) => ({
     login: state.auth.login,
     token: state.auth.token,
     isFetching: state.auth.isFetching,
-    loginInProgress: state.auth.loginInProgress
+    loginInProgress: state.auth.loginInProgress,
+    message: state.auth.message
 })
 
 export default compose(

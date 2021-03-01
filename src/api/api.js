@@ -1,9 +1,25 @@
 import * as axios from "axios";
+import {Redirect} from "react-router-dom";
+import React from "react";
 
 const instance = axios.create({
 //настройки
     baseURL: 'http://localhost:8080/api/'
 });
+
+const handleErrors = (err) => {
+    if(err.response) {
+        console.log("Problem with response",err.response.status)
+        let data = {message: "not found"}
+        return (err.response.status)
+    } else if (err.request) {
+        console.log("Problem with request")
+        return (err.response.status)
+    } else {
+        console.log("Error",err.message)
+        return (err.response.status)
+    }
+}
 
 export const vacancyAPI = {
     getVacancy(currentPage = 1, pageSize = 3,type) {
@@ -13,6 +29,7 @@ export const vacancyAPI = {
     getFilterVacancy(data,currentPage = 1, pageSize = 3,type) {
         return instance.post(`vacancy/filter`,{...data,currentPage, pageSize,type})
             .then(response => response.data)
+            .catch(error => error.response.status)
     },
 
     respondVacancy(idVacancy, userId) {
@@ -23,6 +40,7 @@ export const vacancyAPI = {
             .then(response => response.data)
     },
     newVacancy(userId, data) {
+
         debugger
         return instance.post(`vacancy`, {
             id_jobs: data.specialisations,
@@ -75,16 +93,19 @@ export const loginAPI = {
                 login: login,
                 password: password
             }).then(response => response.data)
+                .catch(error => error.response.status)
         } else if (type === "employer") {
             return instance.post(`auth/employer/signin`, {
                 login: login,
                 password: password
             }).then(response => response.data)
+                .catch(error => error.response.status)
         } else if (type === "admin") {
             return instance.post(`auth/admin/signin`, {
                 login: login,
                 password: password
             }).then(response => response.data)
+                .catch(handleErrors)
         }
     },
     singUp(type, data) {

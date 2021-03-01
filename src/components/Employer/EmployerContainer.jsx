@@ -3,8 +3,9 @@ import {connect} from "react-redux";
 import Preloader from "../common/preloader";
 import {compose} from "redux";
 import Employer from "./Employer";
-import {changeOneProfession, createNewVacancy, getJobs} from "../../redux/employer-reducer";
+import {changeOneProfession, createNewVacancy, getJobs, setIsVacancyCreated} from "../../redux/employer-reducer";
 import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
+import {Redirect} from "react-router-dom";
 
 class EmployerContainer extends React.Component {
 
@@ -12,6 +13,7 @@ class EmployerContainer extends React.Component {
     componentDidMount() {
         debugger
         this.props.getJobs("professions");
+        this.props.setIsVacancyCreated(false)
     }
 
     getSpecialisations = (profession) => {
@@ -22,7 +24,9 @@ class EmployerContainer extends React.Component {
     render() {
         return (
             <>
-                {!this.props.professions ? <Preloader/> : <Employer {...this.props} getSpecialisations={this.getSpecialisations}/>}
+                {this.props.isVacancyCreated?  <Redirect to={'/profile'}/> : null}
+                {!this.props.professions ? <Preloader/> : <Employer {...this.props} getSpecialisations={this.getSpecialisations}
+                                                                    setIsVacancyCreated={this.props.setIsVacancyCreated}/>}
 
             </>
         )
@@ -38,10 +42,11 @@ const mapStateToProps = (state) => ({
     professions: state.employerPage.professions,
     specialisations: state.employerPage.specialisations,
     oneProfession: state.employerPage.oneProfession,
-    userId: state.auth.userId
+    userId: state.auth.userId,
+    isVacancyCreated: state.employerPage.isVacancyCreated
 })
 
 export default compose(
     WithAuthRedirect,
-    connect(mapStateToProps, {getJobs,changeOneProfession,createNewVacancy})
+    connect(mapStateToProps, {getJobs,changeOneProfession,createNewVacancy,setIsVacancyCreated})
 )(EmployerContainer);

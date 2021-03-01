@@ -7,6 +7,7 @@ const LOG_OUT = 'LOG_OUT';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const EMPLOYER_SIGN_IN = "EMPLOYER_SIGN_IN";
 const TOGGLE_IS_LOGIN_PROGRESS = 'TOGGLE_IS_LOGIN_PROGRESS';
+const SET_MESSAGE = 'SET_MESSAGE';
 
 
 let initialState = {
@@ -20,6 +21,7 @@ let initialState = {
     isFetching: false,
     loginInProgress: false,
     type: null,
+    message: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -30,6 +32,11 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 ...action.data,
                 isAuth: true
+            };
+        case SET_MESSAGE:
+            return {
+                ...state,
+                message: action.data
             };
 
         case SIGN_IN:
@@ -88,6 +95,12 @@ export const SetAuthUserData = (userId, email, login, token) => {
         }
     }
 }
+export const setMessage = (data) => {
+    return {
+        type: SET_MESSAGE,
+        data
+    }
+}
 
 export const loginForm = (type, userId, email, login, token) => {
     return {
@@ -126,11 +139,31 @@ export const signIn = (type, login, password) => (dispatch) => {
     loginAPI.singIn(type, login, password)
         .then(data => {
             debugger
-            let {userId, email, login, token} = data.values;
-            dispatch(loginForm(type, userId, email, login, token));
+            switch (data) {
+                case 401:
+                    dispatch(setMessage("Аккаунт с таким логином не найден"))
+                    break
+
+                case 402:
+                    dispatch(setMessage("Пароль не верный"))
+                    break
+
+                default:
+                    let {userId, email, login, token} = data.values;
+                    dispatch(setMessage(null))
+                    dispatch(loginForm(type, userId, email, login, token));
+                    break
+
+            }
             dispatch(toggleIsFetching(false));
             dispatch(toggleIsLoginProgress(false))
         })
+        /*.catch(err => {
+            debugger
+            dispatch(setMessage(err))
+            dispatch(toggleIsFetching(false));
+            dispatch(toggleIsLoginProgress(false))
+        })*/
 }
 
 export const signUp = (type, data) => (dispatch) => {

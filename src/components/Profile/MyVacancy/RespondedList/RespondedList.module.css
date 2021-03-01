@@ -99,3 +99,32 @@
 
     color: rgba(0, 0, 0, 0.7);
 }
+.text {
+    left: 1.36%;
+    right: 76.24%;
+    top: 75.94%;
+    bottom: 13.21%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 23px;
+
+    color: #000000;
+
+    opacity: 0.8;
+}
+.item {
+    border: 1px solid rgba(51, 84, 31, 0.7);
+    margin: 0px 0px 20px 0px;
+    padding: 5px;
+}
+
+.name {
+    margin: 0px;
+    padding: 0px;
+}
+.feed {
+    background: white;
+}

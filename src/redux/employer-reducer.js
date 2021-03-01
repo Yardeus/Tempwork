@@ -1,5 +1,7 @@
 import {jobsAPI, loginAPI, vacancyAPI} from "../api/api";
 import {toggleIsFetching, toggleIsLoginProgress} from "./auth-reducer";
+import {Redirect} from "react-router-dom";
+import React from "react";
 
 const ADD_VACANCY = 'ADD-VACANCY';
 const ADD_VACANCY_E = 'ADD-VACANCY-EMPLOYEE';
@@ -8,13 +10,15 @@ const GET_TEXT = "GET-TEXT";
 const GET_PROFESSIONS = "GET_PROFESSIONS";
 const GET_SPECIALISATIONS = "GET_SPECIALISATIONS";
 const CHANGE_PROFESSION = "CHANGE_PROFESSION";
+const IS_VACANCY_CREATED = "IS_VACANCY_CREATED";
 
 
 let initialState = {
 
     oneProfession: null,
     professions: [],
-    specialisations: []
+    specialisations: [],
+    isVacancyCreated: false
 }
 
 const employerReducer = (state = initialState, action) => {
@@ -35,6 +39,12 @@ const employerReducer = (state = initialState, action) => {
                     ...action.data.values
                 ],
             };
+        case IS_VACANCY_CREATED:
+            return {
+                ...state,
+                isVacancyCreated: action.data
+                ,
+            };
         case CHANGE_PROFESSION:
             return {
                 ...state,
@@ -48,6 +58,12 @@ const employerReducer = (state = initialState, action) => {
 export const changeOneProfession = (data) => {
     return {
         type: CHANGE_PROFESSION,
+        data
+    }
+}
+export const setIsVacancyCreated = (data) => {
+    return {
+        type: IS_VACANCY_CREATED,
         data
     }
 }

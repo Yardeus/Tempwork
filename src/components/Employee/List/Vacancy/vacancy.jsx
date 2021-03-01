@@ -1,36 +1,53 @@
 import React from "react";
-import s from "../List.module.css";
+import s from "./vacancy.module.css";
 import {NavLink, Redirect} from "react-router-dom";
 import {Field, reduxForm} from "redux-form";
-import {required} from "../../../../utils/validators/validators";
-import {Input} from "../../../common/formsControl";
-import {feedbackAPI} from "../../../../api/api";
+import {Button, Input} from "../../../common/formsControl";
 import moment from "moment";
-import {setIsVacancyClosed} from "../../../../redux/admin-reducer";
 
-let VacancyForm = (props) => {
-    const {handleSubmit} = props;
-    debugger
-    return (
-        <form onSubmit={handleSubmit}>
+import {length} from "redux-form-validators";
+import TextField from "@material-ui/core/TextField";
+
+class VacancyForm extends React.Component {
+
+    renderTextField = ({input, label, type, meta: {touched, error, warning}}) => (
+        <div>
+            <label>{label}</label>
             <div>
-                <div>
-                    <Field placeholder={"Введите отзыв"} name={"feedback"} component={Input}/>
-                </div>
-                <div>
-                    <button type="submit">Отправить отзыв</button>
-                </div>
-                <div>
-                    <button onClick={() => {
-                        props.setFeedbackMode(false)
-                    }}>Отменить
-                    </button>
-                </div>
-
-
+                <TextField {...input} placeholder={label} type={type}/>
+                {/* ошибка для поля*/}
+                {touched && ((error && <div>{error}</div>))}
             </div>
-        </form>
-    )
+        </div>
+    );
+
+    render() {
+        const {handleSubmit} = this.props;
+        debugger
+        return (
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <div>
+                        <Field placeholder={"Введите отзыв"} name={"feedback"} component={this.renderTextField}
+                               validate={length({max: 500, msg: "Максимум 500 символов"})}/>
+                    </div>
+                    <div>
+                        <button type="submit">Отправить отзыв</button>
+                    </div>
+                    <div>
+                        <button onClick={() => {
+                            this.props.setFeedbackMode(false)
+                        }}>Отменить
+                        </button>
+                    </div>
+
+
+                </div>
+            </form>
+        )
+    }
+
+
 }
 
 const VacancyReduxForm = reduxForm({form: 'vacancy'})(VacancyForm)
@@ -73,48 +90,52 @@ const Vacancy = (props) => {
             <div>
                 {
                     props.oneVacancy.map(v => <div className={s.vacancy}>
-
-                            <div>
-                                Рейтинг компании - {v.rank}
+                            <div className={s.text + ' ' + s.main}>
+                                {v.Profession} {v.Specialisation}. Оплата {v.Price} руб.
                             </div>
-                            <div>
-                                Компания - {v.Organization_name}
+                            <div className={s.text}>
+                                Рейтинг - {v.rank}
                             </div>
-                            <div>
-                                Дата начала работы - {moment(v.Start_Date).format('L')}
-                            </div>
-                            <div>
-                                Дата конца работы - {moment(v.End_Date).format('L')}
-                            </div>
-                            <div>
-                                Описание - {v.Description}
-                            </div>
-                            <div>
-                                Оплата - {v.Price}
-                            </div>
-                            <div>
-                                Город - {v.City}
-                            </div>
-                            <div>
-                                Адрес - {v.Adress}
+                            <div className={s.text}>
+                                {v.Organization_name}
                             </div>
 
-                            <div>
+                            <div className={s.text}>
+                                {moment(v.Start_Date).format('L')} - {moment(v.End_Date).format('L')}
+                            </div>
+                            <div className={s.text}>
+                                <div>Описание работы</div>
+
+                                {v.Description}
+                            </div>
+                            <div className={s.text}>
+                                Требуемое количество человек: {v.Quantity}
+                            </div>
+
+                            <div className={s.text}>
+                                {v.City}, {v.Adress}
+                            </div>
+
+
+                            <div className={s.text}>
                                 График работы
                                 <div>Начало дня - {moment(v.Start_Time, 'hh:mm:ss').format('LT')}</div>
                                 <div>Конец дня - {moment(v.End_Time, 'hh:mm:ss').format('LT')}</div>
                             </div>
+                            <div className={s.text}>
+                                Электронная почта для связи {v.Email}
+                            </div>
                             <div>
                                 <NavLink to={"/employee"}>
-                                    <button>Вернуться</button>
+                                    <Button>Вернуться</Button>
                                 </NavLink>
                             </div>
                             {props.isResponded ? <div>Вы откликнулись</div> :
                                 <div>
-                                    <button onClick={() => {
+                                    <Button onClick={() => {
                                         props.onRespond(v.idFind_Employer)
                                     }}>Откликнуться
-                                    </button>
+                                    </Button>
                                 </div>
                             }
 
@@ -126,56 +147,40 @@ const Vacancy = (props) => {
                                 </button>
                             </div> : null}
                             <div>
-                                {props.feedbackSendMode ? <div>Спасибо за оставленный отзыв</div> :
-                                    <div>{props.feedbackMode === v.idFind_Employer ? <div>
-                                            <VacancyReduxForm onSubmit={onSubmit} setFeedbackMode={props.setFeedbackMode}
-                                                              setFeedbackSendMode={props.setFeedbackSendMode}
-                                                              sendFeedbackEmployee={props.sendFeedbackEmployee}/>
-                                        </div>
-                                        :
-                                        <div>
-                                            <button onClick={() => {
-                                                props.setFeedbackMode(v.idFind_Employer)
-                                            }}>
-                                                Оставить отзыв
-                                            </button>
-                                        </div>}</div>}
-                            </div>
-                            <div>
                                 {props.isViewFeedback ? <div>
                                         <div>
-                                            <button onClick={() => {
+                                            <Button onClick={() => {
                                                 props.setIsViewFeedback(false)
                                             }}>Закрыть отзывы
-                                            </button>
+                                            </Button>
                                         </div>
                                         <div>
-                                            {props.feedbacks.map(f => <div>
-                                                <div>
-                                                    ФИО - {f.Surname} {f.First_Name} {f.Middle_Name}
+                                            {props.feedbacks.length > 0 ? props.feedbacks.map(f => <div>
+                                                <div className={s.name}>
+                                                    {f.Surname} {f.Firstname} {f.Middle_Name}
                                                 </div>
-                                                {f.feedback.length > 0 && f.feedback !== "undefined" && f.feedback !== "null" ?
-                                                    <div>
-                                                        Отзыв - {f.feedback}
+                                                <div className={s.item}>
+                                                    {f.rank ? <div>
+                                                        Мнение - {f.rank === "like" ? <span>Хорошее</span> : f.rank === "dislike" ?
+                                                        <span>Плохое</span> : <span>Нейтральное</span>}
                                                     </div> : null}
-                                                {f.rank ? <div>
-                                                    Мнение - {f.rank === "like" ? <span>Хорошее</span> : f.rank === "dislike" ?
-                                                    <span>Плохое</span> : <span>Нейтральное</span>}
-                                                </div> : null}
-
-                                                <div>
+                                                    {f.feedback.length > 0 && f.feedback !== "undefined" && f.feedback !== "null" ?
+                                                        <div>
+                                                            Отзыв - {f.feedback}
+                                                        </div> : null}
 
                                                 </div>
-                                            </div>)}
+
+                                            </div>) : ()=>{return <div>Отзывов нет</div>}}
                                         </div>
                                     </div>
                                     :
                                     <div>
-                                        <button onClick={() => {
+                                        <Button onClick={() => {
                                             props.getFeedbackEmployee(v.idEmployee)
                                         }}>
                                             Просмотреть отзывы о работодателе
-                                        </button>
+                                        </Button>
                                     </div>}
                             </div>
 

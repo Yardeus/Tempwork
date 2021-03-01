@@ -1,4 +1,4 @@
 .footer {
     grid-area: f;
-    background-color: darkgreen;
+    background: linear-gradient(180deg, #EFF6BE 99.99%, rgba(255, 255, 255, 0) 100%);
 }

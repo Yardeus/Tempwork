@@ -30,7 +30,8 @@ class MyVacancyContainer extends React.Component {
     render() {
         return <>
             <MyVacancy {...this.props}  editModeChange={this.editModeChange}
-                       closeMyVacancy={this.props.closeMyVacancy} SetCurrentRespondVacancyId={this.props.SetCurrentRespondVacancyId}/>
+                       closeMyVacancy={this.props.closeMyVacancy} SetCurrentRespondVacancyId={this.props.SetCurrentRespondVacancyId}
+                       deleteVacancy={this.props.deleteMyVacancy}/>
 
         </>
     }
@@ -50,7 +51,7 @@ let mapStateToProps = (state) => {
 }
 
 export default compose(
-    connect(mapStateToProps, {getMyVacancy, editModeChange, closeMyVacancy, SetCurrentRespondVacancyId})
+    connect(mapStateToProps, {getMyVacancy, editModeChange, closeMyVacancy, SetCurrentRespondVacancyId, deleteMyVacancy})
 )(MyVacancyContainer);
 
 

@@ -5,3 +5,21 @@
 .formControl.error span {
     color: red;
 }
+
+.btn button {
+    font-family: Roboto;
+    grid-area: b;
+    border: none;
+    height:auto;
+    min-height: 30px;
+    width:150px;
+    margin: 5px;
+    font-size: 15px;
+    background: #D0E6C3;
+
+}
+
+.text {
+    font-size: 15px;
+    opacity: 1;
+}

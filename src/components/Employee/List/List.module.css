@@ -1,6 +1,5 @@
 .list {
-    grid-area: m;
-    background-color: steelblue;
+
 }
 
 .item{
@@ -11,20 +10,139 @@
 }
 
 .vacancy {
-    grid-area: m;
-    background-color: coral;
-    margin: 10px;
+
+    border: 1px solid rgba(51, 84, 31, 0.7);
+    background-color: white;
+    margin: 20px 50px;
+    padding: 5px;
 }
 
-.number {
+.company {
+    grid-area: c;
+    left: 1.36%;
+    right: 76.24%;
+    top: 75.94%;
+    bottom: 13.21%;
 
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 23px;
+
+    color: #000000;
+
+    opacity: 0.8;
+}
+.date {
+    grid-area: d;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 28px;
+
+    color: rgba(0, 0, 0, 0.8);
+}
+.paid {
+    grid-area: p;
+    left: 1.58%;
+    right: 83.26%;
+    top: 34.91%;
+    bottom: 51.89%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 19px;
+    line-height: 28px;
+
+    color: #006C0B;
+}
+
+.adress {
+    grid-area: a;
+    left: 3.54%;
+    right: 84.62%;
+    top: 55.19%;
+    bottom: 33.96%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 23px;
+
+    color: #000000;
+
+    opacity: 0.8;
+}
+.specialisation {
+    grid-area: s;
+    left: 1.58%;
+    right: 60.48%;
+    top: 12.26%;
+    bottom: 73.58%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 30px;
+
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.numbers {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 30px;
 }
 
 .number_select {
     font-weight: bold;
+
 }
 
 .btn {
-    background-color: burlywood;
 
+
+}
+.btn button {
+    font-family: Roboto;
+    grid-area: b;
+    border: none;
+    height:30px;
+    width:100px;
+    font-size: 15px;
+    background: #D0E6C3;
+
+}
+.text {
+    padding-left: 60px;
+    padding-top: 20px;
+    width: 154px;
+    height: 28px;
+    left: 75px;
+    top: 355px;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 28px;
+
+    color: #000000;
+}
+
+.line {
+    margin: 0px 55px ;
+    width: auto;
+    height: 0px;
+    left: 69px;
+    top: 381px;
+
+    border: 1px solid rgba(51, 84, 31, 0.7);
 }

@@ -1,99 +1,187 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
-import s from "../Employee/List/List.module.css";
+import s from "./Profile.module.css";
 import {Field, reduxForm} from "redux-form";
-import {Input} from "../common/formsControl";
+import {Button, Input, renderRadio} from "../common/formsControl";
 import {setEditProfileMode} from "../../redux/profile-reducer";
 import moment from "moment";
+import {email, format, length, numericality, required} from "redux-form-validators";
 
-let EditProfileForm = (props) => {
-    const {handleSubmit} = props;
-    debugger
-    return (
-        <form onSubmit={handleSubmit}>
-            {props.type === "employer" ? props.profileData.map(p => <div>
-                <div>
-                    <Field placeholder={p.Firstname} name={"Firstname"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Surname} name={"Surname"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Middle_Name} name={"Middle_Name"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.City} name={"City"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Profession} name={"Profession"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Description} name={"Description"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Email} name={"Email"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Sex} name={"Sex"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Phone_Number} name={"Phone_Number"} component={Input}/>
-                </div>
-                <div>
-                    <button type={"submit"}>Сохранить изменения
-                    </button>
-                </div>
-                <div>
-                    <button onClick={() => {
-                        props.setEditProfileMode(false)
-                    }}>Отменить
-                    </button>
-                </div>
+class EditProfileForm extends React.Component {
 
-            </div>) : props.profileData.map(p => <div>
-                <div>
-                    <Field placeholder={p.Firstname} name={"Firstname"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Surname} name={"Surname"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Middle_Name} name={"Middle_Name"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Phone_Number} name={"Phone_Number"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Organization_name} name={"Organization_name"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.Email} name={"Email"} component={Input}/>
-                </div>
-                <div>
-                    <Field placeholder={p.City} name={"City"} component={Input}/>
-                </div>
 
-                <div>
-                    <button type={"submit"}>Сохранить изменения
-                    </button>
-                </div>
-                <div>
-                    <button onClick={() => {
-                        props.setEditProfileMode(false)
-                    }}>Отменить
-                    </button>
-                </div>
+    render() {
+        const {handleSubmit} = this.props;
+        return (
+            <form onSubmit={handleSubmit}>
+                {this.props.type === "employer" ? this.props.profileData.map(p => <div className={s.info}>
+                    <div align={"center"}>
+                        <div>
+                            <span>Имя</span>
+                            <Field placeholder={p.Firstname} name={"Firstname"} component={Input}
+                                   validate={[length({max: 45}), format({
+                                       with: /^[а-я]+$/i,
+                                       msg: "Используйте только буквы русского алфавита ", allowBlank: true
+                                   })]}/>
+                        </div>
+                        <div>
+                            <span>Фамилия</span>
+                            <Field placeholder={p.Surname} name={"Surname"} component={Input}
+                                   validate={[length({max: 45}), format({
+                                       with: /^[а-я]+$/i,
+                                       msg: "Используйте только буквы русского алфавита ", allowBlank: true
+                                   })]}/>
+                        </div>
+                        <div>
+                            <span>Отчество</span>
+                            <Field placeholder={p.Middle_Name} name={"Middle_Name"} component={Input}
+                                   validate={[length({max: 45}), format({
+                                       with: /^[а-я]+$/i,
+                                       msg: "Используйте только буквы русского алфавита ", allowBlank: true
+                                   })]}/>
+                        </div>
+                        <div>
+                            <span>Город</span>
+                            <Field placeholder={p.City} name={"City"} component={Input}
+                                   validate={[format({
+                                       with: /^[а-я]+$/i,
+                                       msg: "Используйте только буквы русского алфавита", allowBlank: true
+                                   })]}/>
+                        </div>
+                        <div>
+                            <span>Профессия</span>
+                            <Field placeholder={p.Profession} name={"Profession"} component={Input}
+                                   validate={[length({max: 45}), format({
+                                       with: /^[а-я]+$/i,
+                                       msg: "Используйте только буквы русского алфавита ", allowBlank: true
+                                   })]}/>
+                        </div>
+                        <div>
+                            <span>Номер телефона</span>
+                            <Field placeholder={p.Phone_Number} name={"Phone_Number"} component={Input}
+                                   validate={[length({
+                                       is: 11,
+                                       msg: "Введите корректный номер. Пример - 8XXXYYYHHII", allowBlank: true
+                                   }), numericality({int: true, allowBlank: true})]}/>
+                        </div>
+                        <div>
+                            <span>Электронная почта</span>
+                            <Field placeholder={p.Email} name={"Email"} component={Input}
+                                   validate={[email({
+                                       msg: "Введите корректный адрес. Пример: tempwork@mail.ru",
+                                       allowBlank: true
+                                   })]}/>
+                        </div>
+                        <div>
+                            <span>Резюме</span>
+                            <Field placeholder={p.Description} name={"Description"} component={Input}
+                                   validate={[length({max: 500})]}/>
+                        </div>
 
-            </div>)}
-        </form>
-    )
+
+                        <div>
+
+                                <Field name="sex" component={renderRadio} type="radio"
+                                />
+
+                        </div>
+
+                        <div>
+                            <Button type={"submit"}>Сохранить изменения
+                            </Button>
+                        </div>
+                        <div>
+                            <Button onClick={() => {
+                                this.props.setEditProfileMode(false)
+                            }}>Отменить
+                            </Button>
+                        </div>
+                    </div>
+
+
+                </div>) : this.props.profileData.map(p => <div className={s.info}>
+                    <div align={"center"}>
+                        <div>
+                            <span>Имя</span>
+                            <Field placeholder={p.Firstname} name={"Firstname"} component={Input}
+                                   validate={[length({max: 45}), format({
+                                       with: /^[а-я]+$/i,
+                                       msg: "Используйте только буквы русского алфавита ", allowBlank: true
+                                   })]}/>
+                        </div>
+                        <div>
+                            <span>Фамилия</span>
+                            <Field placeholder={p.Surname} name={"Surname"} component={Input}
+                                   validate={[length({max: 45}), format({
+                                       with: /^[а-я]+$/i,
+                                       msg: "Используйте только буквы русского алфавита ", allowBlank: true
+                                   })]}/>
+                        </div>
+                        <div>
+                            <span>Отчество</span>
+                            <Field placeholder={p.Middle_Name} name={"Middle_Name"} component={Input}
+                                   validate={[length({max: 45}), format({
+                                       with: /^[а-я]+$/i,
+                                       msg: "Используйте только буквы русского алфавита ", allowBlank: true
+                                   })]}/>
+                        </div>
+                        <div>
+                            <span>Номер телефона</span>
+                            <Field placeholder={p.Phone_Number} name={"Phone_Number"} component={Input}
+                                   validate={[length({
+                                       is: 11,
+                                       msg: "Введите корректный номер. Пример - 8XXXYYYHHII", allowBlank: true
+                                   }), numericality({int: true, allowBlank: true})]}/>
+                        </div>
+                        <div>
+                            <span>Название организации</span>
+                            <Field placeholder={p.Organization_name} name={"Organization_name"} component={Input}
+                                   validate={[format({
+                                       with: /^[а-яa-z0-9]+$/i,
+                                       msg: "Используйте только буквы русского,латинского алфавита, а также цифры от 0 до 9 ",
+                                       allowBlank: true
+                                   })]}/>
+                        </div>
+                        <div>
+                            <span>Электронная почта</span>
+                            <Field placeholder={p.Email} name={"Email"} component={Input}
+                                   validate={[email({
+                                       msg: "Введите корректный адрес. Пример: tempwork@mail.ru",
+                                       allowBlank: true
+                                   })]}/>
+                        </div>
+                        <div>
+                            <span>Город</span>
+                            <Field placeholder={p.City} name={"City"} component={Input}
+                                   validate={[format({
+                                       with: /^[а-я]+$/i,
+                                       msg: "Используйте только буквы русского алфавита", allowBlank: true
+                                   })]}/>
+                        </div>
+
+                        <div>
+                            <Button type={"submit"}>Сохранить изменения
+                            </Button>
+                        </div>
+                        <div>
+                            <Button onClick={() => {
+                                this.props.setEditProfileMode(false)
+                            }}>Отменить
+                            </Button>
+                        </div>
+                    </div>
+
+
+                </div>)}
+            </form>
+        )
+    }
 }
 
 
 const EditProfileReduxForm = reduxForm({form: 'editProfile'})(EditProfileForm)
 
 let Profile = (props) => {
-
 
 
     const onSubmit = (formData) => {
@@ -201,115 +289,120 @@ let Profile = (props) => {
 
     }
 
-    return <div>
+    return <div className={s.text}>
         {props.editProfileMode ? <div>
                 <EditProfileReduxForm {...props} onSubmit={onSubmit} setEditProfileMode={props.setEditProfileMode}/>
             </div> :
-            props.type === "employer" ? props.profileData.map(p => <div>
+            props.type === "employer" ? props.profileData.map(p => <div className={s.main}>
+                <div className={s.info}>
+                    <div>
 
-                <div>
-                    Имя - {p.Firstname}
+                        {p.Surname} {p.Firstname} {p.Middle_Name}
+                    </div>
+                    <div>
+                        {p.Profession}
+                    </div>
+                    <div>
+                        {p.Sex}
+                    </div>
+                    <div>
+                        {p.City}
+                    </div>
+                    <div>
+                        Номер телефона - {p.Phone_Number}
+                    </div>
+                    <div>
+                        Электронная почта - {p.Email}
+                    </div>
+                    <div>
+                        Дата регистрации - {moment(p.Date_Registration).format('L')}
+                    </div>
+                    <div>
+                        День рождения - {moment(p.Birthday).format('L')}
+                    </div>
+                    <span>Описание</span>
+                    <div>
+
+
+                        {p.Description}
+
+                    </div>
                 </div>
-                <div>
-                    Фамилия - {p.Surname}
-                </div>
-                <div>
-                    Отчество - {p.Middle_Name}
-                </div>
-                <div>
-                    Пол - {p.Sex}
-                </div>
-                <div>
-                    Город - {p.City}
-                </div>
-                <div>
-                    Номер телефона - {p.Phone_Number}
-                </div>
-                <div>
-                    Электронная почта - {p.Email}
-                </div>
-                <div>
-                    Дата регистрации - {moment(p.Date_Registration).format('L')}
-                </div>
-                <div>
-                    День рождения - {moment(p.Birthday).format('L')}
-                </div>
-                <div>
-                    Профессия - {p.Profession}
-                </div>
-                <div>
-                    Краткое описание - {p.Description}
-                </div>
-                <div className={s.btn}>
-                    <NavLink to={"/my-vacancy"}>Мои отклики</NavLink>
-                </div>
-                <div className={s.btn}>
-                    <NavLink to={"/my-works"}>Моя занятость</NavLink>
-                </div>
-                <div className={s.btn}>
-                    <NavLink to={"/feedback"}>Мои отзывы</NavLink>
-                </div>
-                <div className={s.btn}>
-                    <button onClick={() => {
-                        props.setEditProfileMode(true)
-                    }}>Редактировать профиль
-                    </button>
-                </div>
-                <div className={s.btn}>
-                    <NavLink to={"/employee"}>
-                        <button onClick={() => {
-                            props.logOut()
-                        }}>Выйти с аккаунта
-                        </button>
-                    </NavLink>
+                <div className={s.nav}>
+                    <div className={s.btn}>
+                        <NavLink to={"/my-vacancy"}><Button>Мои отклики</Button> </NavLink>
+                    </div>
+                    <div className={s.btn}>
+                        <NavLink to={"/my-works"}><Button>Моя занятость</Button></NavLink>
+                    </div>
+                    <div className={s.btn}>
+                        <NavLink to={"/feedback"}><Button>Мои отзывы</Button></NavLink>
+                    </div>
+                    <div className={s.btn}>
+                        <Button onClick={() => {
+                            props.setEditProfileMode(true)
+                        }}>Редактировать профиль
+                        </Button>
+                    </div>
+                    <div className={s.btn}>
+                        <NavLink to={"/employee"}>
+                            <Button onClick={() => {
+                                props.logOut()
+                            }}>Выйти с аккаунта
+                            </Button>
+                        </NavLink>
+                    </div>
                 </div>
 
-            </div>) : props.profileData.map(p => <div>
 
-                <div>
-                    Имя - {p.Firstname}
+            </div>) : props.profileData.map(p => <div className={s.main}>
+                <div className={s.info}>
+                    <div>
+                        {p.Surname} {p.Firstname} {p.Middle_Name}
+                    </div>
+                    <div>
+                        {p.City}
+                    </div>
+                    <div>
+                        Название организации - {p.Organization_name}
+                    </div>
+                    <div>
+                        Дата регистрации - {moment(p.Date_Registration).format('L')}
+                    </div>
+                    <div>
+                        Номер телефона - {p.Phone_Number}
+                    </div>
+                    <div>
+                        Электронная почта - {p.Email}
+                    </div>
+
+
                 </div>
-                <div>
-                    Фамилия - {p.Surname}
+                <div className={s.nav}>
+                    <div className={s.btn}>
+                        <NavLink to={"/my-vacancy"}><Button>
+                            Мои вакансии
+                        </Button> </NavLink>
+                    </div>
+                    <div className={s.btn}>
+                        <NavLink to={"/feedback"}><Button>Мои отзывы</Button> </NavLink>
+                    </div>
+                    <div className={s.btn}>
+                        <Button onClick={() => {
+                            props.setEditProfileMode(true)
+                        }}>Редактировать профиль
+                        </Button>
+                    </div>
+                    <div className={s.btn}>
+                        <NavLink to={"/employee"}>
+                            <Button onClick={() => {
+                                props.logOut()
+                            }}>Выйти с аккаунта
+                            </Button>
+                        </NavLink>
+                    </div>
                 </div>
-                <div>
-                    Отчество - {p.Middle_Name}
-                </div>
-                <div>
-                    Город - {p.City}
-                </div>
-                <div>
-                    Номер телефона - {p.Phone_Number}
-                </div>
-                <div>
-                    Электронная почта - {p.Email}
-                </div>
-                <div>
-                    Дата регистрации - {moment(p.Date_Registration).format('L')}
-                </div>
-                <div>
-                    Название организации - {p.Organization_name}
-                </div>
-                <div className={s.btn}>
-                    <NavLink to={"/my-vacancy"}>Мои вакансии</NavLink>
-                </div>
-                <div className={s.btn}>
-                    <NavLink to={"/feedback"}>Мои отзывы</NavLink>
-                </div>
-                <div className={s.btn}>
-                    <button onClick={() => {
-                        props.setEditProfileMode(true)
-                    }}>Редактировать профиль
-                    </button>
-                </div>
-                <div className={s.btn}>
-                    <NavLink to={"/employee"}>
-                        <button onClick={() => {
-                            props.logOut()
-                        }}>Выйти с аккаунта
-                        </button>
-                    </NavLink>
-                </div>
+
 
             </div>)
 

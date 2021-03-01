@@ -1,5 +1,8 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
+import {Button} from "../../../common/formsControl";
+import moment from "moment";
+import s from "./RespondedList.module.css";
 
 
 let RespondedList = (props) => {
@@ -8,65 +11,62 @@ let RespondedList = (props) => {
     return (<>
             {props.type === "employer" ? null : <div>
                 {
-                    props.responded.map(v => <div>
+                    props.responded.map(v => <div className={s.vacancy+" "+s.text}>
 
-                            <div>
-                                Фамилия - {v.Surname}
-                            </div>
-                            <div>
-                                Имя - {v.Firstname}
-                            </div>
-                            <div>
-                                Отчество - {v.Middle_Name}
-                            </div>
-                            <div>
-                                Пол - {v.Sex}
-                            </div>
-                            <div>
-                                День рождения - {v.Birthday}
-                            </div>
-                            <div>
-                                Город - {v.City}
-                            </div>
-                            <div>
-                                Профессия - {v.Profession}
-                            </div>
-                            <div>
+                        <div>
+                            {v.Firstname} {v.Surname} {v.Middle_Name}
+                        </div>
+                        <div>
+                            {v.Sex}
+                        </div>
+                        <div>
+                            День рождения - {moment(v.Birthday).format('L')}
+                        </div>
+                        <div>
+                            Город - {v.City}
+                        </div>
+                        <div>
+                            Профессия - {v.Profession}
+                        </div>
+                        {/*<div>
                                 Часов отработано на TempWork - {v.Hours_Worked}
-                            </div>
-                            <div>
-                                Описание - {v.Description}
-                            </div>
-                            <div>
-                                Номер телефона - {v.Phone_Number}
-                            </div>
-                            <div>
-                                Электронная почта - {v.Email}
-                            </div>
-                            <div>
-                                Дата регистрации на сайте - {v.Date_Registration}
-                            </div>
+                            </div>*/}
+                        <div>
+                            Описание - {v.Description}
+                        </div>
+                        <div>
+                            Номер телефона - {v.Phone_Number}
+                        </div>
+                        <div>
+                            Электронная почта - {v.Email}
+                        </div>
+                        <div>
+                            Дата регистрации на сайте - {moment(v.Date_Registration).format('L')}
+                        </div>
                             <div>
                                 {props.isViewFeedback ? <div>
                                         <div>
-                                            <button onClick={() => {
+                                            <Button onClick={() => {
                                                 props.setIsViewFeedback(false)
                                             }}>Закрыть отзывы
-                                            </button>
+                                            </Button>
                                         </div>
                                         <div>
                                             {props.feedbacks.map(f => <div>
                                                 <div>
                                                     Название организаии - {f.Organization_name}
                                                 </div>
-                                                {f.feedback.length > 0 && f.feedback !== "undefined" && f.feedback !== "null" ?
-                                                    <div>
-                                                        Отзыв - {f.feedback}
+                                                <div className={s.item+" "+s.feed}>
+                                                    {f.feedback.length > 0 && f.feedback !== "undefined" && f.feedback !== "null" ?
+                                                        <div>
+                                                            Отзыв - {f.feedback}
+                                                        </div> : null}
+                                                    {f.rank ? <div>
+                                                        Мнение - {f.rank === "like" ? <span>Хорошее</span> : f.rank === "dislike" ?
+                                                        <span>Плохое</span> : <span>Нейтральное</span>}
                                                     </div> : null}
-                                                {f.rank ? <div>
-                                                    Мнение - {f.rank === "like" ? <span>Хорошее</span> : f.rank === "dislike" ?
-                                                    <span>Плохое</span> : <span>Нейтральное</span>}
-                                                </div> : null}
+                                                </div>
+
 
                                                 <div>
 
@@ -76,16 +76,16 @@ let RespondedList = (props) => {
                                     </div>
                                     :
                                     <div>
-                                        <button onClick={() => {
+                                        <Button onClick={() => {
                                             props.getFeedbackEmployer(v.idEmployer)
                                         }}>
                                             Просмотреть отзывы о соискателе
-                                        </button>
+                                        </Button>
                                     </div>}
                             </div>
 
                             {!v.Status ? <div>
-                                <button onClick={() => {
+                                <Button onClick={() => {
                                     let data = {
                                         idFind_Employer: v.idFind_Employer,
                                         idEmployer: v.idEmployer
@@ -94,12 +94,12 @@ let RespondedList = (props) => {
                                     props.createAgreement(data)
                                 }}>
                                     Принять на работу
-                                </button>
+                                </Button>
 
                             </div> : <div>
-                                <button>
+                                <Button>
                                     Уволить
-                                </button>
+                                </Button>
                             </div>}
 
 
@@ -107,12 +107,12 @@ let RespondedList = (props) => {
                     )}
                 <div>
                     <NavLink to={"/my-vacancy"}>
-                        <button onClick={() => {
+                        <Button onClick={() => {
                             props.SetCurrentRespondVacancyId(null)
                             props.FormRespondedMyVacancy([])
                         }}>
                             Назад
-                        </button>
+                        </Button>
                     </NavLink>
 
                 </div>

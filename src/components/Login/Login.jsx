@@ -1,49 +1,93 @@
 import React from "react";
 import s from './Login.module.css'
 import {Field, reduxForm} from "redux-form";
-import {maxLength, required} from "../../utils/validators/validators";
-import {Input} from "../common/formsControl";
+import {Button, Input} from "../common/formsControl";
 import {NavLink, Redirect} from "react-router-dom";
+import {length, required, format} from "redux-form-validators";
+import TextField from "@material-ui/core/TextField";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
 
-const maxLength10 = maxLength(10);
 
-const LoginForm = (props) => {
+class LoginForm extends React.Component {
 
-   const  { handleSubmit} = props;
-    return (
-        <form onSubmit={handleSubmit}>
+    renderTextField = ({input, label, type, meta: {touched, error, warning}}) => (
+        <div>
+            <label>{label}</label>
             <div>
-                <Field placeholder={"Login"} name={"login"} component={Input} validate={[required,maxLength10]}/>
+                <TextField {...input} placeholder={label} type={type}/>
+                {/* ошибка для поля*/}
+                {touched && ((error && <div>{error}</div>))}
             </div>
-            <div>
-                <Field placeholder={"Password"} name={"password"} component={Input} validate={[required,maxLength10]}/>
-            </div>
-            <div>
-                <label>
-                    <Field name="type" component={Input} type="radio" value="employer" validate={[required]}/>{' '}
-                    Соискатель
-                </label>
-                <label>
-                    <Field name="type" component={Input} type="radio" value="employee" validate={[required]}/>{' '}
-                    Работодатель
-                </label>
-            </div>
-            <div>
-                <button type="submit" disabled={props.loginInProgress}>Log in</button>
-            </div>
-            <div>
-                <Field component={"input"} name={"rememberMe"} type={"checkbox"}/> remember me
-            </div>
-            <div>
-                <h2>Зарегистироваться как</h2>
-            </div>
-            <div>
-                <NavLink to={"/register-employer"}><button>Соискаталь</button></NavLink>
+        </div>
+    );
+    renderRadio = ({input, label, type, meta: {touched, error, warning}}) => (
+        <div>
+            <span>Войти как</span>
+            <RadioGroup type={type} {...input}>
+                <div align={"center"}>
+                    <FormControlLabel value="employer" control={<Radio/>} label="Соискатель"/>
+                    <FormControlLabel value="employee" control={<Radio/>} label="Работодатель"/>
+                </div>
 
-                <NavLink to={"/register-employee"}><button>Работодатель</button></NavLink>
-            </div>
-        </form>
-    )
+            </RadioGroup>
+            {touched && ((error && <div>{error}</div>))}
+        </div>
+    );
+
+    render() {
+        const {handleSubmit, pristine, reset, submitting, classes} = this.props;
+        return (
+            <form onSubmit={handleSubmit}>
+                <div className={s.text}>
+                    <span>Логин</span>
+                    <Field name={"login"} component={this.renderTextField}
+                           validate={[length({max: 45}), format({
+                               with: /^[a-z0-9]+$/i,
+                               msg: "Используйте только буквы латинского алфавита и цифры от 0 до 9"
+                           })]}/>
+                </div>
+                <div className={s.text}>
+                    <span>Пароль</span>
+                    <Field name={"password"} type={"password"} component={this.renderTextField}
+                           validate={[required({msg: "Введите ваш Пароль"}), length({max: 45}), format({
+                               with: /^[a-z0-9]+$/i,
+                               msg: "Используйте только буквы латинского алфавита и цифры от 0 до 9"
+                           })]}/>
+                </div>
+                <div>
+                    <Field name={"type"} component={this.renderRadio}
+                           validate={[required({msg: "Выберите один из вариантов"})]}/>
+
+                </div>
+                <div >
+                    <Button type="submit" disabled={this.props.loginInProgress}>Авторизоваться</Button>
+                </div>
+                {this.props.message? <div>{this.props.message}</div> : null}
+                <div className={s.text}>
+                    <h3>или</h3>
+                    <h2>Зарегистироваться как</h2>
+                </div>
+                <div className={s.reg} align={"center"}>
+                    <div>
+                        <NavLink to={"/register-employer"}>
+
+                            <Button>Соискаталь</Button>
+                        </NavLink>
+                    </div>
+                    <div>
+                        <NavLink to={"/register-employee"}>
+                            <Button>Работодатель</Button>
+                        </NavLink>
+                    </div>
+
+                </div>
+            </form>
+        )
+    }
+
+
 }
 
 const LoginReduxForm = reduxForm({form: 'login'})(LoginForm)
@@ -51,15 +95,17 @@ const LoginReduxForm = reduxForm({form: 'login'})(LoginForm)
 const Login = (props) => {
     if (props.isAuth) return <Redirect to={'/profile'}/>
     const onSubmit = (formData) => {
-        //disabled = {props.loginInProgress}
         console.log(formData.login)
         props.EmployeeSignIn(formData.login, formData.password, formData.type)
     }
 
     return (
         <div className={s.login}>
-            <h1>Вход в личный кабинет</h1>
-            <LoginReduxForm onSubmit={onSubmit} loginInProgress={props.loginInProgress}/>
+            <div align="center"  className={s.text}>
+                <h1>Вход в личный кабинет</h1>
+                <LoginReduxForm {...props} onSubmit={onSubmit} loginInProgress={props.loginInProgress}/>
+            </div>
+
 
         </div>
     )

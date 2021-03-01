@@ -1,7 +1,9 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 import {Field, reduxForm} from "redux-form";
-import {Input} from "../../../common/formsControl";
+import {Button, Input} from "../../../common/formsControl";
+import s from "../MyWorks/MyWorks.module.css";
+import moment from "moment";
 
 
 let FeedbackForm = (props) => {
@@ -14,13 +16,13 @@ let FeedbackForm = (props) => {
                     <Field placeholder={"Введите отзыв"} name={"feedback"} component={Input}/>
                 </div>
                 <div>
-                    <button type="submit">Отправить отзыв</button>
+                    <Button type="submit">Отправить отзыв</Button>
                 </div>
                 <div>
-                    <button onClick={() => {
+                    <Button onClick={() => {
                         props.setFeedbackMode(false)
                     }}>Отменить
-                    </button>
+                    </Button>
                 </div>
 
             </div>
@@ -63,22 +65,16 @@ let WorkersList = (props) => {
     return (<>
             {props.type === "employer" ? null : <div>
                 {
-                    props.responded.map(v => <div>
+                    props.responded.map(v => <div className={s.vacancy+" "+s.text}>
 
                             <div>
-                                Фамилия - {v.Surname}
+                                {v.Firstname} {v.Surname} {v.Middle_Name}
                             </div>
                             <div>
-                                Имя - {v.Firstname}
+                                {v.Sex}
                             </div>
                             <div>
-                                Отчество - {v.Middle_Name}
-                            </div>
-                            <div>
-                                Пол - {v.Sex}
-                            </div>
-                            <div>
-                                День рождения - {v.Birthday}
+                                День рождения - {moment(v.Birthday).format('L')}
                             </div>
                             <div>
                                 Город - {v.City}
@@ -86,9 +82,9 @@ let WorkersList = (props) => {
                             <div>
                                 Профессия - {v.Profession}
                             </div>
-                            <div>
+                            {/*<div>
                                 Часов отработано на TempWork - {v.Hours_Worked}
-                            </div>
+                            </div>*/}
                             <div>
                                 Описание - {v.Description}
                             </div>
@@ -99,7 +95,7 @@ let WorkersList = (props) => {
                                 Электронная почта - {v.Email}
                             </div>
                             <div>
-                                Дата регистрации на сайте - {v.Date_Registration}
+                                Дата регистрации на сайте - {moment(v.Date_Registration).format('L')}
                             </div>
                             <div>
                                 {props.feedbackSendMode  ? <div>Спасибо за оставленный отзыв</div> :
@@ -110,33 +106,23 @@ let WorkersList = (props) => {
                                         </div>
                                         :
                                         <div>
-                                            <button onClick={() => {
+                                            <Button onClick={() => {
                                                 props.setFeedbackMode(v.idEmployer)
                                             }}>
                                                 Оставить отзыв
-                                            </button>
+                                            </Button>
                                         </div>}</div>}
                             </div>
-
-                            {/*<div>
-                            <button onClick={() => {
-                                return <VacancyReduxForm key={v.idEmployer} onSubmit={onSubmit} setFeedbackMode={props.setFeedbackMode}
-                                                         setFeedbackSendMode={props.setFeedbackSendMode}
-                                                         sendFeedbackEmployer={props.sendFeedbackEmployer}/>
-                            }}>тык</button>
-                        </div>*/}
-
-
                         </div>
                     )}
                 <div>
                     <NavLink to={"/my-vacancy"}>
-                        <button onClick={() => {
+                        <Button onClick={() => {
                             props.SetCurrentRespondVacancyId(null)
                             props.FormRespondedMyVacancy([])
                         }}>
                             Назад
-                        </button>
+                        </Button>
                     </NavLink>
 
                 </div>

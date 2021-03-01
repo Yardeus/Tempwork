@@ -1,5 +1,37 @@
 .login {
-    grid-area: m;
-    background-color: cadetblue;
-    horiz-align: center;
+    display: flex;
+    justify-content: space-between;
+    width: 380px;
+    height: 515px;
+
+    background: white;
+
+    padding: 30px;
+    margin:150px auto;
+
+}
+.main {
+    margin: 0 auto;
+    width: 300px;
+
+}
+
+.reg {
+
+}
+.text {
+    left: 1.36%;
+    right: 76.24%;
+    top: 75.94%;
+    bottom: 13.21%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 23px;
+
+    color: #000000;
+
+
 }

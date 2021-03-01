@@ -1,50 +1,56 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 import {Field, reduxForm} from "redux-form";
-import {Input} from "../../../common/formsControl";
+import {Button, Input} from "../../../common/formsControl";
 import moment from "moment";
 import {required} from "../../../../utils/validators/validators";
 
+import s from './MyWorks.module.css'
 
-let MyWorksForm = (props) => {
-    const {handleSubmit} = props;
-    debugger
-    return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <div>
-                    <Field placeholder={"Введите отзыв"} name={"feedback"} component={Input}/>
-                </div>
-                <div>
-                    Оцените работодателя
-                </div>
-                <div>
-                    <label>
-                        <Field name="rank" component={Input} type="radio" value="like" validate={[required]}/>{' '}
-                        Хорошо
-                    </label>
-                    <label>
-                        <Field name="rank" component={Input} type="radio" value="neutral" validate={[required]}/>{' '}
-                        Нейтрально
-                    </label>
-                    <label>
-                        <Field name="rank" component={Input} type="radio" value="dislike" validate={[required]}/>{' '}
-                        Плохо
-                    </label>
-                </div>
-                <div>
-                    <button type="submit">Отправить отзыв</button>
-                </div>
-                <div>
-                    <button onClick={() => {
-                        props.setFeedbackMode(false)
-                    }}>Отменить
-                    </button>
-                </div>
 
-            </div>
-        </form>
-    )
+class MyWorksForm extends React.Component{
+    render() {
+        const {handleSubmit} = this.props;
+        debugger
+        return (
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <div>
+                        <Field placeholder={"Введите отзыв"} name={"feedback"} component={Input}/>
+                    </div>
+                    <div>
+                        Оцените работодателя
+                    </div>
+                    <div>
+                        <label>
+                            <Field name="rank" component={Input} type="radio" value="like" validate={[required]}/>{' '}
+                            Хорошо
+                        </label>
+                        <label>
+                            <Field name="rank" component={Input} type="radio" value="neutral" validate={[required]}/>{' '}
+                            Нейтрально
+                        </label>
+                        <label>
+                            <Field name="rank" component={Input} type="radio" value="dislike" validate={[required]}/>{' '}
+                            Плохо
+                        </label>
+                    </div>
+                    <div>
+                        <button type="submit">Отправить отзыв</button>
+                    </div>
+                    <div>
+                        <button onClick={() => {
+                            this.props.setFeedbackMode(false)
+                        }}>Отменить
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        )
+    }
+
+
 }
 
 const MyWorksReduxForm = reduxForm({form: 'feedback'})(MyWorksForm)
@@ -81,42 +87,48 @@ let MyWorks = (props) => {
 
     }
 
-    return (<>
+    return (<div>
             {props.type === "employee" ? null : <div>
                 {
-                    props.myWorks.map(v => <div>
+                    props.myWorks.map(v => <div className={s.vacancy}>
 
-                            <div>
-                                Название организации - {v.Organization_name}
-                            </div>
-                            <div>
-                                Оплата - {v.Price}
-                            </div>
-                            <div>
+                        <div className={s.specialisation}>
+                            {v.Profession} {v.Specialisation}
+                        </div>
+                        <div className={s.paid}>
+                            Оплата - {v.Price}
+                        </div>
+                        <div className={s.company}>
+                            {v.Organization_name}
+                        </div>
+                        <div className={s.date}>
+                            {moment(v.Start_Date).format('L')} - {moment(v.End_Date).format('L')}
+                        </div>
+
+                        <div className={s.adress}>
+                            {v.City}, {v.Adress}
+                        </div>
+
+                        <div className={s.date}>
+                            График работы
+                            <div>Начало дня - {v.Start_Time}</div>
+                            <div>Конец дня - {v.End_Time}</div>
+                        </div>
+                            <div className={s.text}>
                                 Статус - {v.Status}
                             </div>
-                            <div>
+                            <div className={s.date}>
                                 Дата начала работы - {moment(v.Start_Date).format('L')}
                             </div>
-                            <div>
+                            <div className={s.date}>
                                 Дата конца работы - {moment(v.End_Date).format('L')}
                             </div>
 
-                            <div>
-                                Время начала рабочего дня - {moment(v.Start_Time, 'hh:mm:ss').format('LT')}
-                            </div>
-                            <div>
-                                Время конца рабочего дня - {moment(v.End_Time, 'hh:mm:ss').format('LT')}
-                            </div>
-                            <div>
-                                Город - {v.City}
-                            </div>
-                            <div>
+
+                            <div className={s.text}>
                                 Описание - {v.Description}
                             </div>
-                            <div>
-                                Адрес - {v.Adress}
-                            </div>
+
 
 
                             <div>
@@ -128,11 +140,11 @@ let MyWorks = (props) => {
                                         </div>
                                         :
                                         <div>
-                                            <button onClick={() => {
+                                            <Button onClick={() => {
                                                 props.setFeedbackMode(v.idFind_Employer)
                                             }}>
                                                 Оставить отзыв
-                                            </button>
+                                            </Button>
                                         </div>}</div>}
                             </div>
 
@@ -141,17 +153,17 @@ let MyWorks = (props) => {
                     )}
                 <div>
                     <NavLink to={"/profile"}>
-                        <button onClick={() => {
+                        <Button onClick={() => {
                             props.SetCurrentRespondVacancyId(null)
                             props.FormRespondedMyVacancy([])
                         }}>
                             Назад
-                        </button>
+                        </Button>
                     </NavLink>
 
                 </div>
             </div>}
-        </>
+        </div>
     )
 }
 
