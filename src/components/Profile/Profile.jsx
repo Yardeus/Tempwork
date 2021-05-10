@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {NavLink} from "react-router-dom";
 import s from "./Profile.module.css";
 import {Field, reduxForm} from "redux-form";
@@ -6,6 +6,8 @@ import {Button, Input, renderRadio} from "../common/formsControl";
 import {setEditProfileMode} from "../../redux/profile-reducer";
 import moment from "moment";
 import {email, format, length, numericality, required} from "redux-form-validators";
+import baseAvatar from "../../server/avatars/base_avatar.jpg"
+import MessagesContainer from "./Messages/MessagesContainer";
 
 class EditProfileForm extends React.Component {
 
@@ -81,8 +83,8 @@ class EditProfileForm extends React.Component {
 
                         <div>
 
-                                <Field name="sex" component={renderRadio} type="radio"
-                                />
+                            <Field name="sex" component={renderRadio} type="radio"
+                            />
 
                         </div>
 
@@ -181,8 +183,27 @@ class EditProfileForm extends React.Component {
 
 const EditProfileReduxForm = reduxForm({form: 'editProfile'})(EditProfileForm)
 
-let Profile = (props) => {
 
+
+let Profile = (props) => {
+debugger
+    let [profileMode,setProfileMode] = useState("default");
+
+    /*let SetDefaultProfileMode = (props) => {
+        return <div className={s.text}>
+
+            <div className={s.btn}>
+                <Button onClick={() => {setProfileMode("default")}}>Назад
+                </Button>
+            </div>
+        </div>
+    }*/
+
+    const avatarSelected = (e) => {
+        if (e.target.files.length) {
+            props.saveAvatar("employer",e.target.files[0],props.userId)
+        }
+    }
 
     const onSubmit = (formData) => {
         if (setEditProfileMode) {
@@ -289,125 +310,150 @@ let Profile = (props) => {
 
     }
 
-    return <div className={s.text}>
-        {props.editProfileMode ? <div>
-                <EditProfileReduxForm {...props} onSubmit={onSubmit} setEditProfileMode={props.setEditProfileMode}/>
-            </div> :
-            props.type === "employer" ? props.profileData.map(p => <div className={s.main}>
-                <div className={s.info}>
-                    <div>
+    switch (profileMode) {
+        case "messages":
+            debugger
+            return <div>
+                {/*<SetDefaultProfileMode />*/}
+                <MessagesContainer />
+            </div>
 
-                        {p.Surname} {p.Firstname} {p.Middle_Name}
-                    </div>
-                    <div>
-                        {p.Profession}
-                    </div>
-                    <div>
-                        {p.Sex}
-                    </div>
-                    <div>
-                        {p.City}
-                    </div>
-                    <div>
-                        Номер телефона - {p.Phone_Number}
-                    </div>
-                    <div>
-                        Электронная почта - {p.Email}
-                    </div>
-                    <div>
-                        Дата регистрации - {moment(p.Date_Registration).format('L')}
-                    </div>
-                    <div>
-                        День рождения - {moment(p.Birthday).format('L')}
-                    </div>
-                    <span>Описание</span>
-                    <div>
+        case "default":
+            debugger
+            return <div className={s.text}>
+                {props.editProfileMode ? <div>
+                        <EditProfileReduxForm {...props} onSubmit={onSubmit} setEditProfileMode={props.setEditProfileMode}/>
+                    </div> :
+                    props.type === "employer" ? props.profileData.map(p => <div className={s.main}>
+                        <div className={s.info}>
 
+                            <div className={s.avatar}>
+                                <img src={`http://localhost:8080/avatars/${p.Avatar}` || baseAvatar} height="200" width="200"/>
+                                {p.idEmployer === props.userId ? <input type={"file"} onChange={avatarSelected}/> : null}
+                            </div>
+                            <div>
 
-                        {p.Description}
-
-                    </div>
-                </div>
-                <div className={s.nav}>
-                    <div className={s.btn}>
-                        <NavLink to={"/my-vacancy"}><Button>Мои отклики</Button> </NavLink>
-                    </div>
-                    <div className={s.btn}>
-                        <NavLink to={"/my-works"}><Button>Моя занятость</Button></NavLink>
-                    </div>
-                    <div className={s.btn}>
-                        <NavLink to={"/feedback"}><Button>Мои отзывы</Button></NavLink>
-                    </div>
-                    <div className={s.btn}>
-                        <Button onClick={() => {
-                            props.setEditProfileMode(true)
-                        }}>Редактировать профиль
-                        </Button>
-                    </div>
-                    <div className={s.btn}>
-                        <NavLink to={"/employee"}>
-                            <Button onClick={() => {
-                                props.logOut()
-                            }}>Выйти с аккаунта
-                            </Button>
-                        </NavLink>
-                    </div>
-                </div>
+                                {p.Surname} {p.Firstname} {p.Middle_Name}
+                            </div>
+                            <div>
+                                {p.Profession}
+                            </div>
+                            <div>
+                                {p.Sex}
+                            </div>
+                            <div>
+                                {p.City}
+                            </div>
+                            <div>
+                                Номер телефона - {p.Phone_Number}
+                            </div>
+                            <div>
+                                Электронная почта - {p.Email}
+                            </div>
+                            <div>
+                                Дата регистрации - {moment(p.Date_Registration).format('L')}
+                            </div>
+                            <div>
+                                День рождения - {moment(p.Birthday).format('L')}
+                            </div>
+                            <span>Описание</span>
+                            <div>
 
 
-            </div>) : props.profileData.map(p => <div className={s.main}>
-                <div className={s.info}>
-                    <div>
-                        {p.Surname} {p.Firstname} {p.Middle_Name}
-                    </div>
-                    <div>
-                        {p.City}
-                    </div>
-                    <div>
-                        Название организации - {p.Organization_name}
-                    </div>
-                    <div>
-                        Дата регистрации - {moment(p.Date_Registration).format('L')}
-                    </div>
-                    <div>
-                        Номер телефона - {p.Phone_Number}
-                    </div>
-                    <div>
-                        Электронная почта - {p.Email}
-                    </div>
+                                {p.Description}
+
+                            </div>
+                        </div>
+                        <div className={s.nav}>
+                            <div className={s.btn}>
+                                <NavLink to={"/my-vacancy"}><Button>Мои отклики</Button> </NavLink>
+                            </div>
+                            <div className={s.btn}>
+                                <NavLink to={"/my-works"}><Button>Моя занятость</Button></NavLink>
+                            </div>
+                            <div className={s.btn}>
+                                <NavLink to={"/feedback"}><Button>Мои отзывы</Button></NavLink>
+                            </div>
+                            <div className={s.btn}>
+                                <Button onClick={() => {
+                                    setProfileMode("messages")
+                                }}>Сообщения
+                                </Button>
+                            </div>
+
+                            <div className={s.btn}>
+                                <Button onClick={() => {
+                                    props.setEditProfileMode(true)
+                                }}>Редактировать профиль
+                                </Button>
+                            </div>
+                            <div className={s.btn}>
+                                <NavLink to={"/employee"}>
+                                    <Button onClick={() => {
+                                        props.logOut()
+                                    }}>Выйти с аккаунта
+                                    </Button>
+                                </NavLink>
+                            </div>
+                        </div>
 
 
-                </div>
-                <div className={s.nav}>
-                    <div className={s.btn}>
-                        <NavLink to={"/my-vacancy"}><Button>
-                            Мои вакансии
-                        </Button> </NavLink>
-                    </div>
-                    <div className={s.btn}>
-                        <NavLink to={"/feedback"}><Button>Мои отзывы</Button> </NavLink>
-                    </div>
-                    <div className={s.btn}>
-                        <Button onClick={() => {
-                            props.setEditProfileMode(true)
-                        }}>Редактировать профиль
-                        </Button>
-                    </div>
-                    <div className={s.btn}>
-                        <NavLink to={"/employee"}>
-                            <Button onClick={() => {
-                                props.logOut()
-                            }}>Выйти с аккаунта
-                            </Button>
-                        </NavLink>
-                    </div>
-                </div>
+                    </div>) : props.profileData.map(p => <div className={s.main}>
+                        <div className={s.info}>
+                            <div>
+                                {p.Surname} {p.Firstname} {p.Middle_Name}
+                            </div>
+                            <div>
+                                {p.City}
+                            </div>
+                            <div>
+                                Название организации - {p.Organization_name}
+                            </div>
+                            <div>
+                                Дата регистрации - {moment(p.Date_Registration).format('L')}
+                            </div>
+                            <div>
+                                Номер телефона - {p.Phone_Number}
+                            </div>
+                            <div>
+                                Электронная почта - {p.Email}
+                            </div>
 
 
-            </div>)
+                        </div>
+                        <div className={s.nav}>
+                            <div className={s.btn}>
+                                <NavLink to={"/my-vacancy"}><Button>
+                                    Мои вакансии
+                                </Button> </NavLink>
+                            </div>
+                            <div className={s.btn}>
+                                <NavLink to={"/feedback"}><Button>Мои отзывы</Button> </NavLink>
+                            </div>
+                            <div className={s.btn}>
+                                <Button onClick={() => {
+                                    props.setEditProfileMode(true)
+                                }}>Редактировать профиль
+                                </Button>
+                            </div>
 
-        }
-    </div>
+                            <div className={s.btn}>
+                                <NavLink to={"/employee"}>
+                                    <Button onClick={() => {
+                                        props.logOut()
+                                    }}>Выйти с аккаунта
+                                    </Button>
+                                </NavLink>
+                            </div>
+                        </div>
+
+
+                    </div>)
+
+                }
+            </div>
+    }
+
 }
 
 export default Profile;

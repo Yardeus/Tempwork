@@ -1,4 +1,4 @@
-import {applyMiddleware, combineReducers, createStore} from "redux";
+import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import employeeReducer from "./employee-reducer";
 import employerReducer from "./employer-reducer";
 import authReducer from "./auth-reducer";
@@ -16,9 +16,15 @@ let reducers = combineReducers({
     admin: adminReducer
     });
 
-let store = createStore(reducers, applyMiddleware(thunkMiddleware));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers, composeEnhancers(
+    applyMiddleware(thunkMiddleware)
+));
 
-window.store = store;
+/*
+let store = createStore(reducers, applyMiddleware(thunkMiddleware));*/
+
+window.__store__ = store;
 
 
 export default store;

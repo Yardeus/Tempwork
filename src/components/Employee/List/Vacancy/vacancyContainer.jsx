@@ -22,11 +22,9 @@ import {closeVacancyAdmin, setIsVacancyClosed} from "../../../../redux/admin-red
 class VacancyContainer extends React.Component {
     componentDidMount() {
         this.props.toggleIsFetching(true);
-        debugger
         let vacancyId = this.props.match.params.vacancyId;
         axios.get(`http://localhost:8080/api/vacancy/one?id=`+vacancyId)
             .then(response => {
-                debugger
                 this.props.setOneVacancy(response.data.values);
                 this.props.toggleIsFetching(false);
                 return (

@@ -78,7 +78,7 @@ const employeeReducer = (state = initialState, action) => {
                 feedbackSendMode: action.data
 
             };
-            case SET_FEEDBACKS:
+        case SET_FEEDBACKS:
             return {
                 ...state,
                 feedbacks: action.data
@@ -129,7 +129,6 @@ const employeeReducer = (state = initialState, action) => {
                 currentPage: action.currentPage
             }
         case SET_ONE_VACANCY:
-            debugger
             return {
                 ...state,
                 oneVacancy: action.vacancyData
@@ -219,10 +218,10 @@ export const setOneVacancy = (vacancyData) => {
     }
 }
 
-export const getVacancy = (currentPage, pageSize,type) => (dispatch) => {
+export const getVacancy = (currentPage, pageSize, type) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     dispatch(setCurrentPage(currentPage));
-    vacancyAPI.getVacancy(currentPage, pageSize,type)
+    vacancyAPI.getVacancy(currentPage, pageSize, type)
         .then(data => {
             dispatch(setVacancy(data.values));
             dispatch(setCount(data.count));
@@ -243,12 +242,11 @@ export const sendFeedbackEmployer = (data) => (dispatch) => {
             dispatch(toggleIsFetching(false));
         })
 }
-export const getFilterVacancy = (data, currentPage, pageSize,type) => (dispatch) => {
+export const getFilterVacancy = (data, currentPage, pageSize, type) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     dispatch(setCurrentPage(currentPage));
-    vacancyAPI.getFilterVacancy(data, currentPage, pageSize,type)
+    vacancyAPI.getFilterVacancy(data, currentPage, pageSize, type)
         .then(data => {
-            debugger
             dispatch(setVacancy(data.values));
             dispatch(setCount(data.count));
             dispatch(toggleIsFetching(false));

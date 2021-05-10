@@ -18,6 +18,12 @@
 
 }
 
+.avatar {
+
+    max-width: 100%;
+    height: auto;
+}
+
 .text {
     left: 1.36%;
     right: 76.24%;

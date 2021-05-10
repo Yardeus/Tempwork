@@ -1,4 +1,4 @@
-import {agreementAPI, feedbackAPI, loginAPI, profileAPI, vacancyAPI} from "../api/api";
+import {agreementAPI, feedbackAPI, loginAPI, messagesAPI, profileAPI, vacancyAPI} from "../api/api";
 import {setCount, setCurrentPage, setVacancy} from "./employee-reducer";
 import {loginForm, toggleIsFetching, toggleIsLoginProgress} from "./auth-reducer";
 
@@ -14,6 +14,9 @@ const PUSH_STATUS_RESPONDED_FROM_MY_VACANCY = 'PUSH_STATUS_RESPONDED_FROM_MY_VAC
 const SET_FEEDBACK = 'SET_FEEDBACK';
 const SET_EDIT_PROFILE_MODE = 'SET_EDIT_PROFILE_MODE';
 const SET_MY_WORKS = 'SET_MY_WORKS';
+const SAVE_AVATAR_SUCCESS = 'SAVE_AVATAR_SUCCESS';
+const SET_CHATS = 'SET_CHATS';
+const SET_MESSAGES = 'SET_MESSAGES';
 
 
 let initialState = {
@@ -25,18 +28,18 @@ let initialState = {
     currentResponded: null,
     editProfileMode: false,
     feedback: [],
-    myWorks: []
+    myWorks: [],
+    chats: [],
+    messages: []
 
 }
 
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
         case EMPLOYEE_PROFILE:
-            debugger
             return {
                 ...state,
                 profileData: action.data.map(p => p)
-                //profileData: [...action.data]
             }
         case MY_VACANCY:
             return {
@@ -49,19 +52,16 @@ const profileReducer = (state = initialState, action) => {
                 editProfileMode: action.data
             }
         case UPDATE_MY_VACANCY:
-            debugger
             return {
                 ...state,
                 editVacancy: [action.data]
             }
         case SET_MY_WORKS:
-            debugger
             return {
                 ...state,
                 myWorks: action.data
             }
         case SET_FEEDBACK:
-            debugger
             return {
                 ...state,
                 feedback: action.data
@@ -92,6 +92,22 @@ const profileReducer = (state = initialState, action) => {
                 ...state,
                 currentResponded: action.vacancyId
             }
+        case SET_CHATS:
+            return {
+                ...state,
+                chats: action.data
+            }
+        case SET_MESSAGES:
+            return {
+                ...state,
+                messages: action.data
+            }
+        /*case SAVE_AVATAR_SUCCESS:
+            return {
+                ...state,
+                ...profileData,
+                avatar: action.avatar
+            }*/
 
         default:
             return state;
@@ -165,7 +181,6 @@ export const FormRespondedMyVacancy = (data) => {
 }
 export const UpdateOneVacancy = (data) => {
 
-    debugger
     return {
         type: UPDATE_MY_VACANCY,
         data
@@ -178,6 +193,27 @@ export const editModeChange = (status, idVacancy) => {
         type: CHANGE_EDIT_MODE,
         status,
         idVacancy
+
+    }
+}
+export const saveAvatarSuccess = (avatar) => {
+    return {
+        type: SAVE_AVATAR_SUCCESS,
+        avatar
+
+    }
+}
+export const setChats = (data) => {
+    return {
+        type: SET_CHATS,
+        data
+
+    }
+}
+export const setMessages = (data) => {
+    return {
+        type: SET_MESSAGES,
+        data
 
     }
 }
@@ -200,6 +236,17 @@ export const updateData = (type, data) => (dispatch) => {
 
         })
 }
+
+export const saveAvatar = (type, file, id) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    profileAPI.saveAvatar(type, file, id)
+        .then(data => {
+            dispatch(profileFormForEmployee(data.values));
+            dispatch(toggleIsFetching(false));
+
+        })
+}
+
 export const getMyVacancy = (id_user, type) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     profileAPI.myVacancy(id_user, type)
@@ -219,7 +266,6 @@ export const closeMyVacancy = (idFind_Employer, id_user) => (dispatch) => {
         )
 }
 export const getRespondedFromMyVacancy = (idFind_Employer) => (dispatch) => {
-    debugger
     dispatch(toggleIsFetching(true));
     vacancyAPI.getEmployerListFromVacancyId(idFind_Employer)
         .then(data => {
@@ -234,7 +280,6 @@ export const getRespondedFromMyVacancy = (idFind_Employer) => (dispatch) => {
         )
 }
 export const getWorkersFromMyVacancy = (idFind_Employer) => (dispatch) => {
-    debugger
     dispatch(toggleIsFetching(true));
     vacancyAPI.getWorkersListFromVacancyId(idFind_Employer)
         .then(data => {
@@ -287,6 +332,29 @@ export const getMyWorks = (idEmployer) => (dispatch) => {
     profileAPI.myWorks(idEmployer)
         .then(data => {
                 dispatch(SetMyWorks(data.values));
+                dispatch(toggleIsFetching(false));
+            }
+        )
+}
+export const getMyChats = (idUser,typeUser) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    let data = {
+        idUser,
+        typeUser
+    }
+    messagesAPI.getChatsUser(data)
+        .then(data => {
+                dispatch(setChats(data.values));
+                dispatch(toggleIsFetching(false));
+            }
+        )
+}
+export const getMyMessages = (idChat) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+
+    messagesAPI.getMessages(idChat)
+        .then(data => {
+                dispatch(setMessages(data.values));
                 dispatch(toggleIsFetching(false));
             }
         )

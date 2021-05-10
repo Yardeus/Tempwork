@@ -23,7 +23,6 @@ class FindForm extends Component {
     );
     renderSelectProfession = ({input, label, type, meta: {touched, error, warning}}) => {
 
-        debugger
         return <div>
             <label>{label}</label>
             <div>
@@ -39,7 +38,6 @@ class FindForm extends Component {
     };
     renderSelectSpecialisation = ({input, label, type, meta: {touched, error, warning}}) => {
 
-        debugger
         return <div>
             <label>{label}</label>
             <div>
@@ -58,7 +56,6 @@ class FindForm extends Component {
 
 
         const {handleSubmit, pristine, reset, submitting, classes} = this.props;
-        debugger
         return (
             <form onSubmit={handleSubmit} className={s.form}>
 
@@ -161,7 +158,7 @@ const FindReduxForm = reduxForm({form: 'findVacancy'})(FindForm)
 
 const Find = (props) => {
     const onSubmit = (formData, dispatch, props) => {
-        debugger
+
         if (props.filterMode) {
             props.updateFilter(formData)
             props.getFilterVacancy(formData, props.currentPage, props.pageSize)

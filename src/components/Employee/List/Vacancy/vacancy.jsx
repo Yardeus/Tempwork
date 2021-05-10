@@ -23,7 +23,6 @@ class VacancyForm extends React.Component {
 
     render() {
         const {handleSubmit} = this.props;
-        debugger
         return (
             <form onSubmit={handleSubmit}>
                 <div>
@@ -53,7 +52,6 @@ class VacancyForm extends React.Component {
 const VacancyReduxForm = reduxForm({form: 'vacancy'})(VacancyForm)
 
 const Vacancy = (props) => {
-    debugger
     props.oneVacancy.map(v => {
         if (v.Status === "Активно") {
             props.setIsVacancyClosed(false)
@@ -64,7 +62,6 @@ const Vacancy = (props) => {
     })
 
     const onSubmit = (formData) => {
-        debugger
         if (props.feedbackMode) {
             let data = {};
             props.oneVacancy.map(v => data = {

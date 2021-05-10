@@ -178,15 +178,31 @@ export const profileAPI = {
     },
 
     deleteVacancy(idVacancy, userId, type) {
-        debugger
         if (type === "employer") {
             return instance.delete(`employer-list?id=${idVacancy}&idEmployer=${userId}`).then(response => response.data)
         }
     },
     myWorks(idEmployer) {
-        debugger
-
         return instance.get(`employer-list/works?idEmployer=${idEmployer}`).then(response => response.data)
+
+    },
+    saveAvatar(type,avatar,id){
+        const formData = new FormData();
+        formData.append("image",avatar)
+        formData.append("id",id)
+        if (type === "employer") {
+            return instance.put(`employer/image`,formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(response => response.data)
+        } else if (type === "employee") {
+            return instance.put(`employee/image`,formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(response => response.data)
+        }
 
     }
 }
@@ -218,6 +234,15 @@ export const agreementAPI = {
     getStatus(idFind_Employer,idEmployer) {
         return instance.get(`agreement/status?idFind_Employer=${idFind_Employer}&idEmployer=${idEmployer}`).then(response => response.data)
     },
+}
+
+export const messagesAPI = {
+    getChatsUser(data){
+        return instance.get(`chat?idUser=${data.idUser}&typeUser=${data.typeUser}`).then(response => response.data)
+    },
+    getMessages(idChat){
+        return instance.get(`messages?idChat=${idChat}`).then(response => response.data)
+    }
 }
 export const feedbackAPI = {
     getFeedbackEmployee(id) {

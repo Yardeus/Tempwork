@@ -1,0 +1,61 @@
+.text {
+    left: 1.36%;
+    right: 76.24%;
+    top: 75.94%;
+    bottom: 13.21%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 23px;
+
+    color: #000000;
+
+    opacity: 0.8;
+}
+
+.titleContact {
+    margin-left: 20px;
+    grid-area: tc;
+    margin-bottom: 10px;
+}
+.titleMessages {
+    grid-area: tm;
+    margin-bottom: 10px;
+    margin-left: 20px;
+
+}
+.contact {
+    margin-left: 20px;
+    grid-area: c;
+}
+.messages {
+
+    grid-area: m;
+    margin-left: 20px;
+}
+
+.container {
+
+    display: grid;
+    grid-template-columns: 200px 200px ;
+    grid-template-rows: auto;
+    grid-template-areas:
+            "tc tm "
+            "c m ";
+}
+
+.btn {
+    background-color: #BAFD80;
+    border: none;
+    color: black;
+    width: 100%;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.btn:hover { background: rgb(53, 167, 110); }

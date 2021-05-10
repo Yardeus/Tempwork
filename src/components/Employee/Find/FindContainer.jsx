@@ -9,14 +9,12 @@ import {filterModeIsFetching, getFilterVacancy, getVacancy, updateFilter} from "
 class EmployerContainer extends React.Component {
 
     componentDidMount() {
-        debugger
         this.props.getJobs("professions");
     }
 
 
 
     getSpecialisations = (profession) => {
-        debugger
         this.props.getJobs("specialisation",profession);
     }
 

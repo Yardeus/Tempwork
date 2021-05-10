@@ -138,7 +138,6 @@ export const signIn = (type, login, password) => (dispatch) => {
     dispatch(toggleIsLoginProgress(true));
     loginAPI.singIn(type, login, password)
         .then(data => {
-            debugger
             switch (data) {
                 case 401:
                     dispatch(setMessage("Аккаунт с таким логином не найден"))

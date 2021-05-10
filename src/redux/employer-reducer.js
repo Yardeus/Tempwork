@@ -82,7 +82,6 @@ export const jobsFormProfessions = (data) => {
 }
 
 export const getJobs = (type, profession) => (dispatch) => {
-    debugger
     dispatch(toggleIsFetching(true));
     if (type === "professions") {
         jobsAPI.getProfessions()
@@ -100,14 +99,12 @@ export const getJobs = (type, profession) => (dispatch) => {
         } else {
             dispatch(toggleIsFetching(false));
         }
-        debugger
 
     }
 
 }
 
 export const createNewVacancy = (userId,data) => (dispatch) => {
-    debugger
     dispatch(toggleIsFetching(true));
 
     vacancyAPI.newVacancy(userId,data)

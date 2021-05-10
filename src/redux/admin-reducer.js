@@ -41,38 +41,32 @@ const adminReducer = (state = initialState, action) => {
                 actionType: action.data
             };
         case SET_EMPLOYER_COUNT:
-            debugger
             return {
                 ...state,
                 employerCount: action.count.map(c => c.Count)
             }
         case SET_EMPLOYEE_COUNT:
-            debugger
             return {
                 ...state,
                 employeeCount: action.count.map(c => c.Count)
             }
 
         case ADD_JOBS_MODE:
-            debugger
             return {
                 ...state,
                 addJobsMode: action.data
             }
         case SEND_JOBS_MODE:
-            debugger
             return {
                 ...state,
                 sendJobsMode: action.data
             }
         case SET_EMPLOYEE_LIST:
-            debugger
             return {
                 ...state,
                 employeeList: action.data
             }
         case SET_EMPLOYER_LIST:
-            debugger
             return {
                 ...state,
                 employerList: action.data
@@ -98,7 +92,6 @@ const adminReducer = (state = initialState, action) => {
                 feedbackList: action.data
             }
         case IS_VACANCY_CLOSED:
-            debugger
             return {
                 ...state,
                 isVacancyClosed: action.data
@@ -188,7 +181,6 @@ export const getEmployerList = (currentPage, pageSize) => (dispatch) => {
     dispatch(setEmployerCurrentPage(currentPage));
     adminAPI.getEmployerList(currentPage, pageSize)
         .then(data => {
-            debugger
             dispatch(setEmployerList(data.values));
             dispatch(setEmployerCount(data.count));
             dispatch(toggleIsFetching(false));
@@ -198,7 +190,6 @@ export const getAllJobs = () => (dispatch) => {
     dispatch(toggleIsFetching(true));
     jobsAPI.getAllJobs()
         .then(data => {
-            debugger
             dispatch(setJobsList(data.values));
             dispatch(toggleIsFetching(false));
         })
@@ -208,7 +199,6 @@ export const getEmployeeList = (currentPage, pageSize) => (dispatch) => {
     dispatch(setEmployeeCurrentPage(currentPage));
     adminAPI.getEmployeeList(currentPage, pageSize)
         .then(data => {
-            debugger
             dispatch(setEmployeeList(data.values));
             dispatch(setEmployeeCount(data.count));
             dispatch(toggleIsFetching(false));
@@ -220,7 +210,6 @@ export const banEmployer = (idUser, currentPage, pageSize) => (dispatch) => {
     dispatch(setEmployerCurrentPage(currentPage));
     adminAPI.banEmployer(idUser, currentPage, pageSize)
         .then(data => {
-            debugger
             dispatch(setEmployerList(data.values));
             dispatch(toggleIsFetching(false));
         })
@@ -230,7 +219,6 @@ export const banEmployee = (idUser, currentPage, pageSize) => (dispatch) => {
     dispatch(setEmployerCurrentPage(currentPage));
     adminAPI.banEmployee(idUser, currentPage, pageSize)
         .then(data => {
-            debugger
             dispatch(setEmployeeList(data.values));
             dispatch(toggleIsFetching(false));
         })
@@ -239,7 +227,6 @@ export const addJobs = (data) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     jobsAPI.addJobs(data)
         .then(data => {
-            debugger
             dispatch(setJobsList(data.values));
             dispatch(setAddJobsMode(false));
             dispatch(setSendJobsMode(true));
@@ -250,7 +237,6 @@ export const deleteJobs = (data) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     jobsAPI.deleteJobs(data)
         .then(data => {
-            debugger
             dispatch(setJobsList(data.values));
             dispatch(toggleIsFetching(false));
         })
@@ -259,7 +245,6 @@ export const getFeedbacks = (type) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     feedbackAPI.getFeedbacks(type)
         .then(data => {
-            debugger
             dispatch(setFeedbackList(data.values));
             dispatch(toggleIsFetching(false));
         })
@@ -268,7 +253,6 @@ export const deleteFeedback = (type,id) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     feedbackAPI.deleteFeedback(type,id)
         .then(data => {
-            debugger
             dispatch(setFeedbackList(data.values));
             dispatch(toggleIsFetching(false));
         })
@@ -277,7 +261,6 @@ export const closeVacancyAdmin = (id) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     adminAPI.closeVacancy(id)
         .then(data => {
-            debugger
             dispatch(setOneVacancy(data.values))
             dispatch(toggleIsFetching(false))
         })
