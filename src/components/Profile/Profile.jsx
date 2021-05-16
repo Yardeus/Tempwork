@@ -8,6 +8,8 @@ import moment from "moment";
 import {email, format, length, numericality, required} from "redux-form-validators";
 import baseAvatar from "../../server/avatars/base_avatar.jpg"
 import MessagesContainer from "./Messages/MessagesContainer";
+import SendReport from "../common/SendReport/SendReport";
+import SendReportContainer from "../common/SendReport/SendReportContainer";
 
 class EditProfileForm extends React.Component {
 
@@ -186,8 +188,10 @@ const EditProfileReduxForm = reduxForm({form: 'editProfile'})(EditProfileForm)
 
 
 let Profile = (props) => {
-debugger
-    let [profileMode,setProfileMode] = useState("default");
+   /* let [profileMode,setProfileMode] = useState("def");
+
+    let [selectedDialog, setSelectedDialog] = useState(0);
+    let [messages, setMessages] = useState(0);*/
 
     /*let SetDefaultProfileMode = (props) => {
         return <div className={s.text}>
@@ -310,16 +314,14 @@ debugger
 
     }
 
-    switch (profileMode) {
+    switch (props.profileMode) {
         case "messages":
-            debugger
             return <div>
                 {/*<SetDefaultProfileMode />*/}
                 <MessagesContainer />
             </div>
 
         case "default":
-            debugger
             return <div className={s.text}>
                 {props.editProfileMode ? <div>
                         <EditProfileReduxForm {...props} onSubmit={onSubmit} setEditProfileMode={props.setEditProfileMode}/>
@@ -376,10 +378,11 @@ debugger
                             </div>
                             <div className={s.btn}>
                                 <Button onClick={() => {
-                                    setProfileMode("messages")
+                                    props.setProfileMode("messages")
                                 }}>Сообщения
                                 </Button>
                             </div>
+
 
                             <div className={s.btn}>
                                 <Button onClick={() => {
@@ -396,6 +399,7 @@ debugger
                                 </NavLink>
                             </div>
                         </div>
+                        <SendReportContainer />
 
 
                     </div>) : props.profileData.map(p => <div className={s.main}>
@@ -436,6 +440,14 @@ debugger
                                 }}>Редактировать профиль
                                 </Button>
                             </div>
+                            <div className={s.btn}>
+                                <Button onClick={() => {
+                                    props.setProfileMode("messages")
+                                }}>Сообщения
+                                </Button>
+                            </div>
+
+
 
                             <div className={s.btn}>
                                 <NavLink to={"/employee"}>

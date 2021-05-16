@@ -9,8 +9,6 @@ class RegisterEmployerContainer extends React.Component {
 
     SignUp = (type, data) => {
         this.props.signUp(type, data)
-
-
     }
 
     render() {

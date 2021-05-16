@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 
 import {compose} from "redux";
 import {
-    createAgreement,
+    createAgreement, createChat,
     FormRespondedMyVacancy,
     getRespondedFromMyVacancy,
     SetCurrentRespondVacancyId
@@ -33,7 +33,8 @@ class RespondedListContainer extends React.Component {
                            FormRespondedMyVacancy={this.props.FormRespondedMyVacancy}
                            createAgreement={this.props.createAgreement}
                            setIsResponded={this.props.setIsResponded}
-                           getFeedbackEmployer={this.props.getFeedbackEmployer}/>
+                           getFeedbackEmployer={this.props.getFeedbackEmployer}
+                           createChat={this.props.createChat}/>
 
         </>
     }
@@ -57,7 +58,7 @@ let mapStateToProps = (state) => {
 }
 
 export default compose(
-    connect(mapStateToProps, {getRespondedFromMyVacancy,SetCurrentRespondVacancyId,FormRespondedMyVacancy, createAgreement,setIsViewFeedback,getFeedbackEmployer,setIsResponded})
+    connect(mapStateToProps, {getRespondedFromMyVacancy,createChat,SetCurrentRespondVacancyId,FormRespondedMyVacancy, createAgreement,setIsViewFeedback,getFeedbackEmployer,setIsResponded})
 )(RespondedListContainer);
 
 

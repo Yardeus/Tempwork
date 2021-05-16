@@ -8,7 +8,6 @@ import Select from "@material-ui/core/Select";
 class EmployerForm extends React.Component {
     renderSelectProfession = ({input, label, type, meta: {touched, error, warning}}) => {
 
-        debugger
         return <div>
             <label>{label}</label>
             <div>
@@ -24,7 +23,6 @@ class EmployerForm extends React.Component {
     };
     renderSelectSpecialisation = ({input, label, type, meta: {touched, error, warning}}) => {
 
-        debugger
         return <div>
             <label>{label}</label>
             <div>

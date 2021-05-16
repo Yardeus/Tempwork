@@ -15,15 +15,14 @@ import withRouter from "react-router-dom/es/withRouter";
 import {compose} from "redux";
 import withUrlDataContainer from "../../../../hoc/WithAuthRedirect"
 import {closeVacancyAdmin, setIsVacancyClosed} from "../../../../redux/admin-reducer";
-
-
+import {createChat, setProfileMode} from "../../../../redux/profile-reducer";
 
 
 class VacancyContainer extends React.Component {
     componentDidMount() {
         this.props.toggleIsFetching(true);
         let vacancyId = this.props.match.params.vacancyId;
-        axios.get(`http://localhost:8080/api/vacancy/one?id=`+vacancyId)
+        axios.get(`http://localhost:8080/api/vacancy/one?id=` + vacancyId)
             .then(response => {
                 this.props.setOneVacancy(response.data.values);
                 this.props.toggleIsFetching(false);
@@ -37,7 +36,7 @@ class VacancyContainer extends React.Component {
 
     }
 
-    onRespond(idVacancy){
+    onRespond(idVacancy) {
         debugger
         this.respondVacancy(idVacancy, this.userId);
         this.setIsResponded(true)
@@ -52,12 +51,13 @@ class VacancyContainer extends React.Component {
                      closeVacancyAdmin={this.props.closeVacancyAdmin}
                      setIsVacancyClosed={this.props.setIsVacancyClosed}
                      setIsResponded={this.props.setIsResponded}
-                     getFeedbackEmployee={this.props.getFeedbackEmployee}/>
+                     getFeedbackEmployee={this.props.getFeedbackEmployee}
+                     createChat={this.props.createChat}
+                     setProfileMode={this.props.setProfileMode}/>
         )
     }
 
 }
-
 
 
 let mapStateToProps = (state) => {
@@ -66,7 +66,7 @@ let mapStateToProps = (state) => {
         userId: state.auth.userId,
         feedbackMode: state.employeePage.feedbackMode,
         feedbackSendMode: state.employeePage.feedbackSendMode,
-        type:state.auth.type,
+        type: state.auth.type,
         isVacancyClosed: state.admin.isVacancyClosed,
         isResponded: state.employeePage.isResponded,
         isViewFeedback: state.employeePage.isViewFeedback,
@@ -77,9 +77,23 @@ let mapStateToProps = (state) => {
 
 export default compose(
     connect(mapStateToProps,
-        {setCurrentPage, toggleIsFetching, setOneVacancy,
-            getVacancy, setFeedbackMode, setFeedbackSendMode, sendFeedbackEmployee,
-            closeVacancyAdmin,setIsVacancyClosed,respondVacancy,setIsResponded, setIsViewFeedback,getFeedbackEmployee}),
+        {
+            setCurrentPage,
+            toggleIsFetching,
+            setOneVacancy,
+            getVacancy,
+            setFeedbackMode,
+            setFeedbackSendMode,
+            sendFeedbackEmployee,
+            closeVacancyAdmin,
+            setIsVacancyClosed,
+            respondVacancy,
+            setIsResponded,
+            setIsViewFeedback,
+            getFeedbackEmployee,
+            createChat,
+            setProfileMode
+        }),
     withRouter
 )(VacancyContainer);
 

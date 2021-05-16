@@ -51,6 +51,62 @@ class FindForm extends Component {
         </div>
 
     };
+    renderSelectExperiences = ({input, label, type, meta: {touched, error, warning}}) => {
+
+        return <div>
+            <label>{label}</label>
+            <div>
+                <Select {...input} placeholder={label} type={type}>
+                    {this.props.experiences && this.props.experiences.map(p => <option
+                        value={p.Experience}>{p.Experience}</option>)}
+                </Select>
+                {/* ошибка для поля*/}
+                {touched && ((error && <div>{error}</div>))}
+            </div>
+        </div>
+    };
+    renderSelectCities = ({input, label, type, meta: {touched, error, warning}}) => {
+
+        return <div>
+            <label>{label}</label>
+            <div>
+                <Select {...input} placeholder={label} type={type}>
+                    {this.props.cities && this.props.cities.map(p => <option
+                        value={p.id}>{p.City}</option>)}
+                </Select>
+                {/* ошибка для поля*/}
+                {touched && ((error && <div>{error}</div>))}
+            </div>
+        </div>
+    };
+    renderSelectShedules = ({input, label, type, meta: {touched, error, warning}}) => {
+
+        return <div>
+            <label>{label}</label>
+            <div>
+                <Select {...input} placeholder={label} type={type}>
+                    {this.props.shedules && this.props.shedules.map(p => <option
+                        value={p.Shedule}>{p.Shedule}</option>)}
+                </Select>
+                {/* ошибка для поля*/}
+                {touched && ((error && <div>{error}</div>))}
+            </div>
+        </div>
+    };
+    renderSelectTypesVacancy = ({input, label, type, meta: {touched, error, warning}}) => {
+
+        return <div>
+            <label>{label}</label>
+            <div>
+                <Select {...input} placeholder={label} type={type}>
+                    {this.props.typesVacancy && this.props.typesVacancy.map(p => <option
+                        value={p.Type}>{p.Type}</option>)}
+                </Select>
+                {/* ошибка для поля*/}
+                {touched && ((error && <div>{error}</div>))}
+            </div>
+        </div>
+    };
 
     render() {
 
@@ -106,18 +162,26 @@ class FindForm extends Component {
                            })}/>
                 </div>
                 <div className={s.paid}>
-                    <span>Оплата в рублях от </span>
+                    <span>Оплата в рублях от</span>
                     <Field className={s.textField} component={this.renderTextField}
                            name={"Price"}
                            validate={numericality({'>': 0, msg: "Введите число больше 0", allowBlank: true})}/>
                 </div>
                 <div className={s.city}>
-                    <span>Город  </span>
-                    <Field name={"City"} component={this.renderTextField} validate={[format({
-                        with: /^[а-я- ]+$/i,
-                        msg: "Используйте только буквы русского алфавита", allowBlank: true
-                    })]}/>
-
+                    <span>Город</span>
+                    <Field name={"City"} component={this.renderSelectCities} />
+                </div>
+                <div className={s.experience}>
+                    <span>Опыт</span>
+                    <Field name={"Experience"} component={this.renderSelectExperiences} />
+                </div>
+                <div className={s.shedule}>
+                    <span>График</span>
+                    <Field name={"Shedule"} component={this.renderSelectShedules} />
+                </div>
+                <div className={s.typeVacancy}>
+                    <span>Занятость</span>
+                    <Field name={"TypeVacancy"} component={this.renderSelectTypesVacancy} />
                 </div>
                 <div className={s.timeStart}>
                     <span>Время начала рабочего дня  </span>

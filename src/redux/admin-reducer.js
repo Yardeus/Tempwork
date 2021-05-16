@@ -1,4 +1,4 @@
-import {adminAPI, feedbackAPI, jobsAPI, vacancyAPI} from "../api/api";
+import {adminAPI, feedbackAPI, jobsAPI, reportsAPI, vacancyAPI} from "../api/api";
 import {getVacancy, setOneVacancy, toggleIsFetching} from "./employee-reducer";
 
 const SET_ACTION_TYPE = "SET_ACTION_TYPE"
@@ -12,6 +12,7 @@ const SET_JOBS_LIST = "SET_JOBS_LIST"
 const ADD_JOBS_MODE = "ADD_JOBS_MODE"
 const SEND_JOBS_MODE = "SEND_JOBS_MODE"
 const SET_FEEDBACK_LIST = "SET_FEEDBACK_LIST"
+const SET_CODES_REPORT = "SET_CODES_REPORT"
 const IS_VACANCY_CLOSED = "IS_VACANCY_CLOSED"
 
 let initialState = {
@@ -27,7 +28,8 @@ let initialState = {
     addJobsMode: false,
     sendJobsMode: false,
     feedbackList: [],
-    isVacancyClosed: false
+    isVacancyClosed: false,
+    codesReports: []
 
 
 }
@@ -95,6 +97,11 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isVacancyClosed: action.data
+            }
+        case SET_CODES_REPORT:
+            return {
+                ...state,
+                codesReports: action.data
             }
 
         default:
@@ -172,6 +179,12 @@ export const setFeedbackList = (data) => {
 export const setIsVacancyClosed = (data) => {
     return {
         type: IS_VACANCY_CLOSED,
+        data
+    }
+}
+export const setCodesReport = (data) => {
+    return {
+        type: SET_CODES_REPORT,
         data
     }
 }
@@ -262,6 +275,14 @@ export const closeVacancyAdmin = (id) => (dispatch) => {
     adminAPI.closeVacancy(id)
         .then(data => {
             dispatch(setOneVacancy(data.values))
+            dispatch(toggleIsFetching(false))
+        })
+}
+export const getCodesReport = () => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    reportsAPI.getCodesReport()
+        .then(data => {
+            dispatch(setCodesReport(data.values))
             dispatch(toggleIsFetching(false))
         })
 }

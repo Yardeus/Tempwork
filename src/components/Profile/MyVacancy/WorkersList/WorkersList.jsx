@@ -8,7 +8,6 @@ import moment from "moment";
 
 let FeedbackForm = (props) => {
     const {handleSubmit} = props;
-    debugger
     return (
         <form onSubmit={handleSubmit}>
             <div>
@@ -43,8 +42,8 @@ let WorkersList = (props) => {
                         return (
                             data = {
 
-                                idEmployee:  props.userId,
-                                idEmployer:v.idEmployer,
+                                idEmployee: props.userId,
+                                idEmployer: v.idEmployer,
                                 feedback: formData.feedback,
                             }
                         )
@@ -65,7 +64,7 @@ let WorkersList = (props) => {
     return (<>
             {props.type === "employer" ? null : <div>
                 {
-                    props.responded.map(v => <div className={s.vacancy+" "+s.text}>
+                    props.responded.map(v => <div className={s.vacancy + " " + s.text}>
 
                             <div>
                                 {v.Firstname} {v.Surname} {v.Middle_Name}
@@ -98,7 +97,7 @@ let WorkersList = (props) => {
                                 Дата регистрации на сайте - {moment(v.Date_Registration).format('L')}
                             </div>
                             <div>
-                                {props.feedbackSendMode  ? <div>Спасибо за оставленный отзыв</div> :
+                                {props.feedbackSendMode ? <div>Спасибо за оставленный отзыв</div> :
                                     <div>{props.feedbackMode === v.idEmployer ? <div>
                                             <VacancyReduxForm onSubmit={onSubmit} setFeedbackMode={props.setFeedbackMode}
                                                               setFeedbackSendMode={props.setFeedbackSendMode}
@@ -113,8 +112,23 @@ let WorkersList = (props) => {
                                             </Button>
                                         </div>}</div>}
                             </div>
+                            {props.type === "employee" ? <div>
+                                <NavLink to="/profile">
+                                    <Button onClick={() => {
+
+                                        let data = {
+                                            idEmployee: props.userId,
+                                            idEmployer: v.idEmployer
+                                        }
+                                        props.createChat(data)
+
+                                    }}>Написать сообщение</Button>
+                                </NavLink>
+
+                            </div> : null}
                         </div>
                     )}
+
                 <div>
                     <NavLink to={"/my-vacancy"}>
                         <Button onClick={() => {

@@ -8,26 +8,26 @@ const instance = axios.create({
 });
 
 const handleErrors = (err) => {
-    if(err.response) {
-        console.log("Problem with response",err.response.status)
+    if (err.response) {
+        console.log("Problem with response", err.response.status)
         let data = {message: "not found"}
         return (err.response.status)
     } else if (err.request) {
         console.log("Problem with request")
         return (err.response.status)
     } else {
-        console.log("Error",err.message)
+        console.log("Error", err.message)
         return (err.response.status)
     }
 }
 
 export const vacancyAPI = {
-    getVacancy(currentPage = 1, pageSize = 3,type) {
+    getVacancy(currentPage = 1, pageSize = 3, type) {
         return instance.get(`vacancy?page=${currentPage}&size=${pageSize}&type=${type}`)
             .then(response => response.data)
     },
-    getFilterVacancy(data,currentPage = 1, pageSize = 3,type) {
-        return instance.post(`vacancy/filter`,{...data,currentPage, pageSize,type})
+    getFilterVacancy(data, currentPage = 1, pageSize = 3, type) {
+        return instance.post(`vacancy/filter`, {...data, currentPage, pageSize, type})
             .then(response => response.data)
             .catch(error => error.response.status)
     },
@@ -164,11 +164,11 @@ export const profileAPI = {
         }
 
     },
-    updateData(type,data) {
+    updateData(type, data) {
         if (type === "employer") {
-            return instance.put(`employer`,{...data}).then(response => response.data)
+            return instance.put(`employer`, {...data}).then(response => response.data)
         } else if (type === "employee") {
-            return instance.put(`employee`,{...data}).then(response => response.data)
+            return instance.put(`employee`, {...data}).then(response => response.data)
         }
 
     },
@@ -186,18 +186,18 @@ export const profileAPI = {
         return instance.get(`employer-list/works?idEmployer=${idEmployer}`).then(response => response.data)
 
     },
-    saveAvatar(type,avatar,id){
+    saveAvatar(type, avatar, id) {
         const formData = new FormData();
-        formData.append("image",avatar)
-        formData.append("id",id)
+        formData.append("image", avatar)
+        formData.append("id", id)
         if (type === "employer") {
-            return instance.put(`employer/image`,formData, {
+            return instance.put(`employer/image`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(response => response.data)
         } else if (type === "employee") {
-            return instance.put(`employee/image`,formData, {
+            return instance.put(`employee/image`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -217,31 +217,74 @@ export const jobsAPI = {
     getSpecialisations(profession) {
         return instance.get(`jobs/specialisations?profession=${profession}`).then(response => response.data)
     },
-    addJobs(data){
-        return instance.post(`jobs`,{...data}).then(response => response.data)
+    addJobs(data) {
+        return instance.post(`jobs`, {...data}).then(response => response.data)
     },
-    deleteJobs(id){
+    deleteJobs(id) {
         return instance.delete(`jobs?id=${id}`).then(response => response.data)
     }
 }
 export const agreementAPI = {
     createAgreement(data) {
-        return instance.post(`agreement`,{...data}).then(response => response.data)
+        return instance.post(`agreement`, {...data}).then(response => response.data)
     },
     getData(idFind_Employer) {
         return instance.get(`employer-list/find?idFind_Employer=${idFind_Employer}`).then(response => response.data)
     },
-    getStatus(idFind_Employer,idEmployer) {
+    getStatus(idFind_Employer, idEmployer) {
         return instance.get(`agreement/status?idFind_Employer=${idFind_Employer}&idEmployer=${idEmployer}`).then(response => response.data)
     },
 }
+export const cityAPI = {
+    getCities() {
+        return instance.get(`city`).then(response => response.data)
+    }
+}
+export const sheduleAPI = {
+    getShedules() {
+        return instance.get(`shedule`).then(response => response.data)
+    }
+}
+export const experienceAPI = {
+    getExperiences() {
+        return instance.get(`experience`).then(response => response.data)
+    }
+}
+export const typeVacancyAPI = {
+    getTypesVacancy() {
+        return instance.get(`typeVacancy`).then(response => response.data)
+    }
+}
+export const reportsAPI = {
+    getReports() {
+        return instance.get(`reports`).then(response => response.data)
+            .catch(error => error.response.status)
+    },
+    getCodesReport() {
+        return instance.get(`reports/codes`).then(response => response.data)
+            .catch(error => error.response.status)
+    },
+    sendReport(data) {
+        return instance.post(`reports`,{...data}).then(response => response.data)
+            .catch(error => error.response.status)
+    }
+}
 
 export const messagesAPI = {
-    getChatsUser(data){
+    getChatsUser(data) {
         return instance.get(`chat?idUser=${data.idUser}&typeUser=${data.typeUser}`).then(response => response.data)
     },
-    getMessages(idChat){
-        return instance.get(`messages?idChat=${idChat}`).then(response => response.data)
+    getMessages(idChat) {
+        return instance.get(`messages?idChat=${idChat}`)
+            .then(response => response.data)
+            .catch(error => error.response.status)
+    },
+    sendMessage(data) {
+        return instance.post(`messages`, {...data}).then(response => response.data)
+    },
+    createChat(data) {
+        return instance.post(`chat`, {...data}).then(response => response.data)
+            .catch(error => error.response.status)
     }
 }
 export const feedbackAPI = {
@@ -249,18 +292,18 @@ export const feedbackAPI = {
         return instance.get(`feedback/employee?id=${id}`).then(response => response.data)
     },
     sendFeedbackEmployee(data) {
-        return instance.post(`feedback/employee`,{...data}).then(response => response.data)
+        return instance.post(`feedback/employee`, {...data}).then(response => response.data)
     },
     getFeedbackEmployer(id) {
         return instance.get(`feedback/employer?id=${id}`).then(response => response.data)
     },
     sendFeedbackEmployer(data) {
-        return instance.post(`feedback/employer`,{...data}).then(response => response.data)
+        return instance.post(`feedback/employer`, {...data}).then(response => response.data)
     },
-    getFeedbacks(type){
+    getFeedbacks(type) {
         return instance.get(`feedback?type=${type}`).then(response => response.data)
     },
-    deleteFeedback(type,id){
+    deleteFeedback(type, id) {
         return instance.delete(`feedback?type=${type}&id=${id}`).then(response => response.data)
     }
 }
@@ -274,24 +317,24 @@ export const adminAPI = {
         return instance.get(`employee?page=${currentPage}&size=${pageSize}`)
             .then(response => response.data)
     },
-    banEmployer(idUser,currentPage = 1, pageSize = 5) {
-        return instance.put(`employer/ban`,{
+    banEmployer(idUser, currentPage = 1, pageSize = 5) {
+        return instance.put(`employer/ban`, {
             idUser: idUser,
-            page:currentPage,
+            page: currentPage,
             size: pageSize
         })
             .then(response => response.data)
     },
-    banEmployee(idUser,currentPage = 1, pageSize = 5) {
-        return instance.put(`employee/ban`,{
+    banEmployee(idUser, currentPage = 1, pageSize = 5) {
+        return instance.put(`employee/ban`, {
             idUser: idUser,
-            page:currentPage,
+            page: currentPage,
             size: pageSize
         })
             .then(response => response.data)
     },
     closeVacancy(id) {
-        return instance.put(`vacancy/admin`,{
+        return instance.put(`vacancy/admin`, {
             idFind_Employer: id
 
         })

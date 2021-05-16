@@ -2,10 +2,18 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from "redux";
 import Profile from "./Profile";
-import {getData, getMyChats, saveAvatar, setEditProfileMode, updateData} from "../../redux/profile-reducer";
+import {
+    getData,
+    getMyChats,
+    saveAvatar,
+    setEditProfileMode,
+    setProfileMode,
+    updateData
+} from "../../redux/profile-reducer";
 import Preloader from "../common/preloader";
 import {logOut} from "../../redux/auth-reducer";
 import {getDate} from "../common/getDate";
+import {getCodesReport} from "../../redux/admin-reducer";
 
 
 class ProfileContainer extends React.Component {
@@ -19,6 +27,8 @@ class ProfileContainer extends React.Component {
             type = 2
         }
         this.props.getMyChats(this.props.userId, type)
+        this.props.getCodesReport()
+
     }
 
 
@@ -29,7 +39,8 @@ class ProfileContainer extends React.Component {
                                                              setEditProfileMode={this.props.setEditProfileMode}
                                                              updateData={this.props.updateData}
                                                              getDate={this.props.getDate}
-                                                             saveAvatar={this.props.saveAvatar}/>}
+                                                             saveAvatar={this.props.saveAvatar}
+                                                             setProfileMode={this.props.setProfileMode}/>}
 
         </>
 
@@ -44,14 +55,15 @@ let mapStateToProps = (state) => {
         isFetching: state.auth.isFetching,
         myVacancy: state.profilePage.myVacancy,
         editProfileMode: state.profilePage.editProfileMode,
-        chats: state.profilePage.chats
+        chats: state.profilePage.chats,
+        profileMode: state.profilePage.profileMode
 
     }
 }
 
 export default compose(
     connect(mapStateToProps,
-        {getData, logOut, setEditProfileMode, updateData, getDate, saveAvatar,getMyChats})
+        {getData, logOut, setEditProfileMode, updateData, getDate, saveAvatar,getMyChats, setProfileMode,getCodesReport})
 )(ProfileContainer);
 
 

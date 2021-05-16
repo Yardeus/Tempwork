@@ -64,9 +64,9 @@ class RegisterEmployerForm extends React.Component {
                            })]}/>
                 </div>
                 <div>
-                    <span>Электронная почта</span>
+                    <span>Пароль</span>
                     <Field name={"password"} type={"password"} component={this.renderTextField}
-                           validate={[required({msg: "Введите ваш Пароль"}), length({max: 45}), format({
+                           validate={[required({msg: "Введите ваш Пароль"}), length({max: 65}), format({
                                with: /^[a-z0-9]+$/i,
                                msg: "Используйте только буквы латинского алфавита и цифры от 0 до 9"
                            })]}/>

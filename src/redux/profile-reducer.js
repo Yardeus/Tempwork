@@ -17,6 +17,8 @@ const SET_MY_WORKS = 'SET_MY_WORKS';
 const SAVE_AVATAR_SUCCESS = 'SAVE_AVATAR_SUCCESS';
 const SET_CHATS = 'SET_CHATS';
 const SET_MESSAGES = 'SET_MESSAGES';
+const SET_SELECTED_DIALOG = 'SET_SELECTED_DIALOG';
+const SET_PROFILE_MODE = 'SET_PROFILE_MODE';
 
 
 let initialState = {
@@ -26,11 +28,13 @@ let initialState = {
     editVacancy: null,
     responded: [],
     currentResponded: null,
+    selectedDialog: null,
     editProfileMode: false,
     feedback: [],
     myWorks: [],
     chats: [],
-    messages: []
+    messages: [],
+    profileMode: "default"
 
 }
 
@@ -101,6 +105,17 @@ const profileReducer = (state = initialState, action) => {
             return {
                 ...state,
                 messages: action.data
+            }
+        case SET_SELECTED_DIALOG:
+            debugger
+            return {
+                ...state,
+                selectedDialog: action.data
+            }
+        case SET_PROFILE_MODE:
+            return {
+                ...state,
+                profileMode: action.data
             }
         /*case SAVE_AVATAR_SUCCESS:
             return {
@@ -215,6 +230,18 @@ export const setMessages = (data) => {
         type: SET_MESSAGES,
         data
 
+    }
+}
+export const setSelectedDialog = (data) => {
+    return {
+        type: SET_SELECTED_DIALOG,
+        data
+    }
+}
+export const setProfileMode = (data) => {
+    return {
+        type: SET_PROFILE_MODE,
+        data
     }
 }
 
@@ -336,7 +363,7 @@ export const getMyWorks = (idEmployer) => (dispatch) => {
             }
         )
 }
-export const getMyChats = (idUser,typeUser) => (dispatch) => {
+export const getMyChats = (idUser, typeUser) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     let data = {
         idUser,
@@ -351,13 +378,52 @@ export const getMyChats = (idUser,typeUser) => (dispatch) => {
 }
 export const getMyMessages = (idChat) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-
     messagesAPI.getMessages(idChat)
         .then(data => {
-                dispatch(setMessages(data.values));
+                if (data.values) {
+                    dispatch(setMessages(data.values));
+
+
+                } else {
+                    dispatch(setMessages(null));
+                }
+
                 dispatch(toggleIsFetching(false));
             }
         )
+}
+export const sendMessage = (idChat, data) => (dispatch) => {
+    debugger
+    dispatch(toggleIsFetching(true));
+
+    messagesAPI.sendMessage(data)
+        .then(data => {
+                messagesAPI.getMessages(idChat)
+                    .then(data => {
+                            dispatch(setMessages(data.values));
+                            dispatch(toggleIsFetching(false));
+                        }
+                    )
+
+            }
+        )
+}
+export const createChat = (data) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    messagesAPI.createChat(data)
+        .then(data => {
+            if (data.values) {
+                debugger
+                console.log(data.values[0])
+                data.values.map(sd => dispatch(setSelectedDialog(sd.id)))
+                data.values.map(sd => dispatch(getMyMessages(sd.id)))
+
+
+                dispatch(setProfileMode("messages"));
+            }
+
+            dispatch(toggleIsFetching(false));
+        })
 }
 export const getFeedback = (type, id) => (dispatch) => {
     dispatch(toggleIsFetching(true));

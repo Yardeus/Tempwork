@@ -3,13 +3,22 @@ import s from './List.module.css'
 import {NavLink} from "react-router-dom";
 import moment from "moment";
 
-let List = (props) => {
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import Pagination from "@material-ui/lab/Pagination";
+import SendReportContainer from "../../common/SendReport/SendReportContainer";
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& > *': {
+            marginTop: theme.spacing(2),
+        },
+    },
+}));
+
+let List = (props) => {
+    const classes = useStyles();
     let pagesCount = Math.ceil(props.count / props.pageSize);
-    let pages = [];
-    for (let i = 1; i <= pagesCount; i++) {
-        pages.push(i)
-    }
+
 
     return <div className={s.list}>
         <div className={s.text}>
@@ -44,19 +53,16 @@ let List = (props) => {
                         </NavLink>
                     </div>
                 </div>)}
-                    <div className={s.numbers}>
-                        {pages.map(p => {
-                            return <span className={props.currentPage === p && s.number_select}
-                                         onClick={() => {
-                                             props.onPageChanged(p)
-                                         }}>{p}</span>
-                        })}
-
+                    <div className={classes.root}>
+                        <Pagination count={pagesCount} showFirstButton showLastButton onChange={(event,page) => {
+                            props.onPageChanged(page)
+                        }}/>
                     </div>
                 </div> : <div>По заданному фильтру вакансии не найдены</div>
             }
 
         </div>
+        <SendReportContainer />
 
     </div>
 }

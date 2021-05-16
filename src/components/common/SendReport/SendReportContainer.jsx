@@ -9,17 +9,18 @@ import {
     setSelectedDialog
 } from "../../../redux/profile-reducer";
 import Preloader from "../../common/preloader";
-import Messages from "./Messages";
+import SendReport from "./SendReport";
+import {getCodesReport} from "../../../redux/admin-reducer";
 
 
-const MessagesContainer = (props) => {
+const SendReportContainer = (props) => {
 
 
 
 
 
     return <div>
-        {props.isFetching ? <Preloader/> : <Messages {...props} />}
+        {props.isFetching ? <Preloader/> : <SendReport {...props} />}
 
     </div>
 
@@ -30,10 +31,8 @@ let mapStateToProps = (state) => {
         userId: state.auth.userId,
         type: state.auth.type,
         isFetching: state.auth.isFetching,
-        chats: state.profilePage.chats,
-        messages: state.profilePage.messages,
-        selectedDialog: state.profilePage.selectedDialog,
-        profileMode: state.profilePage.profileMode,
+        codesReports: state.admin.codesReports
+
 
 
     }
@@ -41,8 +40,8 @@ let mapStateToProps = (state) => {
 
 export default compose(
     connect(mapStateToProps,
-        {getMyChats, getMyMessages, setSelectedDialog, setProfileMode, sendMessage})
-)(MessagesContainer);
+        {getMyChats, getMyMessages, setSelectedDialog, setProfileMode, sendMessage,getCodesReport})
+)(SendReportContainer);
 
 
 

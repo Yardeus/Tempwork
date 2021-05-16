@@ -4,29 +4,39 @@ import {compose} from "redux";
 import Find from "./Find";
 import {changeOneProfession, createNewVacancy, getJobs} from "../../../redux/employer-reducer";
 import Preloader from "../../common/preloader";
-import {filterModeIsFetching, getFilterVacancy, getVacancy, updateFilter} from "../../../redux/employee-reducer";
+import {
+    filterModeIsFetching, getCities, getExperiences,
+    getFilterVacancy, getShedules, getTypesVacancy,
+    getVacancy,
+    updateFilter
+} from "../../../redux/employee-reducer";
 
 class EmployerContainer extends React.Component {
 
     componentDidMount() {
         this.props.getJobs("professions");
+        this.props.getCities();
+        this.props.getShedules();
+        this.props.getExperiences();
+        this.props.getTypesVacancy();
     }
 
 
-
     getSpecialisations = (profession) => {
-        this.props.getJobs("specialisation",profession);
+        this.props.getJobs("specialisation", profession);
     }
 
     render() {
         return (
             <>
-                {!this.props.professions ? <Preloader/> : <Find {...this.props} getSpecialisations={this.getSpecialisations}
-                                                                getFilterVacancy={this.props.getFilterVacancy}
-                                                                filterModeIsFetching={this.props.filterModeIsFetching}
-                                                                updateFilter={this.props.updateFilter}
-                                                                getVacancy={this.props.getVacancy}
-                                                               /* handleClick={this.handleClick}*//>}
+                {!this.props.professions ? <Preloader/> :
+                    <Find {...this.props} getSpecialisations={this.getSpecialisations}
+                          getFilterVacancy={this.props.getFilterVacancy}
+                          filterModeIsFetching={this.props.filterModeIsFetching}
+                          updateFilter={this.props.updateFilter}
+                          getVacancy={this.props.getVacancy}
+
+                        /* handleClick={this.handleClick}*//>}
 
             </>
         )
@@ -48,8 +58,24 @@ const mapStateToProps = (state) => ({
     currentPage: state.employeePage.currentPage,
     filterMode: state.employeePage.filterMode,
     filter: state.employeePage.filter,
+    cities: state.employeePage.cities,
+    shedules: state.employeePage.shedules,
+    experiences: state.employeePage.experiences,
+    typesVacancy: state.employeePage.typesVacancy,
 })
 
 export default compose(
-    connect(mapStateToProps, {getJobs,changeOneProfession,createNewVacancy, getFilterVacancy,filterModeIsFetching, updateFilter, getVacancy})
+    connect(mapStateToProps, {
+        getJobs,
+        changeOneProfession,
+        createNewVacancy,
+        getFilterVacancy,
+        filterModeIsFetching,
+        updateFilter,
+        getVacancy,
+        getCities,
+        getShedules,
+        getExperiences,
+        getTypesVacancy
+    })
 )(EmployerContainer);

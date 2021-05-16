@@ -120,6 +120,15 @@ const Vacancy = (props) => {
                                 <div>Конец дня - {moment(v.End_Time, 'hh:mm:ss').format('LT')}</div>
                             </div>
                             <div className={s.text}>
+                                Тип занятости: {v.Type ? v.Type : "Не указано"}
+                            </div>
+                            <div className={s.text}>
+                                Опыт: {v.Experience ? v.Experience : "Не указано"}
+                            </div>
+                            <div className={s.text}>
+                                График: {v.Shedule ? v.Shedule : "Не указано"}
+                            </div>
+                            <div className={s.text}>
                                 Электронная почта для связи {v.Email}
                             </div>
                             <div>
@@ -127,14 +136,14 @@ const Vacancy = (props) => {
                                     <Button>Вернуться</Button>
                                 </NavLink>
                             </div>
-                            {props.isResponded ? <div>Вы откликнулись</div> :
+                            {props.type === "employer" ? props.isResponded ? <div>Вы откликнулись</div> :
                                 <div>
                                     <Button onClick={() => {
                                         props.onRespond(v.idFind_Employer)
                                     }}>Откликнуться
                                     </Button>
-                                </div>
-                            }
+                                </div> : null}
+
 
                             {props.type === "admin" ? props.isVacancyClosed ? <div>Вакансия закрыта</div> : <div>
                                 <button onClick={() => {
@@ -158,8 +167,9 @@ const Vacancy = (props) => {
                                                 </div>
                                                 <div className={s.item}>
                                                     {f.rank ? <div>
-                                                        Мнение - {f.rank === "like" ? <span>Хорошее</span> : f.rank === "dislike" ?
-                                                        <span>Плохое</span> : <span>Нейтральное</span>}
+                                                        Мнение - {f.rank === "like" ?
+                                                        <span>Хорошее</span> : f.rank === "dislike" ?
+                                                            <span>Плохое</span> : <span>Нейтральное</span>}
                                                     </div> : null}
                                                     {f.feedback.length > 0 && f.feedback !== "undefined" && f.feedback !== "null" ?
                                                         <div>
@@ -168,7 +178,9 @@ const Vacancy = (props) => {
 
                                                 </div>
 
-                                            </div>) : ()=>{return <div>Отзывов нет</div>}}
+                                            </div>) : () => {
+                                                return <div>Отзывов нет</div>
+                                            }}
                                         </div>
                                     </div>
                                     :
@@ -180,6 +192,20 @@ const Vacancy = (props) => {
                                         </Button>
                                     </div>}
                             </div>
+                            {props.type === "employer" ? <div>
+                                <NavLink to="/profile">
+                                    <Button onClick={() => {
+
+                                        let data = {
+                                            idEmployee: v.idEmployee,
+                                            idEmployer: props.userId
+                                        }
+                                        props.createChat(data)
+
+                                    }}>Написать сообщение</Button>
+                                </NavLink>
+
+                            </div> : null}
 
 
                         </div>

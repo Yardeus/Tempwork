@@ -1,4 +1,4 @@
-import {feedbackAPI, vacancyAPI} from "../api/api";
+import {cityAPI, experienceAPI, feedbackAPI, messagesAPI, sheduleAPI, typeVacancyAPI, vacancyAPI} from "../api/api";
 
 const ADD_VACANCY_E = 'ADD-VACANCY-EMPLOYEE';
 const FOLLOW = 'FOLLOW';
@@ -15,6 +15,10 @@ const SET_FEEDBACK_SEND_MODE = 'SET_FEEDBACK_SEND_MODE';
 const SET_IS_RESPONDED = 'SET_IS_RESPONDED';
 const SET_IS_VIEW_FEEDBACK = 'SET_IS_VIEW_FEEDBACK';
 const SET_FEEDBACKS = 'SET_FEEDBACKS';
+const SET_CITIES = 'SET_CITIES';
+const SET_SHEDULES = 'SET_SHEDULES';
+const SET_EXPERIENCES = 'SET_EXPERIENCES';
+const SET_TYPES_VACANCY = 'SET_TYPES_VACANCY';
 
 let initialState = {
     vacancyData: [],
@@ -37,7 +41,11 @@ let initialState = {
     },
     isResponded: false,
     isViewFeedback: false,
-    feedbacks: []
+    feedbacks: [],
+    cities: [],
+    shedules: [],
+    experiences: [],
+    typesVacancy: [],
 }
 
 
@@ -133,6 +141,26 @@ const employeeReducer = (state = initialState, action) => {
                 ...state,
                 oneVacancy: action.vacancyData
             }
+        case SET_CITIES:
+            return {
+                ...state,
+                cities: action.data
+            }
+        case SET_SHEDULES:
+            return {
+                ...state,
+                shedules: action.data
+            }
+        case SET_EXPERIENCES:
+            return {
+                ...state,
+                experiences: action.data
+            }
+        case SET_TYPES_VACANCY:
+            return {
+                ...state,
+                typesVacancy: action.data
+            }
         default:
             return state;
     }
@@ -211,6 +239,30 @@ export const updateFilter = (data) => {
         data
     }
 }
+export const setCities = (data) => {
+    return {
+        type: SET_CITIES,
+        data
+    }
+}
+export const setExperience = (data) => {
+    return {
+        type: SET_EXPERIENCES,
+        data
+    }
+}
+export const setShedules = (data) => {
+    return {
+        type: SET_SHEDULES,
+        data
+    }
+}
+export const setTypesVacancy = (data) => {
+    return {
+        type: SET_TYPES_VACANCY,
+        data
+    }
+}
 export const setOneVacancy = (vacancyData) => {
     return {
         type: SET_ONE_VACANCY,
@@ -247,9 +299,20 @@ export const getFilterVacancy = (data, currentPage, pageSize, type) => (dispatch
     dispatch(setCurrentPage(currentPage));
     vacancyAPI.getFilterVacancy(data, currentPage, pageSize, type)
         .then(data => {
-            dispatch(setVacancy(data.values));
-            dispatch(setCount(data.count));
+            debugger
+            if(data===404){
+                let count = {
+                    Count: 1
+                }
+                dispatch(setVacancy(null));
+                dispatch(setCount(count));
+            } else {
+                dispatch(setVacancy(data.values));
+                dispatch(setCount(data.count));
+
+            }
             dispatch(toggleIsFetching(false));
+
         })
         .catch(dispatch(toggleIsFetching(false)))
 }
@@ -261,6 +324,7 @@ export const respondVacancy = (idVacancy, userId) => (dispatch) => {
             dispatch(toggleIsFetching(false));
         })
 }
+
 export const getFeedbackEmployee = (id) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     feedbackAPI.getFeedbackEmployee(id)
@@ -276,6 +340,38 @@ export const getFeedbackEmployer = (id) => (dispatch) => {
         .then(data => {
             dispatch(setFeedbacks(data.values))
             dispatch(setIsViewFeedback(true))
+            dispatch(toggleIsFetching(false));
+        })
+}
+export const getCities = () => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    cityAPI.getCities()
+        .then(data => {
+            dispatch(setCities(data.values))
+            dispatch(toggleIsFetching(false));
+        })
+}
+export const getExperiences = () => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    experienceAPI.getExperiences()
+        .then(data => {
+            dispatch(setExperience(data.values))
+            dispatch(toggleIsFetching(false));
+        })
+}
+export const getShedules = () => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    sheduleAPI.getShedules()
+        .then(data => {
+            dispatch(setShedules(data.values))
+            dispatch(toggleIsFetching(false));
+        })
+}
+export const getTypesVacancy = () => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    typeVacancyAPI.getTypesVacancy()
+        .then(data => {
+            dispatch(setTypesVacancy(data.values))
             dispatch(toggleIsFetching(false));
         })
 }

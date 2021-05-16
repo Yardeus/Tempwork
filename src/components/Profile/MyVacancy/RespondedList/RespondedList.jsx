@@ -11,38 +11,38 @@ let RespondedList = (props) => {
     return (<>
             {props.type === "employer" ? null : <div>
                 {
-                    props.responded.map(v => <div className={s.vacancy+" "+s.text}>
+                    props.responded.map(v => <div className={s.vacancy + " " + s.text}>
 
-                        <div>
-                            {v.Firstname} {v.Surname} {v.Middle_Name}
-                        </div>
-                        <div>
-                            {v.Sex}
-                        </div>
-                        <div>
-                            День рождения - {moment(v.Birthday).format('L')}
-                        </div>
-                        <div>
-                            Город - {v.City}
-                        </div>
-                        <div>
-                            Профессия - {v.Profession}
-                        </div>
-                        {/*<div>
+                            <div>
+                                {v.Firstname} {v.Surname} {v.Middle_Name}
+                            </div>
+                            <div>
+                                {v.Sex}
+                            </div>
+                            <div>
+                                День рождения - {moment(v.Birthday).format('L')}
+                            </div>
+                            <div>
+                                Город - {v.City}
+                            </div>
+                            <div>
+                                Профессия - {v.Profession}
+                            </div>
+                            {/*<div>
                                 Часов отработано на TempWork - {v.Hours_Worked}
                             </div>*/}
-                        <div>
-                            Описание - {v.Description}
-                        </div>
-                        <div>
-                            Номер телефона - {v.Phone_Number}
-                        </div>
-                        <div>
-                            Электронная почта - {v.Email}
-                        </div>
-                        <div>
-                            Дата регистрации на сайте - {moment(v.Date_Registration).format('L')}
-                        </div>
+                            <div>
+                                Описание - {v.Description}
+                            </div>
+                            <div>
+                                Номер телефона - {v.Phone_Number}
+                            </div>
+                            <div>
+                                Электронная почта - {v.Email}
+                            </div>
+                            <div>
+                                Дата регистрации на сайте - {moment(v.Date_Registration).format('L')}
+                            </div>
                             <div>
                                 {props.isViewFeedback ? <div>
                                         <div>
@@ -56,14 +56,15 @@ let RespondedList = (props) => {
                                                 <div>
                                                     Название организаии - {f.Organization_name}
                                                 </div>
-                                                <div className={s.item+" "+s.feed}>
+                                                <div className={s.item + " " + s.feed}>
                                                     {f.feedback.length > 0 && f.feedback !== "undefined" && f.feedback !== "null" ?
                                                         <div>
                                                             Отзыв - {f.feedback}
                                                         </div> : null}
                                                     {f.rank ? <div>
-                                                        Мнение - {f.rank === "like" ? <span>Хорошее</span> : f.rank === "dislike" ?
-                                                        <span>Плохое</span> : <span>Нейтральное</span>}
+                                                        Мнение - {f.rank === "like" ?
+                                                        <span>Хорошее</span> : f.rank === "dislike" ?
+                                                            <span>Плохое</span> : <span>Нейтральное</span>}
                                                     </div> : null}
                                                 </div>
 
@@ -83,6 +84,20 @@ let RespondedList = (props) => {
                                         </Button>
                                     </div>}
                             </div>
+                            {props.type === "employee" ? <div>
+                                <NavLink to="/profile">
+                                    <Button onClick={() => {
+
+                                        let data = {
+                                            idEmployee: props.userId,
+                                            idEmployer: v.idEmployer
+                                        }
+                                        props.createChat(data)
+
+                                    }}>Написать сообщение</Button>
+                                </NavLink>
+
+                            </div> : null}
 
                             {!v.Status ? <div>
                                 <Button onClick={() => {
@@ -98,7 +113,7 @@ let RespondedList = (props) => {
 
                             </div> : <div>
                                 <Button>
-                                    Уволить
+                                    Отклонить
                                 </Button>
                             </div>}
 
