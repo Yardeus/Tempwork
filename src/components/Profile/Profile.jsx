@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {NavLink} from "react-router-dom";
 import s from "./Profile.module.css";
 import {Field, reduxForm} from "redux-form";
-import {Button, Input, renderRadio} from "../common/formsControl";
+import {Input, renderRadio} from "../common/formsControl";
 import {setEditProfileMode} from "../../redux/profile-reducer";
 import moment from "moment";
 import {email, format, length, numericality, required} from "redux-form-validators";
@@ -10,6 +10,18 @@ import baseAvatar from "../../server/avatars/base_avatar.jpg"
 import MessagesContainer from "./Messages/MessagesContainer";
 import SendReport from "../common/SendReport/SendReport";
 import SendReportContainer from "../common/SendReport/SendReportContainer";
+import Avatar from "@material-ui/core/Avatar";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import IconButton from "@material-ui/core/IconButton";
+/*
+import PhotoCamera from '@material-ui/icons/PhotoCamera';*/
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import Button from "@material-ui/core/Button";
+import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAlt';
+import WcIcon from '@material-ui/icons/Wc';
+import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+
 
 class EditProfileForm extends React.Component {
 
@@ -182,30 +194,41 @@ class EditProfileForm extends React.Component {
     }
 }
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    small: {
+        width: theme.spacing(3),
+        height: theme.spacing(3),
+    },
+    large: {
+        width: theme.spacing(30),
+        height: theme.spacing(30),
+    },
+    input: {
+        display: 'none',
+        color: "blue"
+    },
+}));
 
 const EditProfileReduxForm = reduxForm({form: 'editProfile'})(EditProfileForm)
 
 
-
 let Profile = (props) => {
-   /* let [profileMode,setProfileMode] = useState("def");
+    const classes = useStyles();
 
-    let [selectedDialog, setSelectedDialog] = useState(0);
-    let [messages, setMessages] = useState(0);*/
-
-    /*let SetDefaultProfileMode = (props) => {
-        return <div className={s.text}>
-
-            <div className={s.btn}>
-                <Button onClick={() => {setProfileMode("default")}}>Назад
-                </Button>
-            </div>
-        </div>
-    }*/
-
-    const avatarSelected = (e) => {
+    const employerAvatarSelected = (e) => {
         if (e.target.files.length) {
-            props.saveAvatar("employer",e.target.files[0],props.userId)
+            props.saveAvatar("employer", e.target.files[0], props.userId)
+        }
+    }
+    const employeeAvatarSelected = (e) => {
+        if (e.target.files.length) {
+            props.saveAvatar("employee", e.target.files[0], props.userId)
         }
     }
 
@@ -318,140 +341,195 @@ let Profile = (props) => {
         case "messages":
             return <div>
                 {/*<SetDefaultProfileMode />*/}
-                <MessagesContainer />
+                <MessagesContainer/>
             </div>
 
         case "default":
-            return <div className={s.text}>
+            return <div>
                 {props.editProfileMode ? <div>
                         <EditProfileReduxForm {...props} onSubmit={onSubmit} setEditProfileMode={props.setEditProfileMode}/>
                     </div> :
                     props.type === "employer" ? props.profileData.map(p => <div className={s.main}>
-                        <div className={s.info}>
 
+
+                        <div className={classes.root}>
                             <div className={s.avatar}>
-                                <img src={`http://localhost:8080/avatars/${p.Avatar}` || baseAvatar} height="200" width="200"/>
-                                {p.idEmployer === props.userId ? <input type={"file"} onChange={avatarSelected}/> : null}
+                                {p.Avatar ? <Avatar variant="rounded" className={classes.large} alt="avatar"
+                                                    src={`http://localhost:8080/avatars/${p.Avatar}`}/> :
+                                    <Avatar variant="rounded" className={classes.large} alt="avatar" src={baseAvatar}/>}
                             </div>
-                            <div>
+                        </div>
+                        <div className={s.uploadAvatar}>
+                            {p.idEmployer === props.userId ? <div className={classes.root}>
+                                <div>
+                                    <input accept="image/*" onChange={employerAvatarSelected} className={classes.input}
+                                           id="icon-button-file" type="file"/>
 
-                                {p.Surname} {p.Firstname} {p.Middle_Name}
-                            </div>
-                            <div>
-                                {p.Profession}
-                            </div>
-                            <div>
-                                {p.Sex}
-                            </div>
-                            <div>
-                                {p.City}
-                            </div>
-                            <div>
-                                Номер телефона - {p.Phone_Number}
-                            </div>
-                            <div>
-                                Электронная почта - {p.Email}
-                            </div>
-                            <div>
-                                Дата регистрации - {moment(p.Date_Registration).format('L')}
-                            </div>
-                            <div>
-                                День рождения - {moment(p.Birthday).format('L')}
-                            </div>
-                            <span>Описание</span>
-                            <div>
+                                    <label htmlFor="icon-button-file">
+                                        <Button fullWidth variant="contained" color="white" component="span">
+                                            Обновить фото
+                                        </Button>
+                                    </label>
+                                </div>
 
+                            </div> : null}
+                        </div>
+                        <div className={s.info}>
+                            <div className={s.text}>
+                                <div className={s.name}>
+                                    {p.Surname} {p.Firstname} {p.Middle_Name} <SentimentSatisfiedAltIcon
+                                    color={"white"}/>{p.rank}
+                                </div>
+                                <div className={s.item}>
+                                    <WcIcon/> {p.Sex}
+                                </div>
+                                <div>
+                                    <span className={s.item}>Дата рождения:</span> {moment(p.Birthday).format('L')}
+                                </div>
+                                <div className={s.item}>
+                                    <span>Город:</span> {p.City}
+                                </div>
+                                <div className={s.item}>
+                                    <span>Желаемая занятость:</span> {p.Profession}
+                                </div>
+                                <div className={s.item}>
+                                    <span>Контактные данные</span>
+                                </div>
+                                <div className={s.item}>
+                                    <PhoneInTalkIcon/> {p.Phone_Number}
+                                </div>
+                                <div className={s.item}>
+                                    <MailOutlineIcon/> {p.Email}
+                                </div>
+                                <div className={s.item}>
+                                    Дата регистрации - {moment(p.Date_Registration).format('L')}
+                                </div>
+                            </div>
+                        </div>
+                        <div className={s.desc}>
+                            <div className={s.bottom}>
 
-                                {p.Description}
-
+                                <div className={s.descTitle}>
+                                    Описание
+                                </div>
+                                <div className={s.descText}>
+                                    {p.Description}
+                                </div>
                             </div>
                         </div>
                         <div className={s.nav}>
+
                             <div className={s.btn}>
-                                <NavLink to={"/my-vacancy"}><Button>Мои отклики</Button> </NavLink>
+                                <NavLink to={"/my-vacancy"}><Button fullWidth variant="contained">Мои отклики</Button>
+                                </NavLink>
                             </div>
                             <div className={s.btn}>
-                                <NavLink to={"/my-works"}><Button>Моя занятость</Button></NavLink>
+                                <NavLink to={"/my-works"}><Button fullWidth variant="contained">Моя
+                                    занятость</Button></NavLink>
                             </div>
                             <div className={s.btn}>
-                                <NavLink to={"/feedback"}><Button>Мои отзывы</Button></NavLink>
+                                <NavLink to={"/feedback"}><Button fullWidth variant="contained">Мои
+                                    отзывы</Button></NavLink>
                             </div>
                             <div className={s.btn}>
-                                <Button onClick={() => {
+                                <Button fullWidth variant="contained" onClick={() => {
                                     props.setProfileMode("messages")
                                 }}>Сообщения
                                 </Button>
                             </div>
-
-
                             <div className={s.btn}>
-                                <Button onClick={() => {
+                                <Button fullWidth variant="contained" onClick={() => {
                                     props.setEditProfileMode(true)
                                 }}>Редактировать профиль
                                 </Button>
                             </div>
                             <div className={s.btn}>
                                 <NavLink to={"/employee"}>
-                                    <Button onClick={() => {
+                                    <Button fullWidth variant="contained" onClick={() => {
                                         props.logOut()
                                     }}>Выйти с аккаунта
                                     </Button>
                                 </NavLink>
                             </div>
                         </div>
-                        <SendReportContainer />
 
 
                     </div>) : props.profileData.map(p => <div className={s.main}>
-                        <div className={s.info}>
-                            <div>
-                                {p.Surname} {p.Firstname} {p.Middle_Name}
-                            </div>
-                            <div>
-                                {p.City}
-                            </div>
-                            <div>
-                                Название организации - {p.Organization_name}
-                            </div>
-                            <div>
-                                Дата регистрации - {moment(p.Date_Registration).format('L')}
-                            </div>
-                            <div>
-                                Номер телефона - {p.Phone_Number}
-                            </div>
-                            <div>
-                                Электронная почта - {p.Email}
-                            </div>
 
+                        <div className={classes.root}>
+                            <div className={s.avatar}>
+                                {p.Avatar ? <Avatar variant="rounded" className={classes.large} alt="avatar"
+                                                    src={`http://localhost:8080/avatars/${p.Avatar}`}/> :
+                                    <Avatar variant="rounded" className={classes.large} alt="Remy Sharp"
+                                            src={baseAvatar}/>}
+                            </div>
+                        </div>
+
+                        {p.idEmployee === props.userId ? <div className={classes.root}>
+
+                            <input accept="image/*" onChange={employeeAvatarSelected} className={classes.input}
+                                   id="icon-button-file" type="file"/>
+                            <label htmlFor="icon-button-file">
+                                <Button fullWidth variant="contained" color="white" component="span">
+                                    Обновить фото
+                                </Button>
+                            </label>
+                        </div> : null}
+
+                        <div className={s.info}>
+                            <div className={s.text}>
+                                <div className={s.name}>
+                                    {p.Surname} {p.Firstname} {p.Middle_Name} <SentimentSatisfiedAltIcon
+                                    color={"white"}/> {p.rank}
+                                </div>
+                                <div className={s.item}>
+                                    <span>Город:</span> {p.City}
+                                </div>
+                                <div className={s.item}>
+                                    <span>Название организации: </span> {p.Organization_name}
+                                </div>
+                                <div className={s.item}>
+                                    <span>Дата регистрации: </span> {moment(p.Date_Registration).format('L')}
+                                </div>
+                                <div className={s.item}>
+                                    <span>Контактные данные</span>
+                                </div>
+                                <div className={s.item}>
+                                    <PhoneInTalkIcon/> {p.Phone_Number}
+                                </div>
+                                <div className={s.item}>
+                                    <MailOutlineIcon/> {p.Email}
+                                </div>
+                            </div>
 
                         </div>
                         <div className={s.nav}>
                             <div className={s.btn}>
-                                <NavLink to={"/my-vacancy"}><Button>
+                                <NavLink to={"/my-vacancy"}><Button fullWidth variant="contained">
                                     Мои вакансии
                                 </Button> </NavLink>
                             </div>
                             <div className={s.btn}>
-                                <NavLink to={"/feedback"}><Button>Мои отзывы</Button> </NavLink>
+                                <NavLink to={"/feedback"}><Button fullWidth variant="contained">Мои отзывы</Button>
+                                </NavLink>
                             </div>
                             <div className={s.btn}>
-                                <Button onClick={() => {
+                                <Button fullWidth variant="contained" onClick={() => {
                                     props.setEditProfileMode(true)
                                 }}>Редактировать профиль
                                 </Button>
                             </div>
                             <div className={s.btn}>
-                                <Button onClick={() => {
+                                <Button fullWidth variant="contained" onClick={() => {
                                     props.setProfileMode("messages")
                                 }}>Сообщения
                                 </Button>
                             </div>
 
 
-
                             <div className={s.btn}>
                                 <NavLink to={"/employee"}>
-                                    <Button onClick={() => {
+                                    <Button fullWidth variant="contained" onClick={() => {
                                         props.logOut()
                                     }}>Выйти с аккаунта
                                     </Button>

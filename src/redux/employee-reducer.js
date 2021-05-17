@@ -19,6 +19,8 @@ const SET_CITIES = 'SET_CITIES';
 const SET_SHEDULES = 'SET_SHEDULES';
 const SET_EXPERIENCES = 'SET_EXPERIENCES';
 const SET_TYPES_VACANCY = 'SET_TYPES_VACANCY';
+const SET_FAVORITE_VACANCY = 'SET_FAVORITE_VACANCY';
+const SET_COUNT_FAVORITE_VACANCY = 'SET_COUNT_FAVORITE_VACANCY';
 
 let initialState = {
     vacancyData: [],
@@ -46,6 +48,9 @@ let initialState = {
     shedules: [],
     experiences: [],
     typesVacancy: [],
+    favoriteVacancy: [],
+    countFavoriteVacancy: 1,
+    vacancyIsFavorite: false,
 }
 
 
@@ -139,7 +144,8 @@ const employeeReducer = (state = initialState, action) => {
         case SET_ONE_VACANCY:
             return {
                 ...state,
-                oneVacancy: action.vacancyData
+                oneVacancy: action.vacancyData,
+                vacancyIsFavorite: action.vacancyIsFavorite
             }
         case SET_CITIES:
             return {
@@ -160,6 +166,16 @@ const employeeReducer = (state = initialState, action) => {
             return {
                 ...state,
                 typesVacancy: action.data
+            }
+        case SET_FAVORITE_VACANCY:
+            return {
+                ...state,
+                favoriteVacancy: action.data
+            }
+        case SET_COUNT_FAVORITE_VACANCY:
+            return {
+                ...state,
+                countFavoriteVacancy: action.count.map(c => c.Count)
             }
         default:
             return state;
@@ -209,7 +225,6 @@ export const setVacancy = (vacancyData) => {
     }
 }
 export const setCount = (count) => {
-
     return {
         type: SET_COUNT_DATA,
         count
@@ -263,10 +278,31 @@ export const setTypesVacancy = (data) => {
         data
     }
 }
-export const setOneVacancy = (vacancyData) => {
+export const setOneVacancy = (vacancyData,favoriteVacancy) => {
+    let vacancyIsFavorite = false
+    vacancyData.map(v=>{
+        favoriteVacancy.map(fv=>{
+            if (v.idFind_Employer === fv.idVacancy){
+                vacancyIsFavorite = true
+            }
+        })
+    })
     return {
         type: SET_ONE_VACANCY,
-        vacancyData
+        vacancyData,
+        vacancyIsFavorite
+    }
+}
+export const setFavoriteVacancy = (data) => {
+    return {
+        type: SET_FAVORITE_VACANCY,
+        data
+    }
+}
+export const setCountFavoriteVacancy = (count) => {
+    return {
+        type: SET_COUNT_FAVORITE_VACANCY,
+        count
     }
 }
 
@@ -300,10 +336,10 @@ export const getFilterVacancy = (data, currentPage, pageSize, type) => (dispatch
     vacancyAPI.getFilterVacancy(data, currentPage, pageSize, type)
         .then(data => {
             debugger
-            if(data===404){
-                let count = {
-                    Count: 1
-                }
+            if (data === 404) {
+                let count = [
+                    {Count: 1}
+                ]
                 dispatch(setVacancy(null));
                 dispatch(setCount(count));
             } else {
@@ -372,6 +408,46 @@ export const getTypesVacancy = () => (dispatch) => {
     typeVacancyAPI.getTypesVacancy()
         .then(data => {
             dispatch(setTypesVacancy(data.values))
+            dispatch(toggleIsFetching(false));
+        })
+}
+export const getFavoriteVacancy = (idEmployer) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    vacancyAPI.getFavoriteVacancy(idEmployer)
+        .then(data => {
+            dispatch(setFavoriteVacancy(data.values))
+            dispatch(setCountFavoriteVacancy(data.count))
+
+            dispatch(toggleIsFetching(false));
+        })
+}
+export const addFavoriteVacancy = (idVacancy, idEmployer) => (dispatch) => {
+    let data = {
+        idVacancy,
+        idEmployer
+    }
+    dispatch(toggleIsFetching(true));
+    vacancyAPI.addFavoriteVacancy(data)
+        .then(data => {
+            let count = [
+                {Count: 1}
+            ]
+
+            dispatch(setCountFavoriteVacancy(count))
+            dispatch(setFavoriteVacancy(data.values))
+            dispatch(toggleIsFetching(false));
+        })
+}
+export const deleteFavoriteVacancy = (idVacancy, idEmployer) => (dispatch) => {
+    let data = {
+        idVacancy,
+        idEmployer
+    }
+    debugger
+    dispatch(toggleIsFetching(true));
+    vacancyAPI.deleteFavoriteVacancy(data)
+        .then(data => {
+            dispatch(setFavoriteVacancy(data.values))
             dispatch(toggleIsFetching(false));
         })
 }

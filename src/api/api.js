@@ -83,6 +83,21 @@ export const vacancyAPI = {
     getWorkersListFromVacancyId(idFind_Employer) {
         return instance.get(`employer-list/workers?idFind_Employer=${idFind_Employer}`)
             .then(response => response.data)
+    },
+    getFavoriteVacancy(idEmployer) {
+        return instance.get(`vacancy/favorite?idEmployer=${idEmployer}`)
+            .then(response => response.data)
+            .catch(error => error.response.status)
+    },
+    addFavoriteVacancy(data) {
+        return instance.post(`vacancy/favorite`,{...data})
+            .then(response => response.data)
+            .catch(error => error.response.status)
+    },
+    deleteFavoriteVacancy(data) {
+        return instance.delete(`vacancy/favorite?idVacancy=${data.idVacancy}&idEmployer=${data.idEmployer}`)
+            .then(response => response.data)
+            .catch(error => error.response.status)
     }
 }
 
@@ -121,6 +136,7 @@ export const loginAPI = {
                 login: data.login,
                 password: data.password
             }).then(response => response.data)
+                .catch(error => error.response.status)
         } else if (type === "employer") {
             return instance.post(`auth/employer/signup`, {
                 first_name: data.first_name,
@@ -136,6 +152,7 @@ export const loginAPI = {
                 login: data.login,
                 password: data.password
             }).then(response => response.data)
+                .catch(error => error.response.status)
         }
     },
     me(token) {
@@ -229,7 +246,7 @@ export const agreementAPI = {
         return instance.post(`agreement`, {...data}).then(response => response.data)
     },
     getData(idFind_Employer) {
-        return instance.get(`employer-list/find?idFind_Employer=${idFind_Employer}`).then(response => response.data)
+        return instance.get(`agreement/find?idFind_Employer=${idFind_Employer}`).then(response => response.data)
     },
     getStatus(idFind_Employer, idEmployer) {
         return instance.get(`agreement/status?idFind_Employer=${idFind_Employer}&idEmployer=${idEmployer}`).then(response => response.data)

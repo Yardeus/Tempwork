@@ -82,6 +82,7 @@ const profileReducer = (state = initialState, action) => {
                 editIdVacancy: action.idVacancy
             }
         case GET_RESPONDED_FROM_MY_VACANCY:
+            debugger
             return {
                 ...state,
                 responded: action.data
@@ -297,12 +298,9 @@ export const getRespondedFromMyVacancy = (idFind_Employer) => (dispatch) => {
     vacancyAPI.getEmployerListFromVacancyId(idFind_Employer)
         .then(data => {
                 dispatch(FormRespondedMyVacancy(data.values));
-                agreementAPI.getStatus(idFind_Employer, data.values.idEmployer)
-                    .then(data => {
-                            dispatch(PushStatusResponded(data.values));
-                            dispatch(toggleIsFetching(false));
-                        }
-                    )
+                debugger
+                dispatch(toggleIsFetching(false));
+
             }
         )
 }
@@ -311,6 +309,14 @@ export const getWorkersFromMyVacancy = (idFind_Employer) => (dispatch) => {
     vacancyAPI.getWorkersListFromVacancyId(idFind_Employer)
         .then(data => {
                 dispatch(FormRespondedMyVacancy(data.values));
+                /*data.values.map(v => {
+                    agreementAPI.getStatus(idFind_Employer, v.idEmployer)
+                        .then(data => {
+                                dispatch(PushStatusResponded(data.values));
+                                dispatch(toggleIsFetching(false));
+                            }
+                        )
+                })*/
                 dispatch(toggleIsFetching(false));
 
             }

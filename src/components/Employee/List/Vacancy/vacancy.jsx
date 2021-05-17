@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import s from "./vacancy.module.css";
 import {NavLink, Redirect} from "react-router-dom";
 import {Field, reduxForm} from "redux-form";
@@ -7,6 +7,7 @@ import moment from "moment";
 
 import {length} from "redux-form-validators";
 import TextField from "@material-ui/core/TextField";
+import SendReportContainer from "../../../common/SendReport/SendReportContainer";
 
 class VacancyForm extends React.Component {
 
@@ -52,14 +53,18 @@ class VacancyForm extends React.Component {
 const VacancyReduxForm = reduxForm({form: 'vacancy'})(VacancyForm)
 
 const Vacancy = (props) => {
+    debugger
+    let [addVacancyFavorite, setAddVacancyFavorite] = useState(false)
+    let [delVacancyFavorite, setDelVacancyFavorite] = useState(false)
+
     props.oneVacancy.map(v => {
         if (v.Status === "Активно") {
             props.setIsVacancyClosed(false)
         } else {
             props.setIsVacancyClosed(true)
         }
-
     })
+
 
     const onSubmit = (formData) => {
         if (props.feedbackMode) {
@@ -81,6 +86,7 @@ const Vacancy = (props) => {
 
 
     }
+
 
     return (
         <div className={s.login}>
@@ -136,6 +142,7 @@ const Vacancy = (props) => {
                                     <Button>Вернуться</Button>
                                 </NavLink>
                             </div>
+
                             {props.type === "employer" ? props.isResponded ? <div>Вы откликнулись</div> :
                                 <div>
                                     <Button onClick={() => {
@@ -206,6 +213,59 @@ const Vacancy = (props) => {
                                 </NavLink>
 
                             </div> : null}
+
+                            <SendReportContainer idIntruder={v.idEmployee} typeIntruder={1}/>
+
+                            {/*{!vacancyIsFavorite ?
+                                props.favoriteVacancy.map(fv => {
+                                    if (fv.idVacancy === v.idFind_Employer) {
+                                    setVacancyIsFavorite(true)
+                                    }
+
+                                }) : null
+                            }*/}
+                            {props.vacancyIsFavorite ?
+
+                                !delVacancyFavorite ?
+                                    <div>
+                                        <Button onClick={() => {
+                                            setDelVacancyFavorite(true)
+                                            props.deleteFavoriteVacancy(v.idFind_Employer, props.userId)
+                                        }}>Убрать из избранного</Button>
+                                    </div>
+                                    :
+                                    <div>Убрано из избранного</div>
+
+                                :
+
+                                !addVacancyFavorite ?
+                                    <div>
+                                        <Button onClick={() => {
+                                            setAddVacancyFavorite(true)
+                                            props.addFavoriteVacancy(v.idFind_Employer, props.userId)
+                                        }}>Добавить в избранное</Button>
+                                    </div>
+                                    : <div>Добавлено в избранное</div>
+
+                            }
+
+
+                            {/* {props.vacancyIsFavorite ?
+                                !delVacancyFavorite ?
+                                    <div>
+                                        <Button onClick={() => {
+                                            setVacancyIsFavorite(false)
+                                            props.deleteFavoriteVacancy(v.idFind_Employer, props.userId)
+                                        }}>Убрать из избранного</Button>
+                                    </div> :
+                                    <div>Убрано из избранного</div> :
+                                !vacancyIsFavorite ?
+                                    <div>
+                                        <Button onClick={() => {
+                                            props.addFavoriteVacancy(v.idFind_Employer, props.userId)
+                                        }}>Добавить в избранное</Button>
+                                    </div>
+                                    : null}*/}
 
 
                         </div>

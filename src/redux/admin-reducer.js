@@ -286,5 +286,12 @@ export const getCodesReport = () => (dispatch) => {
             dispatch(toggleIsFetching(false))
         })
 }
+export const sendReport = (data) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    reportsAPI.sendReport(data)
+        .then(data => {
+            dispatch(toggleIsFetching(false))
+        })
+}
 
 export default adminReducer;

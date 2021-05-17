@@ -1,10 +1,9 @@
 .main {
 
     display: grid;
-    grid-template-rows: 12fr;
-    grid-template-columns: 4fr 4fr 4fr;
-    grid-template-areas:
-            "n i  ";
+    grid-template-rows: 5fr 5fr 2fr;
+    grid-template-columns: 3fr 2fr 4fr 4fr;
+    grid-template-areas: "n a i i" "n ua i i" "d d d d";
     padding-top: 30px;
 }
 
@@ -18,10 +17,24 @@
 
 }
 
-.avatar {
 
+.btn {
+
+    width: 250px;
+    margin-bottom: 30px;
+
+}
+
+.avatar {
+    grid-area: a;
     max-width: 100%;
-    height: auto;
+    margin: auto;
+}
+
+.uploadAvatar {
+    grid-area: ua;
+    margin-left: 50px;
+    margin-top: 0px;
 }
 
 .text {
@@ -30,7 +43,7 @@
     top: 75.94%;
     bottom: 13.21%;
 
-    font-family: Roboto;
+    font-family: Roboto-Regular, sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 23px;
@@ -38,7 +51,7 @@
 
     color: #000000;
 
-    opacity: 0.8;
+
 }
 
 .text span {
@@ -50,12 +63,68 @@
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 23px;
 
     color: #000000;
 
-    opacity: 0.6;
+
+}
+
+.name {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid black;
+}
+
+.item {
+    margin: 15px 0px;
+}
+
+.desc {
+    width: 100%;
+    height: auto;
+    grid-area: d;
+
+    min-height: 90px;
+}
+.desc .bottom {
+
+    width: 70%;
+    margin-left: 15%;
+}
+.desc .descTitle {
+    border: 1px solid black;
+    margin: 10px 0px;
+    padding: 10px 5px;
+    left: 1.36%;
+    right: 76.24%;
+    top: 75.94%;
+    bottom: 13.21%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 23px;
+
+    color: #000000;
+}
+
+.desc .descText {
+    left: 1.36%;
+    right: 76.24%;
+    top: 75.94%;
+    bottom: 13.21%;
+    border: 1px solid black;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 23px;
+
+    color: #000000;
 }
 
 .edit {

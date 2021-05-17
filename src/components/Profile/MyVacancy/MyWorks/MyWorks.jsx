@@ -6,9 +6,10 @@ import moment from "moment";
 import {required} from "../../../../utils/validators/validators";
 
 import s from './MyWorks.module.css'
+import SendReportContainer from "../../../common/SendReport/SendReportContainer";
 
 
-class MyWorksForm extends React.Component{
+class MyWorksForm extends React.Component {
     render() {
         const {handleSubmit} = this.props;
         debugger
@@ -27,11 +28,13 @@ class MyWorksForm extends React.Component{
                             Хорошо
                         </label>
                         <label>
-                            <Field name="rank" component={Input} type="radio" value="neutral" validate={[required]}/>{' '}
+                            <Field name="rank" component={Input} type="radio" value="neutral"
+                                   validate={[required]}/>{' '}
                             Нейтрально
                         </label>
                         <label>
-                            <Field name="rank" component={Input} type="radio" value="dislike" validate={[required]}/>{' '}
+                            <Field name="rank" component={Input} type="radio" value="dislike"
+                                   validate={[required]}/>{' '}
                             Плохо
                         </label>
                     </div>
@@ -92,28 +95,28 @@ let MyWorks = (props) => {
                 {
                     props.myWorks.map(v => <div className={s.vacancy}>
 
-                        <div className={s.specialisation}>
-                            {v.Profession} {v.Specialisation}
-                        </div>
-                        <div className={s.paid}>
-                            Оплата - {v.Price}
-                        </div>
-                        <div className={s.company}>
-                            {v.Organization_name}
-                        </div>
-                        <div className={s.date}>
-                            {moment(v.Start_Date).format('L')} - {moment(v.End_Date).format('L')}
-                        </div>
+                            <div className={s.specialisation}>
+                                {v.Profession} {v.Specialisation}
+                            </div>
+                            <div className={s.paid}>
+                                Оплата - {v.Price}
+                            </div>
+                            <div className={s.company}>
+                                {v.Organization_name}
+                            </div>
+                            <div className={s.date}>
+                                {moment(v.Start_Date).format('L')} - {moment(v.End_Date).format('L')}
+                            </div>
 
-                        <div className={s.adress}>
-                            {v.City}, {v.Adress}
-                        </div>
+                            <div className={s.adress}>
+                                {v.City}, {v.Adress}
+                            </div>
 
-                        <div className={s.date}>
-                            График работы
-                            <div>Начало дня - {v.Start_Time}</div>
-                            <div>Конец дня - {v.End_Time}</div>
-                        </div>
+                            <div className={s.date}>
+                                График работы
+                                <div>Начало дня - {v.Start_Time}</div>
+                                <div>Конец дня - {v.End_Time}</div>
+                            </div>
                             <div className={s.text}>
                                 Статус - {v.Status}
                             </div>
@@ -128,7 +131,6 @@ let MyWorks = (props) => {
                             <div className={s.text}>
                                 Описание - {v.Description}
                             </div>
-
 
 
                             <div>
@@ -147,7 +149,7 @@ let MyWorks = (props) => {
                                             </Button>
                                         </div>}</div>}
                             </div>
-
+                            <SendReportContainer idIntruder={v.idEmployee} typeIntruder={1}/>
 
                         </div>
                     )}

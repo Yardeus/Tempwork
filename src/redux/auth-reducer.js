@@ -170,6 +170,22 @@ export const signUp = (type, data) => (dispatch) => {
     dispatch(toggleIsLoginProgress(true));
     loginAPI.singUp(type, data)
         .then(data => {
+            switch (data) {
+                case 401:
+                    dispatch(setMessage("Аккаунт с таким логином не найден"))
+                    break
+
+                case 302:
+                    dispatch(setMessage("Пользователь с таким email,логином,номером телефона уже существует"))
+                    break
+
+                default:
+                    let {userId, email, login, token} = data.values;
+                    dispatch(setMessage(null))
+
+                    break
+
+            }
             dispatch(toggleIsFetching(false));
             dispatch(toggleIsLoginProgress(false))
         })

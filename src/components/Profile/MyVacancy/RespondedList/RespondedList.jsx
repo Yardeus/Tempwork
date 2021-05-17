@@ -3,16 +3,37 @@ import {NavLink} from "react-router-dom";
 import {Button} from "../../../common/formsControl";
 import moment from "moment";
 import s from "./RespondedList.module.css";
+import SendReportContainer from "../../../common/SendReport/SendReportContainer";
+import Avatar from "@material-ui/core/Avatar";
+import baseAvatar from "../../../../server/avatars/base_avatar.jpg";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
-
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    small: {
+        width: theme.spacing(3),
+        height: theme.spacing(3),
+    },
+    large: {
+        width: theme.spacing(20),
+        height: theme.spacing(20),
+    }
+}));
 let RespondedList = (props) => {
 
-
+    const classes = useStyles();
     return (<>
             {props.type === "employer" ? null : <div>
                 {
                     props.responded.map(v => <div className={s.vacancy + " " + s.text}>
-
+                            {v.Avatar ? <Avatar className={classes.large} alt="avatar"
+                                                src={`http://localhost:8080/avatars/${v.Avatar}`}/> :
+                                <Avatar className={classes.large} alt="avatar" src={baseAvatar}/>}
                             <div>
                                 {v.Firstname} {v.Surname} {v.Middle_Name}
                             </div>
@@ -116,7 +137,7 @@ let RespondedList = (props) => {
                                     Отклонить
                                 </Button>
                             </div>}
-
+                            <SendReportContainer idIntruder={v.idEmployer} typeIntruder={2}/>
 
                         </div>
                     )}

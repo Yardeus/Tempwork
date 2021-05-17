@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 
 import * as axios from "axios";
 import {
+    addFavoriteVacancy, deleteFavoriteVacancy,
     follow, getFeedbackEmployee, getVacancy,
     respondVacancy, sendFeedbackEmployee,
     setCurrentPage, setFeedbackMode, setFeedbackSendMode, setIsResponded, setIsViewFeedback,
@@ -19,15 +20,16 @@ import {createChat, setProfileMode} from "../../../../redux/profile-reducer";
 
 
 class VacancyContainer extends React.Component {
+
     componentDidMount() {
         this.props.toggleIsFetching(true);
         let vacancyId = this.props.match.params.vacancyId;
         axios.get(`http://localhost:8080/api/vacancy/one?id=` + vacancyId)
             .then(response => {
-                this.props.setOneVacancy(response.data.values);
+                this.props.setOneVacancy(response.data.values,this.props.favoriteVacancy);
                 this.props.toggleIsFetching(false);
                 return (
-                    <Vacancy {...this.props}/>
+                    <Vacancy {...this.props} />
                 )
             })
         this.props.setFeedbackSendMode(false)
@@ -53,7 +55,10 @@ class VacancyContainer extends React.Component {
                      setIsResponded={this.props.setIsResponded}
                      getFeedbackEmployee={this.props.getFeedbackEmployee}
                      createChat={this.props.createChat}
-                     setProfileMode={this.props.setProfileMode}/>
+                     setProfileMode={this.props.setProfileMode}
+                     addFavoriteVacancy={this.props.addFavoriteVacancy}
+                     deleteFavoriteVacancy={this.props.deleteFavoriteVacancy}
+            />
         )
     }
 
@@ -70,7 +75,10 @@ let mapStateToProps = (state) => {
         isVacancyClosed: state.admin.isVacancyClosed,
         isResponded: state.employeePage.isResponded,
         isViewFeedback: state.employeePage.isViewFeedback,
-        feedbacks: state.employeePage.feedbacks
+        feedbacks: state.employeePage.feedbacks,
+        isAuth: state.auth.isAuth,
+        favoriteVacancy: state.employeePage.favoriteVacancy,
+        vacancyIsFavorite: state.employeePage.vacancyIsFavorite,
     }
 }
 
@@ -92,7 +100,9 @@ export default compose(
             setIsViewFeedback,
             getFeedbackEmployee,
             createChat,
-            setProfileMode
+            setProfileMode,
+            addFavoriteVacancy,
+            deleteFavoriteVacancy
         }),
     withRouter
 )(VacancyContainer);

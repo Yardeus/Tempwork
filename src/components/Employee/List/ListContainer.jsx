@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
+    getFavoriteVacancy,
     getFilterVacancy, getVacancy,
     setCurrentPage, setOneVacancy,
     toggleIsFetching
@@ -14,8 +15,11 @@ class ListContainer extends React.Component {
 
     componentDidMount() {
         this.props.filterMode ? this.props.getFilterVacancy(this.props.filter,this.props.currentPage, this.props.pageSize,this.props.type) : this.props.getVacancy(this.props.currentPage, this.props.pageSize,this.props.type)
-
+        if (this.props.isAuth && this.props.type==="employer") {
+            this.props.getFavoriteVacancy(this.props.userId)
+        }
     }
+
 
     onPageChanged = (pageNumber) => {
         this.props.filterMode ? this.props.getFilterVacancy(this.props.filter,pageNumber, this.props.pageSize,this.props.type) : this.props.getVacancy(pageNumber, this.props.pageSize,this.props.type);
@@ -27,13 +31,7 @@ class ListContainer extends React.Component {
         return <>
             {this.props.isFetching ? <Preloader/> : null}
             {this.props.vacancyData ?
-                <List count={this.props.count}
-                      pageSize={this.props.pageSize}
-                      vacancyData={this.props.vacancyData}
-                      currentPage={this.props.currentPage}
-                      onPageChanged={this.onPageChanged}
-                      unFollow={this.props.unFollow}
-                      follow={this.props.follow}
+                <List {...this.props} onPageChanged={this.onPageChanged}
 
                 />
                 : <div>Не найдено вакансий по заданному фильтру</div>
@@ -53,14 +51,18 @@ let mapStateToProps = (state) => {
         isFetching: state.employeePage.isFetching,
         filterMode: state.employeePage.filterMode,
         filter: state.employeePage.filter,
-        type: state.auth.type
+        type: state.auth.type,
+        userId: state.auth.userId,
+        isAuth: state.auth.isAuth,
+        favoriteVacancy: state.employeePage.favoriteVacancy,
+        countFavoriteVacancy: state.employeePage.countFavoriteVacancy,
 
     }
 }
 
 export default compose(
     connect(mapStateToProps,
-        {setCurrentPage, toggleIsFetching, setOneVacancy, getVacancy,getFilterVacancy})
+        {setCurrentPage, toggleIsFetching, setOneVacancy, getVacancy,getFilterVacancy,getFavoriteVacancy})
 )(ListContainer);
 
 
