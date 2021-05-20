@@ -8,10 +8,25 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import s from "../Employer/RegisterEmployer.module.css";
+import Select from "@material-ui/core/Select";
 
 
 class RegisterEmployerForm extends React.Component {
 
+    renderSelectCities = ({input, label, type, meta: {touched, error, warning}}) => {
+
+        return <div>
+            <label>{label}</label>
+            <div>
+                <Select {...input} placeholder={label} type={type}>
+                    {this.props.cities && this.props.cities.map(p => <option
+                        value={p.City}>{p.City}</option>)}
+                </Select>
+                {/* ошибка для поля*/}
+                {touched && ((error && <div>{error}</div>))}
+            </div>
+        </div>
+    };
     renderTextField = ({input, label, type, meta: {touched, error, warning}}) => (
         <div>
             <label>{label}</label>
@@ -129,12 +144,9 @@ class RegisterEmployerForm extends React.Component {
                 </div>
                 <div>
                     <span>Город</span>
-                    <Field name={"city"} component={this.renderTextField}
-                           validate={[required({msg: "Введите ваш город"}), format({
-                               with: /^[а-я- ]+$/i,
-                               msg: "Используйте только буквы русского алфавита"
-                           })]}/>
+                    <Field name={"city"} component={this.renderSelectCities} />
                 </div>
+                {this.props.message? <div>{this.props.message}</div> : null}
 
                 <div>
                     <Button type="submit" disabled={this.props.loginInProgress}>Зарегистироваться</Button>
@@ -167,7 +179,7 @@ const RegisterEmployee = (props) => {
         <div  className={s.reg}>
             <div align={"center"}>
                 <h1>Регистрация работодателя</h1>
-                <RegisterEmployerReduxForm onSubmit={onSubmit} loginInProgress={props.loginInProgress}/>
+                <RegisterEmployerReduxForm onSubmit={onSubmit} {...props} loginInProgress={props.loginInProgress}/>
             </div>
 
 

@@ -53,7 +53,6 @@ class VacancyForm extends React.Component {
 const VacancyReduxForm = reduxForm({form: 'vacancy'})(VacancyForm)
 
 const Vacancy = (props) => {
-    debugger
     let [addVacancyFavorite, setAddVacancyFavorite] = useState(false)
     let [delVacancyFavorite, setDelVacancyFavorite] = useState(false)
 
@@ -86,6 +85,8 @@ const Vacancy = (props) => {
 
 
     }
+
+     let [vacancyIsClosed, setVacancyIsClosed] = useState(props.isVacancyClosed)
 
 
     return (
@@ -152,10 +153,10 @@ const Vacancy = (props) => {
                                 </div> : null}
 
 
-                            {props.type === "admin" ? props.isVacancyClosed ? <div>Вакансия закрыта</div> : <div>
+                            {props.type === "admin" ? vacancyIsClosed ? <div>Вакансия закрыта</div> : <div>
                                 <button onClick={() => {
                                     props.closeVacancyAdmin(v.idFind_Employer)
-                                    props.setIsVacancyClosed(true)
+                                    setVacancyIsClosed(true)
                                 }}>Закрыть вакансию(Admin)
                                 </button>
                             </div> : null}
@@ -168,7 +169,7 @@ const Vacancy = (props) => {
                                             </Button>
                                         </div>
                                         <div>
-                                            {props.feedbacks.length > 0 ? props.feedbacks.map(f => <div>
+                                            {props.feedbacks ? props.feedbacks.map(f => <div>
                                                 <div className={s.name}>
                                                     {f.Surname} {f.Firstname} {f.Middle_Name}
                                                 </div>
@@ -185,9 +186,8 @@ const Vacancy = (props) => {
 
                                                 </div>
 
-                                            </div>) : () => {
-                                                return <div>Отзывов нет</div>
-                                            }}
+                                            </div>) :  <div>Отзывов нет</div>
+                                            }
                                         </div>
                                     </div>
                                     :
@@ -224,7 +224,7 @@ const Vacancy = (props) => {
 
                                 }) : null
                             }*/}
-                            {props.vacancyIsFavorite ?
+                            {props.isAuth ? props.vacancyIsFavorite ?
 
                                 !delVacancyFavorite ?
                                     <div>
@@ -246,6 +246,7 @@ const Vacancy = (props) => {
                                         }}>Добавить в избранное</Button>
                                     </div>
                                     : <div>Добавлено в избранное</div>
+                                : null
 
                             }
 

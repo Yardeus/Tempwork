@@ -274,7 +274,7 @@ export const closeVacancyAdmin = (id) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     adminAPI.closeVacancy(id)
         .then(data => {
-            dispatch(setOneVacancy(data.values))
+            /*dispatch(setOneVacancy(data.values))*/
             dispatch(toggleIsFetching(false))
         })
 }

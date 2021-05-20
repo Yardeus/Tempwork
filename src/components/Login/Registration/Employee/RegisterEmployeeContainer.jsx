@@ -16,7 +16,7 @@ class RegisterEmployeeContainer extends React.Component {
     render() {
         return (
             <>
-                {this.props.isFetching ? <Preloader/> : <RegisterEmployee {...this.props} EmployeeSignUp={this.SignUp}/>}
+                {this.props.isFetching ? <Preloader/> : <RegisterEmployee {...this.props} SignUp={this.SignUp}/>}
 
             </>
         )
@@ -30,7 +30,9 @@ const mapStateToProps = (state) => ({
     login: state.auth.login,
     token: state.auth.token,
     isFetching: state.auth.isFetching,
-    loginInProgress: state.auth.loginInProgress
+    loginInProgress: state.auth.loginInProgress,
+    cities: state.employeePage.cities,
+    message: state.auth.message
 })
 
 export default compose(

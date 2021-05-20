@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 let List = (props) => {
-    debugger
     const classes = useStyles();
     let pagesCount = Math.ceil(props.count / props.pageSize);
     let pagesFavoriteCount = Math.ceil(props.countFavoriteVacancy / props.pageSize);

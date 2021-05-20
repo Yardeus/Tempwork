@@ -2,11 +2,16 @@ import * as axios from "axios";
 import {Redirect} from "react-router-dom";
 import React from "react";
 
+
 const instance = axios.create({
 //настройки
-    baseURL: 'http://localhost:8080/api/'
+    baseURL: 'http://localhost:8080/api/',
+
 });
 
+const setHeaderAuth = (token) => {
+    return {headers: {Authorization: `${token}`}}
+}
 const handleErrors = (err) => {
     if (err.response) {
         console.log("Problem with response", err.response.status)
@@ -252,9 +257,11 @@ export const agreementAPI = {
         return instance.get(`agreement/status?idFind_Employer=${idFind_Employer}&idEmployer=${idEmployer}`).then(response => response.data)
     },
 }
+
+
 export const cityAPI = {
-    getCities() {
-        return instance.get(`city`).then(response => response.data)
+    getCities(token) {
+        return instance.get(`city`,setHeaderAuth(token)).then(response => response.data)
     }
 }
 export const sheduleAPI = {
@@ -307,21 +314,27 @@ export const messagesAPI = {
 export const feedbackAPI = {
     getFeedbackEmployee(id) {
         return instance.get(`feedback/employee?id=${id}`).then(response => response.data)
+            .catch(error => error.response.status)
     },
     sendFeedbackEmployee(data) {
         return instance.post(`feedback/employee`, {...data}).then(response => response.data)
+            .catch(error => error.response.status)
     },
     getFeedbackEmployer(id) {
         return instance.get(`feedback/employer?id=${id}`).then(response => response.data)
+            .catch(error => error.response.status)
     },
     sendFeedbackEmployer(data) {
         return instance.post(`feedback/employer`, {...data}).then(response => response.data)
+            .catch(error => error.response.status)
     },
     getFeedbacks(type) {
         return instance.get(`feedback?type=${type}`).then(response => response.data)
+            .catch(error => error.response.status)
     },
     deleteFeedback(type, id) {
         return instance.delete(`feedback?type=${type}&id=${id}`).then(response => response.data)
+            .catch(error => error.response.status)
     }
 }
 

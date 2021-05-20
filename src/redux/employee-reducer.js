@@ -365,10 +365,24 @@ export const getFeedbackEmployee = (id) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     feedbackAPI.getFeedbackEmployee(id)
         .then(data => {
-            dispatch(setFeedbacks(data.values))
+            debugger
+            switch (data) {
+                case 404:
+                    dispatch(setFeedbacks(false))
+                    break
+                default:
+                    dispatch(setFeedbacks(data.values))
+            }
+
             dispatch(setIsViewFeedback(true))
             dispatch(toggleIsFetching(false));
         })
+        .catch(data => {
+            debugger
+            dispatch(setFeedbacks(null))
+            dispatch(setIsViewFeedback(true))
+            dispatch(toggleIsFetching(false));
+    })
 }
 export const getFeedbackEmployer = (id) => (dispatch) => {
     dispatch(toggleIsFetching(true));
@@ -379,9 +393,9 @@ export const getFeedbackEmployer = (id) => (dispatch) => {
             dispatch(toggleIsFetching(false));
         })
 }
-export const getCities = () => (dispatch) => {
+export const getCities = (token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    cityAPI.getCities()
+    cityAPI.getCities(token)
         .then(data => {
             dispatch(setCities(data.values))
             dispatch(toggleIsFetching(false));

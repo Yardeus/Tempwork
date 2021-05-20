@@ -1,5 +1,7 @@
 import {loginAPI, vacancyAPI} from "../api/api";
 import {setCount, setCurrentPage, setVacancy} from "./employee-reducer";
+import {Redirect} from "react-router-dom";
+import React from "react";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const SIGN_IN = 'SIGN_IN';
@@ -121,6 +123,7 @@ export const toggleIsFetching = (isFetching) => {
         isFetching
     }
 }
+
 export const toggleIsLoginProgress = (isFetching) => {
     return {
         type: TOGGLE_IS_LOGIN_PROGRESS,
@@ -181,10 +184,7 @@ export const signUp = (type, data) => (dispatch) => {
 
                 default:
                     let {userId, email, login, token} = data.values;
-                    dispatch(setMessage(null))
-
-                    break
-
+                    dispatch(setMessage("Регистрация прошла успешно. Авторизируйтесь"))
             }
             dispatch(toggleIsFetching(false));
             dispatch(toggleIsLoginProgress(false))

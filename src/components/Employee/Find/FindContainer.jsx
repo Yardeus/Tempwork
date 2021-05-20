@@ -15,7 +15,7 @@ class EmployerContainer extends React.Component {
 
     componentDidMount() {
         this.props.getJobs("professions");
-        this.props.getCities();
+        this.props.getCities(this.props.token);
         this.props.getShedules();
         this.props.getExperiences();
         this.props.getTypesVacancy();
@@ -62,6 +62,7 @@ const mapStateToProps = (state) => ({
     shedules: state.employeePage.shedules,
     experiences: state.employeePage.experiences,
     typesVacancy: state.employeePage.typesVacancy,
+    token: state.auth.token,
 })
 
 export default compose(

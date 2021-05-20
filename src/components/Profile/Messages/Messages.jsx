@@ -29,8 +29,10 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
     },
     subheader: {
-        disableGutters: true,
-        backgroundColor: "white"
+        color: "green",
+        disableGutters: false,
+        backgroundColor: "white",
+        inset: true
     },
     time: {
         fontSize: 60
@@ -175,7 +177,7 @@ let Messages = (props) => {
 
                                     <li key={m.id} className={classes.listSection}>
                                         <ul className={classes.ul}>
-                                            <ListSubheader
+                                            <ListSubheader inset={true}
                                                 className={classes.subheader}>{index === m.idSender ? null :
                                                 `${props.type === "employer" ? props.userId === m.idSender ? m.Firstname : m.Organization_name :
                                                     props.userId === m.idSender ? m.Organization_name : m.Firstname}`}</ListSubheader>
@@ -186,7 +188,7 @@ let Messages = (props) => {
                                             </ListItem>
                                             <ListItem>
                                                 <ListItemText className={classes.time}
-                                                              primary={`${moment(m.Date).format('LT')}`}/>
+                                                              secondary={`${moment(m.Date).format('LT')}`}/>
                                             </ListItem>
                                         </ul>
                                     </li>

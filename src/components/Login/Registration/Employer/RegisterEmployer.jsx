@@ -7,10 +7,26 @@ import TextField from "@material-ui/core/TextField";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
+import Select from "@material-ui/core/Select";
+import {Redirect} from "react-router-dom";
 
 
 class RegisterEmployerForm extends React.Component {
 
+    renderSelectCities = ({input, label, type, meta: {touched, error, warning}}) => {
+
+        return <div>
+            <label>{label}</label>
+            <div>
+                <Select {...input} placeholder={label} type={type}>
+                    {this.props.cities && this.props.cities.map(p => <option
+                        value={p.City}>{p.City}</option>)}
+                </Select>
+                {/* ошибка для поля*/}
+                {touched && ((error && <div>{error}</div>))}
+            </div>
+        </div>
+    };
     renderTextField = ({input, label, type, meta: {touched, error, warning}}) => (
         <div>
             <label>{label}</label>
@@ -111,6 +127,10 @@ class RegisterEmployerForm extends React.Component {
                            }), numericality({int: true})]}/>
                 </div>
                 <div>
+                    <span>Город</span>
+                    <Field name={"city"} component={this.renderSelectCities} />
+                </div>
+                <div>
                     <span>Электронная почта</span>
                     <Field placeholder={"Электронная почта"} name={"email"} component={this.renderTextField}
                            validate={[required({msg: "Введите вашу электронную почту"}), email({msg: "Введите корректный адрес. Пример: tempwork@mail.ru"})]}/>
@@ -141,6 +161,7 @@ class RegisterEmployerForm extends React.Component {
                            validate={[required({msg: "Выберите один из вариантов"})]}/>
 
                 </div>
+                {this.props.message? <div>{this.props.message}</div> : null}
                 <div>
                     <Button type="submit" disabled={this.props.loginInProgress}>Зарегистироваться</Button>
                 </div>
@@ -160,6 +181,7 @@ const RegisterEmployer = (props) => {
             middle_name: formData.middleName,
             phone_number: formData.phoneNumber,
             e_mail: formData.email,
+            city: formData.city,
             login: formData.login,
             password: formData.password,
             birthday: formData.birthday,
@@ -169,13 +191,14 @@ const RegisterEmployer = (props) => {
 
         }
         props.SignUp("employer", data)
+
     }
 
     return (
         <div  className={s.reg}>
             <div align="center" className={s.text}>
                 <h1>Регистрация соискателя</h1>
-                <RegisterEmployerReduxForm onSubmit={onSubmit} loginInProgress={props.loginInProgress}/>
+                <RegisterEmployerReduxForm onSubmit={onSubmit} {...props} loginInProgress={props.loginInProgress}/>
             </div>
         </div>
     )
