@@ -36,7 +36,7 @@ let FeedbackAboutEmployer = (props) => {
 
                 <div>
                     <Button onClick={() => {
-                        props.deleteFeedback("employer",j.id)
+                        props.deleteFeedback("employer",j.id,props.token)
                     }}>Удалить
                     </Button>
                 </div>

@@ -51,9 +51,6 @@ class EmployerForm extends React.Component {
                         this.props.getSpecialisations(event.target.value)
                     }}>
 
-                        {/*{this.props.professions && this.props.professions.map(p => <option
-                                    value={p.Profession}>{p.Profession}</option>)}*/}
-
                     </Field>
                 </div>
                 <div>
@@ -155,9 +152,7 @@ const EmployerReduxForm = reduxForm({form: 'createVacancy'})(EmployerForm)
 
 const Employer = (props) => {
     const onSubmit = (formData) => {
-        console.log(props.userId)
-        console.log(formData)
-        props.createNewVacancy(props.userId, formData)
+        props.createNewVacancy(props.userId, formData,props.token)
         props.setIsVacancyCreated(true)
     }
 

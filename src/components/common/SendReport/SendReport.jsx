@@ -35,14 +35,11 @@ class SendReportForm extends React.Component {
 
 
     value = 1;
-    setValue = (value1) => {
-        this.value = value1
-    }
+
 
     handleChange = (event) => {
-        debugger
+
         this.value = event.target.value;
-        console.log(event.target.value)
     };
 
 
@@ -71,17 +68,6 @@ class SendReportForm extends React.Component {
             </FormControl>
         </div>
 
-        /*<div>
-            <span>Выберите пункт для подачи жалобы</span>
-            {this.props.codesReports && <RadioGroup type={type} {...input} >
-                <div align={"center"}>
-                    {this.props.codesReports.map(code=><FormControlLabel value={code.id} control={<Radio/>} label={code.description}/>)}
-                    {touched && ((error && <div>{error}</div>))}
-                </div>
-
-            </RadioGroup>
-            }
-        </div>*/
     );
 
     render() {
@@ -90,10 +76,6 @@ class SendReportForm extends React.Component {
         return (
             <form onSubmit={handleSubmit}>
                 <div>
-                    {/*<div>
-                        <Field name={"code"} component={this.renderRadio}/>
-                        <RadioButtonsGroup {...this.props}/>
-                    </div>*/}
                     <div>
                         <label>Описание вашей ситуации</label>
                         <Field placeholder={"Описание вашей жалобы"} name={"message"} component={this.renderTextField}
@@ -114,16 +96,15 @@ const SendReportReduxForm = reduxForm({form: 'sendReport'})(SendReportForm)
 
 
 let SendReport = (props) => {
-
-    const [value, setValue] = React.useState('0');
     let [sendReport, setSendReport] = useState(false)
+    const [value, setValue] = React.useState('0');
+
     const handleChange = (event) => {
         setValue(event.target.value);
     };
 
 
     let onSubmit = (formData) => {
-        console.log(formData, value)
 
         let typeSender
         if (props.type === "employee") {
@@ -140,8 +121,7 @@ let SendReport = (props) => {
             idIntruder: props.idIntruder,
             typeIntruder: props.typeIntruder,
         }
-        console.log(data)
-        props.sendReport(data)
+        props.sendReport(data,props.token)
     }
 
     return (

@@ -104,8 +104,7 @@ const EditVacancy = (props) => {
                 data.End_Time = formData.endTime
             }
         })
-        props.updateDataMyVacancy(data)
-        console.log(data)
+        props.updateDataMyVacancy(data,props.token)
     }
 
     return (

@@ -10,6 +10,7 @@ import {
 } from "../../../redux/profile-reducer";
 import Preloader from "../../common/preloader";
 import Messages from "./Messages";
+import {WithAuthRedirect} from "../../../hoc/WithAuthRedirect";
 
 
 const MessagesContainer = (props) => {
@@ -34,12 +35,13 @@ let mapStateToProps = (state) => {
         messages: state.profilePage.messages,
         selectedDialog: state.profilePage.selectedDialog,
         profileMode: state.profilePage.profileMode,
+        token: state.auth.token
 
 
     }
 }
 
-export default compose(
+export default compose(WithAuthRedirect,
     connect(mapStateToProps,
         {getMyChats, getMyMessages, setSelectedDialog, setProfileMode, sendMessage})
 )(MessagesContainer);

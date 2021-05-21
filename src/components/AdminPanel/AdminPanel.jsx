@@ -6,6 +6,7 @@ import {getFeedbacks} from "../../redux/admin-reducer";
 import FeedbackAboutEmployeeContainer from "./Feedbacks/FeedbackAboutEmployeeContainer";
 import FeedbackAboutEmployerContainer from "./Feedbacks/FeedbackAboutEmployerContainer";
 import {Button} from "../common/formsControl";
+import ReportsContainer from "./Reports/ReportsContainer";
 
 
 let AdminPanel = (props) => {
@@ -21,6 +22,8 @@ let AdminPanel = (props) => {
             return <FeedbackAboutEmployeeContainer/>
         case "feedbackEmployer":
             return <FeedbackAboutEmployerContainer/>
+        case "reports":
+            return <ReportsContainer/>
 
         default:
             return <div>
@@ -47,7 +50,7 @@ let AdminPanel = (props) => {
                 </div>
                 <div>
                     <Button onClick={() => {
-                        props.getFeedbacks("employee")
+                        props.getFeedbacks("employee",props.token)
                         props.SetActionType("feedbackEmployee")
                     }}>
                         Список отзывов о работодателях
@@ -55,10 +58,17 @@ let AdminPanel = (props) => {
                 </div>
                 <div>
                     <Button onClick={() => {
-                        props.getFeedbacks("employer")
+                        props.getFeedbacks("employer",props.token)
                         props.SetActionType("feedbackEmployer")
                     }}>
                         Список отзывов о сотрудниках
+                    </Button>
+                </div>
+                <div>
+                    <Button onClick={() => {
+                        props.SetActionType("reports")
+                    }}>
+                        Список репортов
                     </Button>
                 </div>
             </div>

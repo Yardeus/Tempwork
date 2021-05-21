@@ -40,7 +40,8 @@ let mapStateToProps = (state) => {
         type: state.auth.type,
         isFetching: state.auth.isFetching,
         actionType: state.admin.actionType,
-        feedbackList: state.admin.feedbackList
+        feedbackList: state.admin.feedbackList,
+        token: state.auth.token
 
 
     }

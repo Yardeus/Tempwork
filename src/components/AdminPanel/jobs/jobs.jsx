@@ -45,16 +45,11 @@ const AddJobsReduxForm = reduxForm({form: 'addJobs'})(AddJobsForm)
 let Jobs = (props) => {
 
     const onSubmit = (formData) => {
-        debugger
-
-        let data = {
+               let data = {
             profession: formData.profession,
             specialisation: formData.specialisation
         };
-
-        console.log(formData)
-        props.addJobs(data)
-
+        props.addJobs(data,props.token)
 
     }
 
@@ -106,7 +101,7 @@ let Jobs = (props) => {
                 </div>
                 <div>
                     <Button onClick={() => {
-                        props.deleteJobs(j.idJobs)
+                        props.deleteJobs(j.idJobs,props.token)
                     }}>Удалить
                     </Button>
                 </div>

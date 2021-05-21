@@ -14,19 +14,20 @@ import Preloader from "../common/preloader";
 import {logOut} from "../../redux/auth-reducer";
 import {getDate} from "../common/getDate";
 import {getCodesReport} from "../../redux/admin-reducer";
+import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
 
 
 class ProfileContainer extends React.Component {
 
     componentDidMount() {
-        this.props.getData(this.props.type, this.props.userId)
+        this.props.getData(this.props.type, this.props.userId,this.props.token)
         let type
         if (this.props.type === "employee") {
             type = 1
         } else if (this.props.type === "employer") {
             type = 2
         }
-        this.props.getMyChats(this.props.userId, type)
+        this.props.getMyChats(this.props.userId, type,this.props.token)
         this.props.getCodesReport()
 
     }
@@ -56,12 +57,13 @@ let mapStateToProps = (state) => {
         myVacancy: state.profilePage.myVacancy,
         editProfileMode: state.profilePage.editProfileMode,
         chats: state.profilePage.chats,
-        profileMode: state.profilePage.profileMode
+        profileMode: state.profilePage.profileMode,
+        token: state.auth.token
 
     }
 }
 
-export default compose(
+export default compose(WithAuthRedirect,
     connect(mapStateToProps,
         {getData, logOut, setEditProfileMode, updateData, getDate, saveAvatar,getMyChats, setProfileMode,getCodesReport})
 )(ProfileContainer);

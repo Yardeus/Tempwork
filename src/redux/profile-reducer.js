@@ -82,7 +82,6 @@ const profileReducer = (state = initialState, action) => {
                 editIdVacancy: action.idVacancy
             }
         case GET_RESPONDED_FROM_MY_VACANCY:
-            debugger
             return {
                 ...state,
                 responded: action.data
@@ -247,27 +246,17 @@ export const setProfileMode = (data) => {
 }
 
 
-export const getData = (type, id_user) => (dispatch) => {
+export const getData = (type, id_user,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    profileAPI.getProfile(type, id_user)
+    profileAPI.getProfile(type, id_user,token)
         .then(data => {
             dispatch(profileFormForEmployee(data.values));
             dispatch(toggleIsFetching(false));
         })
 }
-export const updateData = (type, data) => (dispatch) => {
+export const updateData = (type, data,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    profileAPI.updateData(type, data)
-        .then(data => {
-            dispatch(profileFormForEmployee(data.values));
-            dispatch(toggleIsFetching(false));
-
-        })
-}
-
-export const saveAvatar = (type, file, id) => (dispatch) => {
-    dispatch(toggleIsFetching(true));
-    profileAPI.saveAvatar(type, file, id)
+    profileAPI.updateData(type, data,token)
         .then(data => {
             dispatch(profileFormForEmployee(data.values));
             dispatch(toggleIsFetching(false));
@@ -275,27 +264,37 @@ export const saveAvatar = (type, file, id) => (dispatch) => {
         })
 }
 
-export const getMyVacancy = (id_user, type) => (dispatch) => {
+export const saveAvatar = (type, file, id,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    profileAPI.myVacancy(id_user, type)
+    profileAPI.saveAvatar(type, file, id,token)
+        .then(data => {
+            dispatch(profileFormForEmployee(data.values));
+            dispatch(toggleIsFetching(false));
+
+        })
+}
+
+export const getMyVacancy = (id_user, type,token) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    profileAPI.myVacancy(id_user, type,token)
         .then(data => {
             dispatch(FormMyVacancy(data.values));
             dispatch(toggleIsFetching(false));
         })
 }
 
-export const closeMyVacancy = (idFind_Employer, id_user) => (dispatch) => {
+export const closeMyVacancy = (idFind_Employer, id_user,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    vacancyAPI.closeVacancy(idFind_Employer, id_user)
+    vacancyAPI.closeVacancy(idFind_Employer, id_user,token)
         .then(data => {
                 dispatch(FormMyVacancy(data.values));
                 dispatch(toggleIsFetching(false));
             }
         )
 }
-export const getRespondedFromMyVacancy = (idFind_Employer) => (dispatch) => {
+export const getRespondedFromMyVacancy = (idFind_Employer,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    vacancyAPI.getEmployerListFromVacancyId(idFind_Employer)
+    vacancyAPI.getEmployerListFromVacancyId(idFind_Employer,token)
         .then(data => {
                 dispatch(FormRespondedMyVacancy(data.values));
                 debugger
@@ -304,46 +303,38 @@ export const getRespondedFromMyVacancy = (idFind_Employer) => (dispatch) => {
             }
         )
 }
-export const getWorkersFromMyVacancy = (idFind_Employer) => (dispatch) => {
+export const getWorkersFromMyVacancy = (idFind_Employer,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    vacancyAPI.getWorkersListFromVacancyId(idFind_Employer)
+    vacancyAPI.getWorkersListFromVacancyId(idFind_Employer,token)
         .then(data => {
                 dispatch(FormRespondedMyVacancy(data.values));
-                /*data.values.map(v => {
-                    agreementAPI.getStatus(idFind_Employer, v.idEmployer)
-                        .then(data => {
-                                dispatch(PushStatusResponded(data.values));
-                                dispatch(toggleIsFetching(false));
-                            }
-                        )
-                })*/
                 dispatch(toggleIsFetching(false));
 
             }
         )
 }
 
-export const deleteMyVacancy = (idVacancy, id_user, type) => (dispatch) => {
+export const deleteMyVacancy = (idVacancy, id_user, type,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    profileAPI.deleteVacancy(idVacancy, id_user, type)
+    profileAPI.deleteVacancy(idVacancy, id_user, type,token)
         .then(data => {
                 dispatch(FormMyVacancy(data.values));
                 dispatch(toggleIsFetching(false));
             }
         )
 }
-export const createAgreement = (data) => (dispatch) => {
+export const createAgreement = (data,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    agreementAPI.createAgreement(data)
+    agreementAPI.createAgreement(data,token)
         .then(data => {
                 dispatch(toggleIsFetching(false));
             }
         )
 }
 
-export const updateDataMyVacancy = (newData) => (dispatch) => {
+export const updateDataMyVacancy = (newData,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    vacancyAPI.updateVacancy(newData)
+    vacancyAPI.updateVacancy(newData,token)
         .then(data => {
                 dispatch(UpdateOneVacancy(newData));
                 dispatch(toggleIsFetching(false));
@@ -360,31 +351,31 @@ export const getOneVacancy = (vacancyId) => (dispatch) => {
             }
         )
 }
-export const getMyWorks = (idEmployer) => (dispatch) => {
+export const getMyWorks = (idEmployer,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    profileAPI.myWorks(idEmployer)
+    profileAPI.myWorks(idEmployer,token)
         .then(data => {
                 dispatch(SetMyWorks(data.values));
                 dispatch(toggleIsFetching(false));
             }
         )
 }
-export const getMyChats = (idUser, typeUser) => (dispatch) => {
+export const getMyChats = (idUser, typeUser,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     let data = {
         idUser,
         typeUser
     }
-    messagesAPI.getChatsUser(data)
+    messagesAPI.getChatsUser(data,token)
         .then(data => {
                 dispatch(setChats(data.values));
                 dispatch(toggleIsFetching(false));
             }
         )
 }
-export const getMyMessages = (idChat) => (dispatch) => {
+export const getMyMessages = (idChat,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    messagesAPI.getMessages(idChat)
+    messagesAPI.getMessages(idChat,token)
         .then(data => {
                 if (data.values) {
                     dispatch(setMessages(data.values));
@@ -398,13 +389,13 @@ export const getMyMessages = (idChat) => (dispatch) => {
             }
         )
 }
-export const sendMessage = (idChat, data) => (dispatch) => {
+export const sendMessage = (idChat, data,token) => (dispatch) => {
     debugger
     dispatch(toggleIsFetching(true));
 
-    messagesAPI.sendMessage(data)
+    messagesAPI.sendMessage(data,token)
         .then(data => {
-                messagesAPI.getMessages(idChat)
+                messagesAPI.getMessages(idChat,token)
                     .then(data => {
                             dispatch(setMessages(data.values));
                             dispatch(toggleIsFetching(false));
@@ -414,34 +405,29 @@ export const sendMessage = (idChat, data) => (dispatch) => {
             }
         )
 }
-export const createChat = (data) => (dispatch) => {
+export const createChat = (data,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    messagesAPI.createChat(data)
+    messagesAPI.createChat(data,token)
         .then(data => {
             if (data.values) {
-                debugger
-                console.log(data.values[0])
                 data.values.map(sd => dispatch(setSelectedDialog(sd.id)))
-                data.values.map(sd => dispatch(getMyMessages(sd.id)))
-
-
+                data.values.map(sd => dispatch(getMyMessages(sd.id,token)))
                 dispatch(setProfileMode("messages"));
             }
-
             dispatch(toggleIsFetching(false));
         })
 }
-export const getFeedback = (type, id) => (dispatch) => {
+export const getFeedback = (type, id,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     if (type === "employee") {
-        feedbackAPI.getFeedbackEmployee(id)
+        feedbackAPI.getFeedbackEmployee(id,token)
             .then(data => {
                     dispatch(SetFeedback(data.values));
                     dispatch(toggleIsFetching(false));
                 }
             )
     } else if (type === "employer") {
-        feedbackAPI.getFeedbackEmployer(id)
+        feedbackAPI.getFeedbackEmployer(id,token)
             .then(data => {
                     dispatch(SetFeedback(data.values));
                     dispatch(toggleIsFetching(false));

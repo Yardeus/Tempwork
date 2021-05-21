@@ -11,12 +11,13 @@ import {
 import WorkersList from "./WorkersList";
 import {sendFeedbackEmployer, setFeedbackMode, setFeedbackSendMode} from "../../../../redux/employee-reducer";
 import Vacancy from "../../../Employee/List/Vacancy/vacancy";
+import {WithAuthRedirect} from "../../../../hoc/WithAuthRedirect";
 
 
 class WorkersListContainer extends React.Component {
 
     componentDidMount() {
-        this.props.getWorkersFromMyVacancy(this.props.currentResponded)
+        this.props.getWorkersFromMyVacancy(this.props.currentResponded,this.props.token)
         this.props.setFeedbackSendMode(false)
     }
 
@@ -49,12 +50,13 @@ let mapStateToProps = (state) => {
         responded: state.profilePage.responded,
         currentResponded: state.profilePage.currentResponded,
         feedbackMode: state.employeePage.feedbackMode,
-        feedbackSendMode: state.employeePage.feedbackSendMode
+        feedbackSendMode: state.employeePage.feedbackSendMode,
+        token: state.auth.token
 
     }
 }
 
-export default compose(
+export default compose(WithAuthRedirect,
     connect(mapStateToProps, {getWorkersFromMyVacancy,createChat,SetCurrentRespondVacancyId,FormRespondedMyVacancy, createAgreement,  setFeedbackMode, setFeedbackSendMode,sendFeedbackEmployer})
 )(WorkersListContainer);
 

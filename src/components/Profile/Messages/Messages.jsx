@@ -117,8 +117,7 @@ let Messages = (props) => {
             TypeReceiver: typeReceiver,
             idChat: props.selectedDialog
         }
-        console.log(data)
-        props.sendMessage(props.selectedDialog, data)
+        props.sendMessage(props.selectedDialog, data,props.token)
 
     }
     let lastMessage = React.createRef();
@@ -154,7 +153,7 @@ let Messages = (props) => {
                             <button className={s.btn} onClick={() => {
                                 /* */
                                 props.setSelectedDialog(c.id)
-                                props.getMyMessages(c.id)
+                                props.getMyMessages(c.id,props.token)
                                 /*props.setProfileMode("messages")*/
                             }}>
                                 {props.type === "employer" ? c.Organization_name : `${c.Surname} ${c.Firstname} ${c.Middle_Name}`}
@@ -181,7 +180,6 @@ let Messages = (props) => {
                                                 className={classes.subheader}>{index === m.idSender ? null :
                                                 `${props.type === "employer" ? props.userId === m.idSender ? m.Firstname : m.Organization_name :
                                                     props.userId === m.idSender ? m.Organization_name : m.Firstname}`}</ListSubheader>
-                                            {console.log(arr[i])}
                                             {setIndex(m.idSender)}
                                             <ListItem>
                                                 <ListItemText primary={`${m.message}`}/>

@@ -77,7 +77,7 @@ const Vacancy = (props) => {
             })
 
             console.log(formData)
-            props.sendFeedbackEmployee(data)
+            props.sendFeedbackEmployee(data,props.token)
             props.setFeedbackMode(false)
             props.setFeedbackSendMode(true)
 
@@ -147,7 +147,7 @@ const Vacancy = (props) => {
                             {props.type === "employer" ? props.isResponded ? <div>Вы откликнулись</div> :
                                 <div>
                                     <Button onClick={() => {
-                                        props.onRespond(v.idFind_Employer)
+                                        props.onRespond(v.idFind_Employer,props.token)
                                     }}>Откликнуться
                                     </Button>
                                 </div> : null}
@@ -155,7 +155,7 @@ const Vacancy = (props) => {
 
                             {props.type === "admin" ? vacancyIsClosed ? <div>Вакансия закрыта</div> : <div>
                                 <button onClick={() => {
-                                    props.closeVacancyAdmin(v.idFind_Employer)
+                                    props.closeVacancyAdmin(v.idFind_Employer,props.token)
                                     setVacancyIsClosed(true)
                                 }}>Закрыть вакансию(Admin)
                                 </button>
@@ -207,7 +207,7 @@ const Vacancy = (props) => {
                                             idEmployee: v.idEmployee,
                                             idEmployer: props.userId
                                         }
-                                        props.createChat(data)
+                                        props.createChat(data,props.token)
 
                                     }}>Написать сообщение</Button>
                                 </NavLink>
@@ -216,21 +216,14 @@ const Vacancy = (props) => {
 
                             <SendReportContainer idIntruder={v.idEmployee} typeIntruder={1}/>
 
-                            {/*{!vacancyIsFavorite ?
-                                props.favoriteVacancy.map(fv => {
-                                    if (fv.idVacancy === v.idFind_Employer) {
-                                    setVacancyIsFavorite(true)
-                                    }
 
-                                }) : null
-                            }*/}
                             {props.isAuth ? props.vacancyIsFavorite ?
 
                                 !delVacancyFavorite ?
                                     <div>
                                         <Button onClick={() => {
                                             setDelVacancyFavorite(true)
-                                            props.deleteFavoriteVacancy(v.idFind_Employer, props.userId)
+                                            props.deleteFavoriteVacancy(v.idFind_Employer, props.userId,props.token)
                                         }}>Убрать из избранного</Button>
                                     </div>
                                     :
@@ -242,31 +235,13 @@ const Vacancy = (props) => {
                                     <div>
                                         <Button onClick={() => {
                                             setAddVacancyFavorite(true)
-                                            props.addFavoriteVacancy(v.idFind_Employer, props.userId)
+                                            props.addFavoriteVacancy(v.idFind_Employer, props.userId,props.token)
                                         }}>Добавить в избранное</Button>
                                     </div>
                                     : <div>Добавлено в избранное</div>
                                 : null
 
                             }
-
-
-                            {/* {props.vacancyIsFavorite ?
-                                !delVacancyFavorite ?
-                                    <div>
-                                        <Button onClick={() => {
-                                            setVacancyIsFavorite(false)
-                                            props.deleteFavoriteVacancy(v.idFind_Employer, props.userId)
-                                        }}>Убрать из избранного</Button>
-                                    </div> :
-                                    <div>Убрано из избранного</div> :
-                                !vacancyIsFavorite ?
-                                    <div>
-                                        <Button onClick={() => {
-                                            props.addFavoriteVacancy(v.idFind_Employer, props.userId)
-                                        }}>Добавить в избранное</Button>
-                                    </div>
-                                    : null}*/}
 
 
                         </div>

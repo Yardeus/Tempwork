@@ -99,7 +99,7 @@ let RespondedList = (props) => {
                                     :
                                     <div>
                                         <Button onClick={() => {
-                                            props.getFeedbackEmployer(v.idEmployer)
+                                            props.getFeedbackEmployer(v.idEmployer,props.token)
                                         }}>
                                             Просмотреть отзывы о соискателе
                                         </Button>
@@ -113,7 +113,7 @@ let RespondedList = (props) => {
                                             idEmployee: props.userId,
                                             idEmployer: v.idEmployer
                                         }
-                                        props.createChat(data)
+                                        props.createChat(data,props.token)
 
                                     }}>Написать сообщение</Button>
                                 </NavLink>
@@ -127,7 +127,7 @@ let RespondedList = (props) => {
                                         idEmployer: v.idEmployer
                                     }
 
-                                    props.createAgreement(data)
+                                    props.createAgreement(data,props.token)
                                 }}>
                                     Принять на работу
                                 </Button>

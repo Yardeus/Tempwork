@@ -160,12 +160,7 @@ export const signIn = (type, login, password) => (dispatch) => {
             dispatch(toggleIsFetching(false));
             dispatch(toggleIsLoginProgress(false))
         })
-        /*.catch(err => {
-            debugger
-            dispatch(setMessage(err))
-            dispatch(toggleIsFetching(false));
-            dispatch(toggleIsLoginProgress(false))
-        })*/
+
 }
 
 export const signUp = (type, data) => (dispatch) => {

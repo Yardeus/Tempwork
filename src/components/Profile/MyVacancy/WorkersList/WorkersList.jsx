@@ -8,6 +8,11 @@ import SendReportContainer from "../../../common/SendReport/SendReportContainer"
 import Avatar from "@material-ui/core/Avatar";
 import baseAvatar from "../../../../server/avatars/base_avatar.jpg";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import FormLabel from "@material-ui/core/FormLabel";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
+import FormControl from "@material-ui/core/FormControl";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,10 +31,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 let FeedbackForm = (props) => {
+
+
     const {handleSubmit} = props;
     return (
         <form onSubmit={handleSubmit}>
             <div>
+
+
                 <div>
                     <Field placeholder={"Введите отзыв"} name={"feedback"} component={Input}/>
                 </div>
@@ -51,9 +60,14 @@ let FeedbackForm = (props) => {
 const VacancyReduxForm = reduxForm({form: 'feedback'})(FeedbackForm)
 
 let WorkersList = (props) => {
+    const [rank, setRank] = React.useState('like');
+
+    const handleChange = (event) => {
+        debugger
+        setRank(event.target.value);
+    };
 
     const onSubmit = (formData) => {
-        debugger
         if (props.feedbackMode) {
             let data = {};
             props.responded.map(v => {
@@ -63,6 +77,7 @@ let WorkersList = (props) => {
 
                                 idEmployee: props.userId,
                                 idEmployer: v.idEmployer,
+                                rank: rank,
                                 feedback: formData.feedback,
                             }
                         )
@@ -70,8 +85,7 @@ let WorkersList = (props) => {
                 }
             )
 
-            console.log(formData)
-            props.sendFeedbackEmployer(data)
+            props.sendFeedbackEmployer(data,props.token)
             props.setFeedbackMode(false)
             props.setFeedbackSendMode(true)
 
@@ -102,9 +116,7 @@ let WorkersList = (props) => {
                             <div>
                                 Профессия - {v.Profession}
                             </div>
-                            {/*<div>
-                                Часов отработано на TempWork - {v.Hours_Worked}
-                            </div>*/}
+
                             <div>
                                 Описание - {v.Description}
                             </div>
@@ -120,6 +132,15 @@ let WorkersList = (props) => {
                             <div>
                                 {props.feedbackSendMode ? <div>Спасибо за оставленный отзыв</div> :
                                     <div>{props.feedbackMode === v.idEmployer ? <div>
+                                            <div>
+                                                <FormControl component="fieldset" name="rank">
+                                                    <FormLabel component="legend">Выберите подходящий пункт</FormLabel>
+                                                    <RadioGroup aria-label="rank" name="rank" value={`${rank}`} onChange={handleChange}>
+                                                        <FormControlLabel value={`like`} control={<Radio/>} label="Положительно"/>
+                                                        <FormControlLabel value={`dislike`} control={<Radio/>} label="Отрицательно"/>
+                                                    </RadioGroup>
+                                                </FormControl>
+                                            </div>
                                             <VacancyReduxForm onSubmit={onSubmit} setFeedbackMode={props.setFeedbackMode}
                                                               setFeedbackSendMode={props.setFeedbackSendMode}
                                                               sendFeedbackEmployer={props.sendFeedbackEmployer}/>
@@ -141,7 +162,7 @@ let WorkersList = (props) => {
                                             idEmployee: props.userId,
                                             idEmployer: v.idEmployer
                                         }
-                                        props.createChat(data)
+                                        props.createChat(data,props.token)
 
                                     }}>Написать сообщение</Button>
                                 </NavLink>

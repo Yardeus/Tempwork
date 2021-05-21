@@ -61,7 +61,6 @@ const MyWorksReduxForm = reduxForm({form: 'feedback'})(MyWorksForm)
 let MyWorks = (props) => {
 
     const onSubmit = (formData) => {
-        debugger
         if (props.feedbackMode) {
             let data = {};
             props.myWorks.map(v => {
@@ -80,8 +79,7 @@ let MyWorks = (props) => {
                 }
             )
 
-            console.log(formData)
-            props.sendFeedbackEmployee(data)
+            props.sendFeedbackEmployee(data,props.token)
             props.setFeedbackMode(false)
             props.setFeedbackSendMode(true)
 

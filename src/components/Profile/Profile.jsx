@@ -223,12 +223,12 @@ let Profile = (props) => {
 
     const employerAvatarSelected = (e) => {
         if (e.target.files.length) {
-            props.saveAvatar("employer", e.target.files[0], props.userId)
+            props.saveAvatar("employer", e.target.files[0], props.userId,props.token)
         }
     }
     const employeeAvatarSelected = (e) => {
         if (e.target.files.length) {
-            props.saveAvatar("employee", e.target.files[0], props.userId)
+            props.saveAvatar("employee", e.target.files[0], props.userId,props.token)
         }
     }
 
@@ -331,7 +331,7 @@ let Profile = (props) => {
                 })
             }
 
-            props.updateData(props.type, data)
+            props.updateData(props.type, data,props.token)
             props.setEditProfileMode(false)
         }
 

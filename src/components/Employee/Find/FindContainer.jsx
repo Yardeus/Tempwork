@@ -15,7 +15,7 @@ class EmployerContainer extends React.Component {
 
     componentDidMount() {
         this.props.getJobs("professions");
-        this.props.getCities(this.props.token);
+        this.props.getCities();
         this.props.getShedules();
         this.props.getExperiences();
         this.props.getTypesVacancy();

@@ -14,6 +14,7 @@ import {getJobs, updateStatus} from "../../../../redux/employer-reducer";
 import {withRouter} from "react-router-dom";
 import Preloader from "../../../common/preloader";
 import Login from "../../../Login/Login";
+import {WithAuthRedirect} from "../../../../hoc/WithAuthRedirect";
 
 
 
@@ -54,10 +55,11 @@ let mapStateToProps = (state) => {
         editVacancy: state.profilePage.editVacancy,
         professions: state.employerPage.professions,
         specialisations: state.employerPage.specialisations,
+        token: state.auth.token
 
     }
 }
-export default compose(
+export default compose(WithAuthRedirect,
     connect(mapStateToProps, {getOneVacancy,getJobs,updateDataMyVacancy}),
     withRouter
 )(EditVacancyContainer);

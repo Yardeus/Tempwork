@@ -33,7 +33,8 @@ let mapStateToProps = (state) => {
         type: state.auth.type,
         isFetching: state.auth.isFetching,
         isAuth: state.auth.isAuth,
-        codesReports: state.admin.codesReports
+        codesReports: state.admin.codesReports,
+        token: state.auth.token
 
 
 

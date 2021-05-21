@@ -27,6 +27,7 @@ class FindForm extends Component {
             <label>{label}</label>
             <div>
                 <Select {...input} placeholder={label} type={type}>
+                    <option value={null}>Все</option>
                     {this.props.professions && this.props.professions.map(p => <option
                         value={p.Profession}>{p.Profession}</option>)}
                 </Select>
@@ -42,6 +43,7 @@ class FindForm extends Component {
             <label>{label}</label>
             <div>
                 <Select {...input} placeholder={label} type={type}>
+                    <option value={""}>Все</option>
                     {this.props.specialisations && this.props.specialisations.map(p => <option
                         value={p.idJobs}>{p.Specialisation}</option>)}
                 </Select>
@@ -57,6 +59,7 @@ class FindForm extends Component {
             <label>{label}</label>
             <div>
                 <Select {...input} placeholder={label} type={type}>
+                    <option value={null}>Все</option>
                     {this.props.experiences && this.props.experiences.map(p => <option
                         value={p.Experience}>{p.Experience}</option>)}
                 </Select>
@@ -71,8 +74,9 @@ class FindForm extends Component {
             <label>{label}</label>
             <div>
                 <Select {...input} placeholder={label} type={type}>
+                    <option value={null}>Все</option>
                     {this.props.cities && this.props.cities.map(p => <option
-                        value={p.id}>{p.City}</option>)}
+                        value={p.City}>{p.City}</option>)}
                 </Select>
                 {/* ошибка для поля*/}
                 {touched && ((error && <div>{error}</div>))}
@@ -85,6 +89,7 @@ class FindForm extends Component {
             <label>{label}</label>
             <div>
                 <Select {...input} placeholder={label} type={type}>
+                    <option value={null}>Все</option>
                     {this.props.shedules && this.props.shedules.map(p => <option
                         value={p.Shedule}>{p.Shedule}</option>)}
                 </Select>
@@ -99,6 +104,7 @@ class FindForm extends Component {
             <label>{label}</label>
             <div>
                 <Select {...input} placeholder={label} type={type}>
+                    <option value={null}>Все</option>
                     {this.props.typesVacancy && this.props.typesVacancy.map(p => <option
                         value={p.Type}>{p.Type}</option>)}
                 </Select>
@@ -122,9 +128,6 @@ class FindForm extends Component {
                             <Field name="profession" component={this.renderSelectProfession} onChange={(event) => {
                                 this.props.getSpecialisations(event.target.value)
                             }}>
-
-                                {/*{this.props.professions && this.props.professions.map(p => <option
-                                    value={p.Profession}>{p.Profession}</option>)}*/}
 
                             </Field> : null}
                     </div>

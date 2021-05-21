@@ -12,17 +12,14 @@ class AEmployeeContainer extends React.Component {
 
 
     }
-    onPageChanged = (pageNumber) => {
-        this.props.getEmployeeList(pageNumber, this.props.pageSize);
-    }
+
 
 
 
     render() {
 
         return <>
-            {this.props.isFetching ? <Preloader/> : <AEmployee {...this.props} SetActionType={this.props.SetActionType} onPageChanged={this.onPageChanged}
-                                                               banEmployee={this.props.banEmployee}/>}
+            {this.props.isFetching ? <Preloader/> : <AEmployee {...this.props} />}
 
         </>
 
@@ -39,7 +36,8 @@ let mapStateToProps = (state) => {
         employeeCurrentPage: state.admin.employeeCurrentPage,
         employeeList: state.admin.employeeList,
         employeeCount: state.admin.employeeCount,
-        banUserId: state.admin.banUserId
+        banUserId: state.admin.banUserId,
+        token: state.auth.token
 
 
     }

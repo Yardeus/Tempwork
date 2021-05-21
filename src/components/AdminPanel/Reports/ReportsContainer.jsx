@@ -2,18 +2,19 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from "redux";
 import Preloader from "../../common/preloader";
+import Jobs from "./Reports";
 import {
-    addJobs,
-    deleteFeedback,
+    addJobs, confirmReport,
     deleteJobs,
+    rejectReport,
     SetActionType,
     setAddJobsMode,
     setSendJobsMode
 } from "../../../redux/admin-reducer";
-import FeedbackAboutEmployer from "./FeedbackAboutEmployer";
+import Reports from "./Reports";
 
 
-class FeedbackAboutEmployerContainer extends React.Component {
+class ReportsContainer extends React.Component {
 
     componentDidMount() {
 
@@ -26,9 +27,8 @@ class FeedbackAboutEmployerContainer extends React.Component {
     render() {
 
         return <>
-            {this.props.isFetching ? <Preloader/> : <FeedbackAboutEmployer {...this.props} SetActionType={this.props.SetActionType}
-                                                                           deleteFeedback={this.props.deleteFeedback}
-            />}
+            {this.props.isFetching ? <Preloader/> : <Reports {...this.props}
+                                                         />}
 
         </>
 
@@ -41,8 +41,8 @@ let mapStateToProps = (state) => {
         type: state.auth.type,
         isFetching: state.auth.isFetching,
         actionType: state.admin.actionType,
-        feedbackList: state.admin.feedbackList,
-        token: state.auth.token
+        token: state.auth.token,
+        reportList: state.admin.reportList,
 
 
     }
@@ -50,8 +50,8 @@ let mapStateToProps = (state) => {
 
 export default compose(
     connect(mapStateToProps,
-        {SetActionType,deleteFeedback})
-)(FeedbackAboutEmployerContainer);
+        {SetActionType,rejectReport,confirmReport})
+)(ReportsContainer);
 
 
 

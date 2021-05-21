@@ -2,14 +2,25 @@ import React from "react";
 import s from "./Users.module.css";
 import {Button} from "../../common/formsControl";
 import moment from "moment";
+import Pagination from "@material-ui/lab/Pagination";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& > *': {
+            marginTop: theme.spacing(2),
+        },
+    },
+}));
 
 let AEmployee = (props) => {
-    debugger
-    let pagesCount = Math.ceil(props.employeeCount / props.pageSize);
-    let pages = [];
-    for (let i = 1; i <= pagesCount; i++) {
-        pages.push(i)
+debugger
+    const onPageChanged = (pageNumber) => {
+       props.getEmployeeList(pageNumber, props.pageSize,props.token);
     }
+
+    const classes = useStyles();
+    let pagesCount = Math.ceil(props.employeeCount / props.pageSize);
 
 
     return <div className={s.text}>
@@ -37,7 +48,7 @@ let AEmployee = (props) => {
                 {l.Status === "Активен" ?
                     <div>
                         <Button onClick={() => {
-                            props.banEmployee(l.idEmployee, props.employeeCurrentPage, props.pageSize)
+                            props.banEmployee(l.idEmployee, props.employeeCurrentPage, props.pageSize,props.token)
                         }}>
                             Заблокировать
                         </Button>
@@ -45,13 +56,23 @@ let AEmployee = (props) => {
             </div>
         </div>)}
         <div>
+            <div className={classes.root}>
+                <Pagination count={pagesCount} showFirstButton showLastButton onChange={(event, page) => {
+                    debugger
+                    onPageChanged(page)
+                }}/>
+            </div>
+        </div>
+
+        {/*<div>
+
             {pages.map(p => {
                 return <span className={props.employeeCurrentPage === p && s.number_select}
                              onClick={() => {
                                  props.onPageChanged(p)
                              }}>{p}</span>
             })}
-        </div>
+        </div>*/}
         <div>
             <Button onClick={() => {
                 props.SetActionType(null)

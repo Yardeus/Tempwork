@@ -38,7 +38,8 @@ let mapStateToProps = (state) => {
         actionType: state.admin.actionType,
         jobs: state.admin.jobs,
         addJobsMode: state.admin.addJobsMode,
-        sendJobsMode: state.admin.sendJobsMode
+        sendJobsMode: state.admin.sendJobsMode,
+        token: state.auth.token
 
 
     }

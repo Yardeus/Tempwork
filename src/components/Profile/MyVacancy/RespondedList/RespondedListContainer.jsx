@@ -15,12 +15,13 @@ import {
     setIsResponded,
     setIsViewFeedback
 } from "../../../../redux/employee-reducer";
+import {WithAuthRedirect} from "../../../../hoc/WithAuthRedirect";
 
 
 class RespondedListContainer extends React.Component {
 
     componentDidMount() {
-        this.props.getRespondedFromMyVacancy(this.props.currentResponded)
+        this.props.getRespondedFromMyVacancy(this.props.currentResponded,this.props.token)
         this.props.setIsResponded(false)
     }
 
@@ -52,12 +53,13 @@ let mapStateToProps = (state) => {
         responded: state.profilePage.responded,
         currentResponded: state.profilePage.currentResponded,
         isViewFeedback: state.employeePage.isViewFeedback,
-        feedbacks: state.employeePage.feedbacks
+        feedbacks: state.employeePage.feedbacks,
+        token: state.auth.token
 
     }
 }
 
-export default compose(
+export default compose(WithAuthRedirect,
     connect(mapStateToProps, {getRespondedFromMyVacancy,createChat,SetCurrentRespondVacancyId,FormRespondedMyVacancy, createAgreement,setIsViewFeedback,getFeedbackEmployer,setIsResponded})
 )(RespondedListContainer);
 

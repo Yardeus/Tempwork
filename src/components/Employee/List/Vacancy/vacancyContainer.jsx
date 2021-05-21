@@ -38,9 +38,9 @@ class VacancyContainer extends React.Component {
 
     }
 
-    onRespond(idVacancy) {
+    onRespond(idVacancy,token) {
         debugger
-        this.respondVacancy(idVacancy, this.userId);
+        this.respondVacancy(idVacancy, this.userId, token);
         this.setIsResponded(true)
     }
 
@@ -79,6 +79,7 @@ let mapStateToProps = (state) => {
         isAuth: state.auth.isAuth,
         favoriteVacancy: state.employeePage.favoriteVacancy,
         vacancyIsFavorite: state.employeePage.vacancyIsFavorite,
+        token: state.auth.token
     }
 }
 

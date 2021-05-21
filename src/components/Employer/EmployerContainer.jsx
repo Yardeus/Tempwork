@@ -11,13 +11,11 @@ class EmployerContainer extends React.Component {
 
 
     componentDidMount() {
-        debugger
         this.props.getJobs("professions");
         this.props.setIsVacancyCreated(false)
     }
 
     getSpecialisations = (profession) => {
-        debugger
         this.props.getJobs("specialisation",profession);
     }
 
@@ -43,7 +41,8 @@ const mapStateToProps = (state) => ({
     specialisations: state.employerPage.specialisations,
     oneProfession: state.employerPage.oneProfession,
     userId: state.auth.userId,
-    isVacancyCreated: state.employerPage.isVacancyCreated
+    isVacancyCreated: state.employerPage.isVacancyCreated,
+    token: state.auth.token
 })
 
 export default compose(

@@ -16,7 +16,7 @@ class ListContainer extends React.Component {
     componentDidMount() {
         this.props.filterMode ? this.props.getFilterVacancy(this.props.filter,this.props.currentPage, this.props.pageSize,this.props.type) : this.props.getVacancy(this.props.currentPage, this.props.pageSize,this.props.type)
         if (this.props.isAuth && this.props.type==="employer") {
-            this.props.getFavoriteVacancy(this.props.userId)
+            this.props.getFavoriteVacancy(this.props.userId,this.props.token)
         }
     }
 
@@ -56,6 +56,7 @@ let mapStateToProps = (state) => {
         isAuth: state.auth.isAuth,
         favoriteVacancy: state.employeePage.favoriteVacancy,
         countFavoriteVacancy: state.employeePage.countFavoriteVacancy,
+        token: state.auth.token
 
     }
 }

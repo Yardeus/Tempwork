@@ -4,6 +4,7 @@ import {compose} from "redux";
 import {getFeedback} from "../../../redux/profile-reducer";
 import Preloader from "../../common/preloader";
 import Feedback from "./Feedback";
+import {WithAuthRedirect} from "../../../hoc/WithAuthRedirect";
 
 
 class FeedbackContainer extends React.Component {
@@ -32,12 +33,13 @@ let mapStateToProps = (state) => {
         type: state.auth.type,
         isFetching: state.auth.isFetching,
         myVacancy: state.profilePage.myVacancy,
-        feedback: state.profilePage.feedback
+        feedback: state.profilePage.feedback,
+        token: state.auth.token
 
     }
 }
 
-export default compose(
+export default compose(WithAuthRedirect,
     connect(mapStateToProps,
         {getFeedback})
 )(FeedbackContainer);

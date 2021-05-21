@@ -13,7 +13,7 @@ class AEmployerContainer extends React.Component {
 
     }
     onPageChanged = (pageNumber) => {
-        this.props.getEmployerList(pageNumber, this.props.pageSize);
+        this.props.getEmployerList(pageNumber, this.props.pageSize,this.props.token);
     }
 
 
@@ -39,7 +39,8 @@ let mapStateToProps = (state) => {
         employerCurrentPage: state.admin.employerCurrentPage,
         employerList: state.admin.employerList,
         employerCount: state.admin.employerCount,
-        banUserId: state.admin.banUserId
+        banUserId: state.admin.banUserId,
+        token: state.auth.token
 
 
     }

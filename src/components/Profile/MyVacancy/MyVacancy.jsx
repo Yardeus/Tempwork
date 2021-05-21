@@ -37,7 +37,7 @@ let myVacancy = (props) => {
                             </div>
                             <div align={"right"}>
                                 <Button onClick={() => {
-                                    props.deleteVacancy(v.id, v.idEmployer, props.type)
+                                    props.deleteVacancy(v.id, v.idEmployer, props.type,props.token)
                                 }}>
                                     Убрать отклик
                                 </Button>
@@ -101,7 +101,7 @@ let myVacancy = (props) => {
                                     </div>
                                     <div>
                                         <Button onClick={() => {
-                                            props.closeMyVacancy(v.idFind_Employer, props.userId)
+                                            props.closeMyVacancy(v.idFind_Employer, props.userId,props.token)
                                         }}>
                                             Закрыть вакансию
                                         </Button>

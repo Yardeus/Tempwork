@@ -37,14 +37,14 @@ export const vacancyAPI = {
             .catch(error => error.response.status)
     },
 
-    respondVacancy(idVacancy, userId) {
+    respondVacancy(idVacancy, userId,token) {
         return instance.post(`employer-list`, {
             id_find_employer: idVacancy,
             id_employer: userId
-        })
+        },setHeaderAuth(token))
             .then(response => response.data)
     },
-    newVacancy(userId, data) {
+    newVacancy(userId, data,token) {
 
         debugger
         return instance.post(`vacancy`, {
@@ -59,17 +59,17 @@ export const vacancyAPI = {
             description: data.description,
             city: data.city,
             adress: data.adress
-        })
+        },setHeaderAuth(token))
             .then(response => response.data)
     },
-    closeVacancy(idFind_Employer, idEmployee) {
+    closeVacancy(idFind_Employer, idEmployee,token) {
         return instance.put(`vacancy`, {
             idFind_Employer: idFind_Employer,
             idEmployee: idEmployee
-        })
+        },setHeaderAuth(token))
             .then(response => response.data)
     },
-    updateVacancy(data) {
+    updateVacancy(data,token) {
         return instance.put(`vacancy/data`, {
             idFind_Employer: data.idFind_Employer,
             Price: data.Price,
@@ -77,30 +77,30 @@ export const vacancyAPI = {
             Description: data.Description,
             Start_Time: data.Start_Time,
             End_Time: data.End_Time
-        })
+        },setHeaderAuth(token))
             .then(response => response.data)
     },
 
-    getEmployerListFromVacancyId(idFind_Employer) {
-        return instance.get(`employer-list/find?idFind_Employer=${idFind_Employer}`)
+    getEmployerListFromVacancyId(idFind_Employer,token) {
+        return instance.get(`employer-list/find?idFind_Employer=${idFind_Employer}`,setHeaderAuth(token))
             .then(response => response.data)
     },
-    getWorkersListFromVacancyId(idFind_Employer) {
-        return instance.get(`employer-list/workers?idFind_Employer=${idFind_Employer}`)
+    getWorkersListFromVacancyId(idFind_Employer,token) {
+        return instance.get(`employer-list/workers?idFind_Employer=${idFind_Employer}`,setHeaderAuth(token))
             .then(response => response.data)
     },
-    getFavoriteVacancy(idEmployer) {
-        return instance.get(`vacancy/favorite?idEmployer=${idEmployer}`)
-            .then(response => response.data)
-            .catch(error => error.response.status)
-    },
-    addFavoriteVacancy(data) {
-        return instance.post(`vacancy/favorite`,{...data})
+    getFavoriteVacancy(idEmployer,token) {
+        return instance.get(`vacancy/favorite?idEmployer=${idEmployer}`,setHeaderAuth(token))
             .then(response => response.data)
             .catch(error => error.response.status)
     },
-    deleteFavoriteVacancy(data) {
-        return instance.delete(`vacancy/favorite?idVacancy=${data.idVacancy}&idEmployer=${data.idEmployer}`)
+    addFavoriteVacancy(data,token) {
+        return instance.post(`vacancy/favorite`,{...data},setHeaderAuth(token))
+            .then(response => response.data)
+            .catch(error => error.response.status)
+    },
+    deleteFavoriteVacancy(data,token) {
+        return instance.delete(`vacancy/favorite?idVacancy=${data.idVacancy}&idEmployer=${data.idEmployer}`,setHeaderAuth(token))
             .then(response => response.data)
             .catch(error => error.response.status)
     }
@@ -171,26 +171,26 @@ export const loginAPI = {
 }
 
 export const profileAPI = {
-    getProfile(type, id_user) {
+    getProfile(type, id_user,token) {
         if (type === "employee") {
-            return instance.get(`employee/one?id=${id_user}`).then(response => response.data)
+            return instance.get(`employee/one?id=${id_user}`,setHeaderAuth(token)).then(response => response.data)
         } else if (type === "employer") {
-            return instance.get(`employer/one?id=${id_user}`).then(response => response.data)
+            return instance.get(`employer/one?id=${id_user}`,setHeaderAuth(token)).then(response => response.data)
         }
     },
-    myVacancy(id_user, type) {
+    myVacancy(id_user, type,token) {
         if (type === "employer") {
-            return instance.get(`employer-list/employer?id_employer=${id_user}`).then(response => response.data)
+            return instance.get(`employer-list/employer?id_employer=${id_user}`,setHeaderAuth(token)).then(response => response.data)
         } else if (type === "employee") {
-            return instance.get(`vacancy/employee?id=${id_user}`).then(response => response.data)
+            return instance.get(`vacancy/employee?id=${id_user}`,setHeaderAuth(token)).then(response => response.data)
         }
 
     },
-    updateData(type, data) {
+    updateData(type, data,token) {
         if (type === "employer") {
-            return instance.put(`employer`, {...data}).then(response => response.data)
+            return instance.put(`employer`, {...data},setHeaderAuth(token)).then(response => response.data)
         } else if (type === "employee") {
-            return instance.put(`employee`, {...data}).then(response => response.data)
+            return instance.put(`employee`, {...data},setHeaderAuth(token)).then(response => response.data)
         }
 
     },
@@ -199,29 +199,31 @@ export const profileAPI = {
         return instance.get(`vacancy/one?id=${vacancyId}`).then(response => response.data)
     },
 
-    deleteVacancy(idVacancy, userId, type) {
+    deleteVacancy(idVacancy, userId, type,token) {
         if (type === "employer") {
-            return instance.delete(`employer-list?id=${idVacancy}&idEmployer=${userId}`).then(response => response.data)
+            return instance.delete(`employer-list?id=${idVacancy}&idEmployer=${userId}`,setHeaderAuth(token)).then(response => response.data)
         }
     },
-    myWorks(idEmployer) {
-        return instance.get(`employer-list/works?idEmployer=${idEmployer}`).then(response => response.data)
+    myWorks(idEmployer,token) {
+        return instance.get(`employer-list/works?idEmployer=${idEmployer}`,setHeaderAuth(token)).then(response => response.data)
 
     },
-    saveAvatar(type, avatar, id) {
+    saveAvatar(type, avatar, id,token) {
         const formData = new FormData();
         formData.append("image", avatar)
         formData.append("id", id)
         if (type === "employer") {
             return instance.put(`employer/image`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `${token}`
                 }
             }).then(response => response.data)
         } else if (type === "employee") {
             return instance.put(`employee/image`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `${token}`
                 }
             }).then(response => response.data)
         }
@@ -239,29 +241,29 @@ export const jobsAPI = {
     getSpecialisations(profession) {
         return instance.get(`jobs/specialisations?profession=${profession}`).then(response => response.data)
     },
-    addJobs(data) {
-        return instance.post(`jobs`, {...data}).then(response => response.data)
+    addJobs(data,token) {
+        return instance.post(`jobs`, {...data},setHeaderAuth(token)).then(response => response.data)
     },
-    deleteJobs(id) {
-        return instance.delete(`jobs?id=${id}`).then(response => response.data)
+    deleteJobs(id,token) {
+        return instance.delete(`jobs?id=${id}`,setHeaderAuth(token)).then(response => response.data)
     }
 }
 export const agreementAPI = {
-    createAgreement(data) {
-        return instance.post(`agreement`, {...data}).then(response => response.data)
+    createAgreement(data,token) {
+        return instance.post(`agreement`, {...data},setHeaderAuth(token)).then(response => response.data)
     },
-    getData(idFind_Employer) {
-        return instance.get(`agreement/find?idFind_Employer=${idFind_Employer}`).then(response => response.data)
+    getData(idFind_Employer,token) {
+        return instance.get(`agreement/find?idFind_Employer=${idFind_Employer}`,setHeaderAuth(token)).then(response => response.data)
     },
-    getStatus(idFind_Employer, idEmployer) {
-        return instance.get(`agreement/status?idFind_Employer=${idFind_Employer}&idEmployer=${idEmployer}`).then(response => response.data)
+    getStatus(idFind_Employer, idEmployer,token) {
+        return instance.get(`agreement/status?idFind_Employer=${idFind_Employer}&idEmployer=${idEmployer}`,setHeaderAuth(token)).then(response => response.data)
     },
 }
 
 
 export const cityAPI = {
-    getCities(token) {
-        return instance.get(`city`,setHeaderAuth(token)).then(response => response.data)
+    getCities() {
+        return instance.get(`city`).then(response => response.data)
     }
 }
 export const sheduleAPI = {
@@ -280,34 +282,42 @@ export const typeVacancyAPI = {
     }
 }
 export const reportsAPI = {
-    getReports() {
-        return instance.get(`reports`).then(response => response.data)
+    getReports(token) {
+        return instance.get(`reports`,setHeaderAuth(token)).then(response => response.data)
             .catch(error => error.response.status)
     },
     getCodesReport() {
         return instance.get(`reports/codes`).then(response => response.data)
             .catch(error => error.response.status)
     },
-    sendReport(data) {
-        return instance.post(`reports`,{...data}).then(response => response.data)
+    sendReport(data,token) {
+        return instance.post(`reports`,{...data},setHeaderAuth(token)).then(response => response.data)
+            .catch(error => error.response.status)
+    },
+    confirmReport(data,token) {
+        return instance.post(`reports/confirm`,{...data},setHeaderAuth(token)).then(response => response.data)
+            .catch(error => error.response.status)
+    },
+    rejectReport(data,token) {
+        return instance.post(`reports/reject`,{...data},setHeaderAuth(token)).then(response => response.data)
             .catch(error => error.response.status)
     }
 }
 
 export const messagesAPI = {
-    getChatsUser(data) {
-        return instance.get(`chat?idUser=${data.idUser}&typeUser=${data.typeUser}`).then(response => response.data)
+    getChatsUser(data,token) {
+        return instance.get(`chat?idUser=${data.idUser}&typeUser=${data.typeUser}`,setHeaderAuth(token)).then(response => response.data)
     },
-    getMessages(idChat) {
-        return instance.get(`messages?idChat=${idChat}`)
+    getMessages(idChat,token) {
+        return instance.get(`messages?idChat=${idChat}`,setHeaderAuth(token))
             .then(response => response.data)
             .catch(error => error.response.status)
     },
-    sendMessage(data) {
-        return instance.post(`messages`, {...data}).then(response => response.data)
+    sendMessage(data,token) {
+        return instance.post(`messages`, {...data},setHeaderAuth(token)).then(response => response.data)
     },
-    createChat(data) {
-        return instance.post(`chat`, {...data}).then(response => response.data)
+    createChat(data,token) {
+        return instance.post(`chat`, {...data},setHeaderAuth(token)).then(response => response.data)
             .catch(error => error.response.status)
     }
 }
@@ -316,58 +326,58 @@ export const feedbackAPI = {
         return instance.get(`feedback/employee?id=${id}`).then(response => response.data)
             .catch(error => error.response.status)
     },
-    sendFeedbackEmployee(data) {
-        return instance.post(`feedback/employee`, {...data}).then(response => response.data)
+    sendFeedbackEmployee(data,token) {
+        return instance.post(`feedback/employee`, {...data},setHeaderAuth(token)).then(response => response.data)
             .catch(error => error.response.status)
     },
     getFeedbackEmployer(id) {
         return instance.get(`feedback/employer?id=${id}`).then(response => response.data)
             .catch(error => error.response.status)
     },
-    sendFeedbackEmployer(data) {
-        return instance.post(`feedback/employer`, {...data}).then(response => response.data)
+    sendFeedbackEmployer(data,token) {
+        return instance.post(`feedback/employer`, {...data},setHeaderAuth(token)).then(response => response.data)
             .catch(error => error.response.status)
     },
-    getFeedbacks(type) {
-        return instance.get(`feedback?type=${type}`).then(response => response.data)
+    getFeedbacks(type,token) {
+        return instance.get(`feedback?type=${type}`,setHeaderAuth(token)).then(response => response.data)
             .catch(error => error.response.status)
     },
-    deleteFeedback(type, id) {
-        return instance.delete(`feedback?type=${type}&id=${id}`).then(response => response.data)
+    deleteFeedback(type, id,token) {
+        return instance.delete(`feedback?type=${type}&id=${id}`,setHeaderAuth(token)).then(response => response.data)
             .catch(error => error.response.status)
     }
 }
 
 export const adminAPI = {
-    getEmployerList(currentPage = 1, pageSize = 5) {
-        return instance.get(`employer?page=${currentPage}&size=${pageSize}`)
+    getEmployerList(currentPage = 1, pageSize = 5,token) {
+        return instance.get(`employer?page=${currentPage}&size=${pageSize}`,setHeaderAuth(token))
             .then(response => response.data)
     },
-    getEmployeeList(currentPage = 1, pageSize = 5) {
-        return instance.get(`employee?page=${currentPage}&size=${pageSize}`)
+    getEmployeeList(currentPage = 1, pageSize = 5,token) {
+        return instance.get(`employee?page=${currentPage}&size=${pageSize}`,setHeaderAuth(token))
             .then(response => response.data)
     },
-    banEmployer(idUser, currentPage = 1, pageSize = 5) {
+    banEmployer(idUser, currentPage = 1, pageSize = 5,token) {
         return instance.put(`employer/ban`, {
             idUser: idUser,
             page: currentPage,
             size: pageSize
-        })
+        },setHeaderAuth(token))
             .then(response => response.data)
     },
-    banEmployee(idUser, currentPage = 1, pageSize = 5) {
+    banEmployee(idUser, currentPage = 1, pageSize = 5,token) {
         return instance.put(`employee/ban`, {
             idUser: idUser,
             page: currentPage,
             size: pageSize
-        })
+        },setHeaderAuth(token))
             .then(response => response.data)
     },
-    closeVacancy(id) {
+    closeVacancy(id,token) {
         return instance.put(`vacancy/admin`, {
             idFind_Employer: id
 
-        })
+        },setHeaderAuth(token))
             .then(response => response.data)
     },
 

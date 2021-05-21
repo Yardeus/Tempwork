@@ -6,11 +6,10 @@ import {me, SetAuthUserData} from "../../redux/auth-reducer";
 import {loginAPI} from "../../api/api";
 import {compose} from "redux";
 import {setOneVacancy} from "../../redux/employee-reducer";
-const TOKEN = "test"
 
 class HeaderContainer extends React.Component {
     componentDidMount() {
-        me(TOKEN)
+        me(this.props.token)
     }
 
     render() {

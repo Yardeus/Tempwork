@@ -316,16 +316,16 @@ export const getVacancy = (currentPage, pageSize, type) => (dispatch) => {
             dispatch(toggleIsFetching(false));
         })
 }
-export const sendFeedbackEmployee = (data) => (dispatch) => {
+export const sendFeedbackEmployee = (data,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    feedbackAPI.sendFeedbackEmployee(data)
+    feedbackAPI.sendFeedbackEmployee(data,token)
         .then(data => {
             dispatch(toggleIsFetching(false));
         })
 }
-export const sendFeedbackEmployer = (data) => (dispatch) => {
+export const sendFeedbackEmployer = (data,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    feedbackAPI.sendFeedbackEmployer(data)
+    feedbackAPI.sendFeedbackEmployer(data,token)
         .then(data => {
             dispatch(toggleIsFetching(false));
         })
@@ -353,10 +353,13 @@ export const getFilterVacancy = (data, currentPage, pageSize, type) => (dispatch
         .catch(dispatch(toggleIsFetching(false)))
 }
 
-export const respondVacancy = (idVacancy, userId) => (dispatch) => {
+export const respondVacancy = (idVacancy, userId,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    vacancyAPI.respondVacancy(idVacancy, userId)
+    vacancyAPI.respondVacancy(idVacancy, userId,token)
         .then(data => {
+            dispatch(toggleIsFetching(false));
+        })
+        .catch(()=>{
             dispatch(toggleIsFetching(false));
         })
 }
@@ -393,9 +396,9 @@ export const getFeedbackEmployer = (id) => (dispatch) => {
             dispatch(toggleIsFetching(false));
         })
 }
-export const getCities = (token) => (dispatch) => {
+export const getCities = () => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    cityAPI.getCities(token)
+    cityAPI.getCities()
         .then(data => {
             dispatch(setCities(data.values))
             dispatch(toggleIsFetching(false));
@@ -425,9 +428,9 @@ export const getTypesVacancy = () => (dispatch) => {
             dispatch(toggleIsFetching(false));
         })
 }
-export const getFavoriteVacancy = (idEmployer) => (dispatch) => {
+export const getFavoriteVacancy = (idEmployer,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    vacancyAPI.getFavoriteVacancy(idEmployer)
+    vacancyAPI.getFavoriteVacancy(idEmployer,token)
         .then(data => {
             dispatch(setFavoriteVacancy(data.values))
             dispatch(setCountFavoriteVacancy(data.count))
@@ -435,13 +438,13 @@ export const getFavoriteVacancy = (idEmployer) => (dispatch) => {
             dispatch(toggleIsFetching(false));
         })
 }
-export const addFavoriteVacancy = (idVacancy, idEmployer) => (dispatch) => {
+export const addFavoriteVacancy = (idVacancy, idEmployer,token) => (dispatch) => {
     let data = {
         idVacancy,
         idEmployer
     }
     dispatch(toggleIsFetching(true));
-    vacancyAPI.addFavoriteVacancy(data)
+    vacancyAPI.addFavoriteVacancy(data,token)
         .then(data => {
             let count = [
                 {Count: 1}
@@ -452,14 +455,14 @@ export const addFavoriteVacancy = (idVacancy, idEmployer) => (dispatch) => {
             dispatch(toggleIsFetching(false));
         })
 }
-export const deleteFavoriteVacancy = (idVacancy, idEmployer) => (dispatch) => {
+export const deleteFavoriteVacancy = (idVacancy, idEmployer,token) => (dispatch) => {
     let data = {
         idVacancy,
         idEmployer
     }
     debugger
     dispatch(toggleIsFetching(true));
-    vacancyAPI.deleteFavoriteVacancy(data)
+    vacancyAPI.deleteFavoriteVacancy(data,token)
         .then(data => {
             dispatch(setFavoriteVacancy(data.values))
             dispatch(toggleIsFetching(false));

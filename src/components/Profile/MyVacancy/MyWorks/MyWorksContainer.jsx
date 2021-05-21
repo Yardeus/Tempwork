@@ -15,12 +15,13 @@ import {
     setFeedbackSendMode, setIsViewFeedback
 } from "../../../../redux/employee-reducer";
 import MyWorks from "./MyWorks";
+import {WithAuthRedirect} from "../../../../hoc/WithAuthRedirect";
 
 
 class MyWorksContainer extends React.Component {
 
     componentDidMount() {
-        this.props.getMyWorks(this.props.userId)
+        this.props.getMyWorks(this.props.userId,this.props.token)
         this.props.setFeedbackSendMode(false)
         this.props.setIsViewFeedback(false)
     }
@@ -56,13 +57,14 @@ let mapStateToProps = (state) => {
         currentResponded: state.profilePage.currentResponded,
         feedbackMode: state.employeePage.feedbackMode,
         feedbackSendMode: state.employeePage.feedbackSendMode,
-        myWorks: state.profilePage.myWorks
+        myWorks: state.profilePage.myWorks,
+        token: state.auth.token
 
 
     }
 }
 
-export default compose(
+export default compose(WithAuthRedirect,
     connect(mapStateToProps, {getWorkersFromMyVacancy,SetCurrentRespondVacancyId,FormRespondedMyVacancy, createAgreement,  setFeedbackMode,
         setFeedbackSendMode,sendFeedbackEmployee,getMyWorks,setIsViewFeedback})
 )(MyWorksContainer);

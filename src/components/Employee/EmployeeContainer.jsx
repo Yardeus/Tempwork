@@ -24,7 +24,8 @@ class EmployeeContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        employeePage: state.employeePage
+        employeePage: state.employeePage,
+        token: state.auth.token
     }
 }
 

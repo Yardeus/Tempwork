@@ -104,10 +104,10 @@ export const getJobs = (type, profession) => (dispatch) => {
 
 }
 
-export const createNewVacancy = (userId,data) => (dispatch) => {
+export const createNewVacancy = (userId,data,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
 
-    vacancyAPI.newVacancy(userId,data)
+    vacancyAPI.newVacancy(userId,data,token)
         .then(data => {
             dispatch(toggleIsFetching(false));
         })

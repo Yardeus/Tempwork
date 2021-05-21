@@ -13,6 +13,7 @@ const ADD_JOBS_MODE = "ADD_JOBS_MODE"
 const SEND_JOBS_MODE = "SEND_JOBS_MODE"
 const SET_FEEDBACK_LIST = "SET_FEEDBACK_LIST"
 const SET_CODES_REPORT = "SET_CODES_REPORT"
+const SET_REPORT_LIST = "SET_REPORT_LIST"
 const IS_VACANCY_CLOSED = "IS_VACANCY_CLOSED"
 
 let initialState = {
@@ -29,7 +30,8 @@ let initialState = {
     sendJobsMode: false,
     feedbackList: [],
     isVacancyClosed: false,
-    codesReports: []
+    codesReports: [],
+    reportList: []
 
 
 }
@@ -102,6 +104,11 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
                 codesReports: action.data
+            }
+        case SET_REPORT_LIST:
+            return {
+                ...state,
+                reportList: action.data
             }
 
         default:
@@ -188,11 +195,17 @@ export const setCodesReport = (data) => {
         data
     }
 }
+export const setReportList = (data) => {
+    return {
+        type: SET_REPORT_LIST,
+        data
+    }
+}
 
-export const getEmployerList = (currentPage, pageSize) => (dispatch) => {
+export const getEmployerList = (currentPage, pageSize,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     dispatch(setEmployerCurrentPage(currentPage));
-    adminAPI.getEmployerList(currentPage, pageSize)
+    adminAPI.getEmployerList(currentPage, pageSize,token)
         .then(data => {
             dispatch(setEmployerList(data.values));
             dispatch(setEmployerCount(data.count));
@@ -207,10 +220,10 @@ export const getAllJobs = () => (dispatch) => {
             dispatch(toggleIsFetching(false));
         })
 }
-export const getEmployeeList = (currentPage, pageSize) => (dispatch) => {
+export const getEmployeeList = (currentPage, pageSize,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     dispatch(setEmployeeCurrentPage(currentPage));
-    adminAPI.getEmployeeList(currentPage, pageSize)
+    adminAPI.getEmployeeList(currentPage, pageSize,token)
         .then(data => {
             dispatch(setEmployeeList(data.values));
             dispatch(setEmployeeCount(data.count));
@@ -218,27 +231,27 @@ export const getEmployeeList = (currentPage, pageSize) => (dispatch) => {
         })
 }
 
-export const banEmployer = (idUser, currentPage, pageSize) => (dispatch) => {
+export const banEmployer = (idUser, currentPage, pageSize,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     dispatch(setEmployerCurrentPage(currentPage));
-    adminAPI.banEmployer(idUser, currentPage, pageSize)
+    adminAPI.banEmployer(idUser, currentPage, pageSize,token)
         .then(data => {
             dispatch(setEmployerList(data.values));
             dispatch(toggleIsFetching(false));
         })
 }
-export const banEmployee = (idUser, currentPage, pageSize) => (dispatch) => {
+export const banEmployee = (idUser, currentPage, pageSize,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
     dispatch(setEmployerCurrentPage(currentPage));
-    adminAPI.banEmployee(idUser, currentPage, pageSize)
+    adminAPI.banEmployee(idUser, currentPage, pageSize,token)
         .then(data => {
             dispatch(setEmployeeList(data.values));
             dispatch(toggleIsFetching(false));
         })
 }
-export const addJobs = (data) => (dispatch) => {
+export const addJobs = (data,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    jobsAPI.addJobs(data)
+    jobsAPI.addJobs(data,token)
         .then(data => {
             dispatch(setJobsList(data.values));
             dispatch(setAddJobsMode(false));
@@ -246,33 +259,33 @@ export const addJobs = (data) => (dispatch) => {
             dispatch(toggleIsFetching(false));
         })
 }
-export const deleteJobs = (data) => (dispatch) => {
+export const deleteJobs = (data,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    jobsAPI.deleteJobs(data)
+    jobsAPI.deleteJobs(data,token)
         .then(data => {
             dispatch(setJobsList(data.values));
             dispatch(toggleIsFetching(false));
         })
 }
-export const getFeedbacks = (type) => (dispatch) => {
+export const getFeedbacks = (type,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    feedbackAPI.getFeedbacks(type)
+    feedbackAPI.getFeedbacks(type,token)
         .then(data => {
             dispatch(setFeedbackList(data.values));
             dispatch(toggleIsFetching(false));
         })
 }
-export const deleteFeedback = (type,id) => (dispatch) => {
+export const deleteFeedback = (type,id,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    feedbackAPI.deleteFeedback(type,id)
+    feedbackAPI.deleteFeedback(type,id,token)
         .then(data => {
             dispatch(setFeedbackList(data.values));
             dispatch(toggleIsFetching(false));
         })
 }
-export const closeVacancyAdmin = (id) => (dispatch) => {
+export const closeVacancyAdmin = (id,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    adminAPI.closeVacancy(id)
+    adminAPI.closeVacancy(id,token)
         .then(data => {
             /*dispatch(setOneVacancy(data.values))*/
             dispatch(toggleIsFetching(false))
@@ -286,12 +299,39 @@ export const getCodesReport = () => (dispatch) => {
             dispatch(toggleIsFetching(false))
         })
 }
-export const sendReport = (data) => (dispatch) => {
+export const sendReport = (data,token) => (dispatch) => {
     dispatch(toggleIsFetching(true));
-    reportsAPI.sendReport(data)
+    reportsAPI.sendReport(data,token)
         .then(data => {
             dispatch(toggleIsFetching(false))
         })
 }
+export const getReportList = (token) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    reportsAPI.getReports(token)
+        .then(data => {
+            dispatch(setReportList(data.values))
+            dispatch(toggleIsFetching(false))
+        })
+}
+export const confirmReport = (data,token) => (dispatch) => {
+    debugger
+    dispatch(toggleIsFetching(true));
+    reportsAPI.confirmReport(data,token)
+        .then(data => {
+            dispatch(getReportList(token))
+            dispatch(toggleIsFetching(false))
+        })
+}
+export const rejectReport = (data,token) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    reportsAPI.rejectReport(data,token)
+        .then(data => {
+            dispatch(getReportList(token))
+            dispatch(toggleIsFetching(false))
+        })
+}
+
+
 
 export default adminReducer;
